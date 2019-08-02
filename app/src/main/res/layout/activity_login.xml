@@ -5,21 +5,26 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".LoginActivity">
+        tools:context=".LoginActivity" android:background="@drawable/repolho_roxo">
 
     <Button
-            android:text="Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/btnLogEntrar" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="36dp"
             android:layout_marginRight="36dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginLeft="36dp" android:layout_marginStart="36dp" android:layout_marginTop="36dp"
-            app:layout_constraintTop_toBottomOf="@+id/button2" app:layout_constraintHorizontal_bias="0.0"/>
-    <Button
-            android:text="Button"
+            android:layout_marginLeft="36dp" android:layout_marginStart="36dp"
+            app:layout_constraintHorizontal_bias="1.0" android:layout_marginTop="256dp"
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintVertical_bias="0.68"
+            android:text="@string/entrar"/>
+    <FrameLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content" tools:layout_editor_absoluteY="502dp"
-            android:id="@+id/button2" app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="36dp"
-            android:layout_marginStart="36dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="36dp"
-            android:layout_marginRight="36dp"/>
+            android:layout_height="618dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp" android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.533"
+            app:layout_constraintVertical_bias="0.457" android:id="@+id/frmLoginContainer">
+
+    </FrameLayout>
 </android.support.constraint.ConstraintLayout>

@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">TG</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--Login-->
+    <string name="entrar">Entrar</string>
+    <string name="rmb">Lembrar minha senha</string>
+    <string name="crtConta">Criar conta</string>
+    <string name="email">email</string>
+    <string name="senha">senha</string>
 </resources>
