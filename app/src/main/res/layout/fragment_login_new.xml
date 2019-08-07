@@ -3,7 +3,7 @@
              xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context=".LoginNewFragment">
+             tools:context="com.trabalho.tg.LoginNewFragment">
     <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -52,7 +52,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/edtSenha_LoginNew"
                 app:layout_constraintHorizontal_bias="0.0"/>
         <Button
-                android:text="Button"
+                android:text="@string/crtConta"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/btnCria_LoginNew" app:layout_constraintStart_toStartOf="parent"
@@ -64,7 +64,7 @@
                 android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/ckbxLemb_LoginNEw"
                 app:layout_constraintVertical_bias="1.0"/>
         <CheckBox
-                android:text="CheckBox"
+                android:text="@string/rmb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/ckbxLemb_LoginNEw" android:layout_marginTop="40dp"

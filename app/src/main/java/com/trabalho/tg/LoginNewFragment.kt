@@ -1,4 +1,4 @@
-package com.example.tg
+package com.trabalho.tg
 
 import android.content.Context
 import android.net.Uri

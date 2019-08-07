@@ -10,4 +10,33 @@
     <string name="crtConta">Criar conta</string>
     <string name="email">email</string>
     <string name="senha">senha</string>
+
+    <!--Main-->
+    <string name="title_activity_main">MainActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <!--Menu drawer-->
+    <string name="menu_main">Início</string>
+    <string name="menu_area">Áreas em produção</string>
+    <string name="menu_fechado">Produção fechada</string>
+    <string name="menu_qrcode">QR Codes</string>
+    <string name="menu_opt">Opções</string>
+    <string name="menu_sair">Sair</string>
+
+    <!--AreaView Adapter-->
+    <string name="varea_imagem">Imagem da area</string>
+    <string name="varea_nome">Codigo da area</string>
+
+    <!--QR View Adapter-->
+    <string name="vqr_imagem">Qr imagem</string>
+
+    <!--Common Assets-->
+    <string name="btn_excluir">Botão excluir</string>
+    <string name="btn_alterar">Botão alterar</string>
+    <string name="btn_novo">Botão novo</string>
 </resources>
