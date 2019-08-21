@@ -10,6 +10,7 @@
     <string name="crtConta">Criar conta</string>
     <string name="email">email</string>
     <string name="senha">senha</string>
+    <string name="verifica">Gerar código</string>
 
     <!--Main-->
     <string name="title_activity_main">MainActivity</string>

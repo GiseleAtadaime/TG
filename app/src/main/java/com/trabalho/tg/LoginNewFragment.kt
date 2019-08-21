@@ -1,12 +1,17 @@
 package com.trabalho.tg
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
+import com.trabalho.tg.Helper.CognitoHelper
+import kotlinx.android.synthetic.main.fragment_login.*
+import kotlinx.android.synthetic.main.fragment_login_new.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -98,5 +103,33 @@ class LoginNewFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        btnCria_LoginNew.setOnClickListener {
+
+            if(btnCria_LoginNew.run { text.contains(R.string.verifica.toString()) }){
+                var helper = CognitoHelper(it.context)
+
+                println(edtSenha_LoginNew.text.toString())
+                helper.registerUser(edtNome_LoginNew.text.toString(),edtEmail_LoginNew.text.toString(),edtEmail_LoginNew.text.toString())
+
+                btnCria_LoginNew.text = R.string.crtConta.toString()
+                edtVerifCode_LoginNew.visibility = VISIBLE
+            }
+            else{
+                println("String: " + R.string.verifica)
+                println("Validar código em andamento: " + btnCria_LoginNew.text)
+            }
+
+
+            //val intent = Intent (activity, MainActivity::class.java)
+            //startActivity(intent)
+
+
+        }
+
     }
 }

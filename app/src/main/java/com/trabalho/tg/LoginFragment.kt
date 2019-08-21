@@ -5,10 +5,20 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.text.TextUtils.replace
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.amazonaws.metrics.AwsSdkMetrics.add
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserAttributes
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserCodeDeliveryDetails
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHandler
+import com.amazonaws.regions.Regions
+import com.trabalho.tg.Helper.CognitoHelper
 import kotlinx.android.synthetic.main.fragment_login.*
+import java.lang.reflect.Field
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -38,6 +48,8 @@ class LoginFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
 
+
+
     }
 
     override fun onCreateView(
@@ -65,6 +77,8 @@ class LoginFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
         listener = null
+
+
     }
 
     /**
@@ -106,8 +120,13 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         btnEntrar_Login.setOnClickListener {
-            val intent = Intent (activity, MainActivity::class.java)
-            startActivity(intent)
+
+            //val intent = Intent (activity, MainActivity::class.java)
+            //startActivity(intent)
+        }
+
+        btnCriar_Login.setOnClickListener {
+            LoginActivity().changeFragment(LoginNewFragment(), true)
         }
 
     }
