@@ -3,6 +3,8 @@ package com.trabalho.tg.Helper;
 import android.provider.BaseColumns;
 import android.widget.ArrayAdapter;
 
+import java.util.WeakHashMap;
+
 public final class Contrato {
 
     private static class Usuario implements BaseColumns {
@@ -183,4 +185,48 @@ public final class Contrato {
             " CONSTRAINT pk_lote PRIMARY KEY ( " + Lote.COLUMN_ID + " ), " +
             " CONSTRAINT fk_lot_area FOREIGN KEY ( " + Area.COLUMN_ID + " ), " +
             " CONSTRAINT fk_lot_usuario FOREIGN KEY ( " + Usuario_Info.COLUMN_USR_ID + " )); ";
+
+    public static final String CREATE_TABLE_ENTRADA = "CREATE TABLE " + Entrada.TABLENAME +
+            " ( " + Entrada.COLUMN_NUMERO + " INTEGER, " +
+                    Entrada.COLUMN_LOTE_ID + " INTEGER, " +
+                    Entrada.COLUMN_DATA + " DATETIME, " +
+                    Entrada.COLUMN_TIPO + " VARCHAR(10), " +
+                    Entrada.COLUMN_DESC + " VARCHAR(20), " +
+                    Entrada.COLUMN_VALOR_1 + " INTEGER, " +
+                    Entrada.COLUMN_VALOR_2 + " NUMERIC(10,2), " +
+                    Entrada.COLUMN_CUSTO + " NUMERIC(10,2), " +
+                    Entrada.COLUMN_USR_ID + " INTEGER, " +
+                    Entrada.COLUMN_REG_NUM + " INTEGER, " +
+            " CONSTRAINT pk_ent PRIMARY KEY ( " + Entrada.COLUMN_NUMERO + " ), " +
+            " CONSTRAINT fk_ent_lote FOREIGN KEY ( " + Lote.COLUMN_ID + " ), " +
+            " CONSTRAINT fk_ent_usuario FOREIGN KEY ( " + Usuario_Info.COLUMN_USR_ID + " )); ";
+
+    public static final String CREATE_TABLE_LOTE_FECHADO = "CREATE TABLE " + Fec_lote.TABLENAME +
+            " ( " + Fec_lote.COLUMN_ID + " INTEGER, " +
+                    Fec_lote.COLUMN_NOME + " VARCHAR(60), " +
+                    Fec_lote.COLUMN_IMAGEM + " VARCHAR(60), " +
+                    Fec_lote.COLUMN_PDF_LINK + " VARCHAR(60), " +
+                    Fec_lote.COLUMN_LOT_USERPDF_LINK + " VARCHAR(60), "  +
+                    Fec_lote.COLUMN_QRCODE_LINK + " VARCHAR(60), " +
+                    Fec_lote.COLUMN_AREA_ID + " INTEGER, " +
+                    Fec_lote.COLUMN_USR_ID + " INTEGER, " +
+            " CONSTRAINT pk_fec_lote PRIMARY KEY ( " + Fec_lote.COLUMN_ID + " ), " +
+            " CONSTRAINT fk_fec_lot_area FOREIGN KEY ( " + Area.COLUMN_ID + " ), " +
+            " CONSTRAINT fk_fec_lot_usuario FOREIGN KEY ( " + Usuario_Info.COLUMN_USR_ID + " )); ";
+
+    public static final String CREATE_TABLE_ENTRADA_FECHADA = "CREATE TABLE " + Fec_entrada.TABLENAME +
+            " ( " + Fec_entrada.COLUMN_ID + " INTEGER, " +
+            Fec_entrada.COLUMN_LOTE_ID + " INTEGER, " +
+            Fec_entrada.COLUMN_DATA + " DATETIME, " +
+            Fec_entrada.COLUMN_TIPO + " VARCHAR(10), " +
+            Fec_entrada.COLUMN_DESC + " VARCHAR(20), " +
+            Fec_entrada.COLUMN_VALOR_1 + " INTEGER, " +
+            Fec_entrada.COLUMN_VALOR_2 + " NUMERIC(10,2), " +
+            Fec_entrada.COLUMN_CUSTO + " NUMERIC(10,2), " +
+            Fec_entrada.COLUMN_USR_ID + " INTEGER, " +
+            Fec_entrada.COLUMN_REG_NUM + " INTEGER, " +
+            " CONSTRAINT pk_fec_ent PRIMARY KEY ( " + Fec_entrada.COLUMN_ID + " ), " +
+            " CONSTRAINT fk_fec_ent_lote FOREIGN KEY ( " + Lote.COLUMN_ID + " ), " +
+            " CONSTRAINT fk_fec_ent_usuario FOREIGN KEY ( " + Usuario_Info.COLUMN_USR_ID + " )); ";
+
 }
