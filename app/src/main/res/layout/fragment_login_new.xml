@@ -61,18 +61,7 @@
                 android:layout_marginEnd="36dp"
                 app:layout_constraintHorizontal_bias="0.0"
                 android:layout_marginBottom="200dp" app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/ckbxLemb_LoginNEw"
-                app:layout_constraintVertical_bias="1.0"/>
-        <CheckBox
-                android:text="@string/rmb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/ckbxLemb_LoginNEw" android:layout_marginTop="40dp"
-                app:layout_constraintTop_toBottomOf="@+id/edtSenha2_LoginNew"
-                app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
-                android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="8dp" android:layout_marginRight="8dp"
-                app:layout_constraintHorizontal_bias="0.498"/>
+                android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/edtSenha2_LoginNew"/>
         <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -80,8 +69,15 @@
                 android:ems="10"
                 android:id="@+id/edtVerifCode_LoginNew"
                 app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginTop="44dp"
+                android:layout_marginTop="48dp"
                 app:layout_constraintTop_toBottomOf="@+id/btnCria_LoginNew" android:hint="código"
-                android:visibility="gone"/>
+                android:visibility="visible" android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toStartOf="@+id/btnValidar_LoginNew" app:layout_constraintHorizontal_bias="0.7"/>
+        <Button
+                android:text="@string/validar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnValidar_LoginNew" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="44dp"
+                app:layout_constraintTop_toTopOf="@+id/edtVerifCode_LoginNew"/>
     </android.support.constraint.ConstraintLayout>
 </FrameLayout>

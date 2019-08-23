@@ -11,6 +11,7 @@
     <string name="email">email</string>
     <string name="senha">senha</string>
     <string name="verifica">Gerar código</string>
+    <string name="validar">Validar</string>
 
     <!--Main-->
     <string name="title_activity_main">MainActivity</string>
