@@ -4,9 +4,14 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.trabalho.tg.Adapters.AreaAdapter
+import com.trabalho.tg.Model.Area
+import kotlinx.android.synthetic.main.fragment_area.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -42,7 +47,21 @@ class AreaFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_area, container, false)
+        val view  = inflater.inflate(R.layout.fragment_area, container, false)
+
+        var area :  ArrayList<Area> = ArrayList()
+        area.add(Area(1))
+        area[0].ar_nome = "Area 1"
+
+        area.add(Area(2))
+        area[1].ar_nome = "Area 2"
+
+        var recyclerView = view.findViewById(R.id.recView_AreaFrag) as RecyclerView
+        recyclerView.layoutManager = LinearLayoutManager(context)
+
+        recyclerView.adapter = AreaAdapter(area, context)
+
+        return view
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -57,6 +76,9 @@ class AreaFragment : Fragment() {
         } else {
             throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
         }
+
+
+
     }
 
     override fun onDetach() {
@@ -99,4 +121,11 @@ class AreaFragment : Fragment() {
                 }
             }
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+    }
+
 }
+

@@ -10,9 +10,13 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import com.trabalho.tg.Controller.C_Usuario
 import com.trabalho.tg.Helper.CognitoHelper
+import com.trabalho.tg.Helper.DBHelper
+import com.trabalho.tg.Model.Usuario
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_login_new.*
+import java.io.Serializable
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -113,7 +117,7 @@ class LoginNewFragment : Fragment() {
 
 
         btnCria_LoginNew.setOnClickListener {
-
+/*
                 var helper = CognitoHelper(it.context)
 
                 println(edtSenha_LoginNew.text.toString())
@@ -121,10 +125,27 @@ class LoginNewFragment : Fragment() {
 
                 edtVerifCode_LoginNew.visibility = VISIBLE
                 btnValidar_LoginNew.visibility = VISIBLE
-
+*/
             //val intent = Intent (activity, MainActivity::class.java)
             //startActivity(intent)
+            val dbHelper = DBHelper(context)
+            val cUsuario = C_Usuario()
 
+            var u = Usuario(0)
+            u.usr_nome = edtNome_LoginNew.text.toString()
+            u.usr_email = edtEmail_LoginNew.text.toString()
+            u.usr_senha = edtSenha_LoginNew.text.toString()
+            if(cUsuario.insertUsuario(dbHelper,u)){
+                println("Inserido com sucesso!!")
+            }
+
+            var user = cUsuario.selectUsuario(dbHelper)
+            if (user.size != 0) {
+                val intent = Intent (activity, MainActivity::class.java)
+                intent.putExtra("usuario", user as Serializable)
+                startActivity(intent)
+
+            }
 
         }
 

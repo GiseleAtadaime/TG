@@ -7,10 +7,9 @@ import java.util.WeakHashMap;
 
 public final class Contrato {
 
-    private static class Usuario implements BaseColumns {
+    public static class Usuario implements BaseColumns {
         public static final String TABLENAME = "USUARIO";
         public static final String COLUMN_ID = "usr_id";
-        public static final String COLUMN_APELIDO = "usr_apelido";
         public static final String COLUMN_NOME = "usr_nome";
         public static final String COLUMN_EMAIL = "usr_email";
         public static final String COLUMN_SENHA = "usr_senha";
@@ -18,7 +17,7 @@ public final class Contrato {
 
     }
 
-    private static class Usuario_Info implements BaseColumns{
+    public static class Usuario_Info implements BaseColumns{
         public static final String TABLENAME = "USUARIO_INFO";
         public static final String COLUMN_INFO_ID = "info_id";
         public static final String COLUMN_USR_ID = "info_usr_id";
@@ -32,7 +31,7 @@ public final class Contrato {
 
     }
 
-    private static class Endereco implements BaseColumns{
+    public static class Endereco implements BaseColumns{
         public static final String TABLENAME = "ENDERECO";
         public static final String COLUMN_ID = "end_id";
         public static final String COLUMN_LOGRADOURO = "end_logradouro";
@@ -46,7 +45,7 @@ public final class Contrato {
 
     }
 
-    private static class Reg_Agrotoxico implements BaseColumns{
+    public static class Reg_Agrotoxico implements BaseColumns{
         public static final String TABLENAME = "REG_AGROTOXICO";
         public static final String COLUMN_NUMERO = "reg_num";
         public static final String COLUMN_NOMECOM = "reg_nomecom";
@@ -55,7 +54,7 @@ public final class Contrato {
 
     }
 
-    private static class Area implements BaseColumns{
+    public static class Area implements BaseColumns{
         public static final String TABLENAME = "AREA";
         public static final String COLUMN_ID = "ar_id";
         public static final String COLUMN_LOTE_CONT = "ar_lote_cont";
@@ -66,12 +65,12 @@ public final class Contrato {
 
 
 
-        public static final String STATUS_DELETADO = "D";
-        public static final String STATUS_ATIVO = "A";
+        public static final Integer STATUS_DELETADO = 1;
+        public static final Integer STATUS_ATIVO = 0;
 
     }
 
-    private static class Lote implements BaseColumns{
+    public static class Lote implements BaseColumns{
         public static final String TABLENAME = "LOTE";
         public static final String COLUMN_ID = "lot_id";
         public static final String COLUMN_NOME = "lot_nome";
@@ -80,7 +79,7 @@ public final class Contrato {
         public static final String COLUMN_USR_ID = "lot_usr_id";
 
     }
-    private static class Entrada implements BaseColumns{
+    public static class Entrada implements BaseColumns{
         public static final String TABLENAME = "ENTRADA";
         public static final String COLUMN_NUMERO = "ent_num";
         public static final String COLUMN_LOTE_ID = "ent_lot_id";
@@ -96,7 +95,7 @@ public final class Contrato {
 
     }
 
-    private static class Fec_lote implements BaseColumns{
+    public static class Fec_lote implements BaseColumns{
         public static final String TABLENAME = "FEC_LOTE";
         public static final String COLUMN_ID = "fec_id";
         public static final String COLUMN_NOME = "fec_nome";
@@ -108,7 +107,7 @@ public final class Contrato {
         public static final String COLUMN_USR_ID = "fec_usr_id";
     }
 
-    private static class Fec_entrada implements BaseColumns{
+    public static class Fec_entrada implements BaseColumns{
         public static final String TABLENAME = "FEC_ENTRADA";
         public static final String COLUMN_ID = "fent_id";
         public static final String COLUMN_LOTE_ID = "fent_lot_id";
@@ -126,13 +125,11 @@ public final class Contrato {
     //Table creations
 
     public static final String CREATE_TABLE_USUARIO  = "CREATE TABLE " + Usuario.TABLENAME +
-            " ( " + Usuario.COLUMN_ID + " INTEGER, " +
-                    Usuario.COLUMN_APELIDO + " VARCHAR(20), " +
+            " ( " + Usuario.COLUMN_ID + " INTEGER CONSTRAINT pk_usuario PRIMARY KEY AUTOINCREMENT, " +
                     Usuario.COLUMN_NOME + " VARCHAR(60), " +
                     Usuario.COLUMN_SENHA + " VARCHAR(20), " +
                     Usuario.COLUMN_EMAIL + " VARCHAR(60), " +
-                    Usuario.COLUMN_FOTOPERFIL + " VARCHAR(60), " +
-            " CONSTRAINT pk_usuario PRIMARY KEY ( " + Usuario.COLUMN_ID + " )); ";
+                    Usuario.COLUMN_FOTOPERFIL + " VARCHAR(60)); ";
 
     public static final String CREATE_TABLE_USUARIO_INFO = "CREATE TABLE " + Usuario_Info.TABLENAME +
             " ( " + Usuario_Info.COLUMN_INFO_ID + " INTEGER, " +
@@ -144,7 +141,7 @@ public final class Contrato {
                     Usuario_Info.COLUMN_RZSOCIAL + " VARCHAR(100), " +
                     Usuario_Info.COLUMN_END_ID + " INTEGER, " +
             " CONSTRAINT pk_info PRIMARY KEY ( " + Usuario_Info.COLUMN_INFO_ID + " ), " +
-            " CONSTRAINT fk_info_usuario FOREIGN KEY ( " + Usuario_Info.COLUMN_USR_ID + "));";
+            " CONSTRAINT fk_info_usuario FOREIGN KEY ( " + Usuario_Info.COLUMN_USR_ID + ") REFERENCES " + Usuario.TABLENAME + " (  " +  Usuario.COLUMN_ID + " ));";
 
     public static final String CREATE_TABLE_ENDERECO = "CREATE TABLE " + Endereco.TABLENAME +
             " ( " + Endereco.COLUMN_ID + " INTEGER, " +
@@ -157,7 +154,7 @@ public final class Contrato {
                     Endereco.COLUMN_UF + " VARCHAR(2), " +
                     Endereco.COLUMN_USR_ID + " INTEGER, " +
             " CONSTRAINT pk_endereco PRIMARY KEY ( " + Endereco.COLUMN_ID + " ), " +
-            " CONSTRAINT fk_end_usuario FOREIGN KEY ( " + Usuario_Info.COLUMN_USR_ID + ")); ";
+            " CONSTRAINT fk_end_usuario FOREIGN KEY ( " + Endereco.COLUMN_USR_ID  + ") REFERENCES " + Usuario.TABLENAME + " (  " + Usuario.COLUMN_ID + " ));";
 
     public static final String CREATE_TABLE_REG_AGROTOXICO = "CREATE TABLE " + Reg_Agrotoxico.TABLENAME +
             " ( " + Reg_Agrotoxico.COLUMN_NUMERO + " INTEGER, " +
@@ -174,7 +171,7 @@ public final class Contrato {
                     Area.COLUMN_DEL + " INTEGER, " +
                     Area.COLUMN_USR_ID + " INTEGER, " +
             " CONSTRAINT pk_area PRIMARY KEY ( " + Area.COLUMN_ID + " ), " +
-            " CONSTRAINT fk_ar_usuario FOREIGN KEY ( " + Usuario_Info.COLUMN_USR_ID + " )); ";
+            " CONSTRAINT fk_ar_usuario FOREIGN KEY ( " + Area.COLUMN_USR_ID  + ") REFERENCES " + Usuario.TABLENAME + " (  " + Usuario.COLUMN_ID + " ));";
 
     public static final String CREATE_TABLE_LOTE = "CREATE TABLE " + Lote.TABLENAME +
             " ( " + Lote.COLUMN_ID + " INTEGER, " +
@@ -183,8 +180,8 @@ public final class Contrato {
                     Lote.COLUMN_AREA_ID + " INTEGER, " +
                     Lote.COLUMN_USR_ID + " INTEGER, " +
             " CONSTRAINT pk_lote PRIMARY KEY ( " + Lote.COLUMN_ID + " ), " +
-            " CONSTRAINT fk_lot_area FOREIGN KEY ( " + Area.COLUMN_ID + " ), " +
-            " CONSTRAINT fk_lot_usuario FOREIGN KEY ( " + Usuario_Info.COLUMN_USR_ID + " )); ";
+            " CONSTRAINT fk_lot_area FOREIGN KEY ( " + Lote.COLUMN_AREA_ID + " ) REFERENCES " + Area.COLUMN_ID  + " ( "    + Area.COLUMN_ID + " ), " +
+            " CONSTRAINT fk_lot_usuario FOREIGN KEY ( " + Lote.COLUMN_USR_ID  + ") REFERENCES " + Usuario.TABLENAME + " (  " + Usuario.COLUMN_ID + " ));";
 
     public static final String CREATE_TABLE_ENTRADA = "CREATE TABLE " + Entrada.TABLENAME +
             " ( " + Entrada.COLUMN_NUMERO + " INTEGER, " +
@@ -198,8 +195,8 @@ public final class Contrato {
                     Entrada.COLUMN_USR_ID + " INTEGER, " +
                     Entrada.COLUMN_REG_NUM + " INTEGER, " +
             " CONSTRAINT pk_ent PRIMARY KEY ( " + Entrada.COLUMN_NUMERO + " ), " +
-            " CONSTRAINT fk_ent_lote FOREIGN KEY ( " + Lote.COLUMN_ID + " ), " +
-            " CONSTRAINT fk_ent_usuario FOREIGN KEY ( " + Usuario_Info.COLUMN_USR_ID + " )); ";
+            " CONSTRAINT fk_ent_lote FOREIGN KEY ( " + Entrada.COLUMN_LOTE_ID + " ) REFERENCES  " + Lote.TABLENAME + "( " + Lote.COLUMN_ID + " ), " +
+            " CONSTRAINT fk_ent_usuario FOREIGN KEY ( " + Entrada.COLUMN_USR_ID + ") REFERENCES " + Usuario.TABLENAME + " (  " + Usuario.COLUMN_ID + " ));";
 
     public static final String CREATE_TABLE_LOTE_FECHADO = "CREATE TABLE " + Fec_lote.TABLENAME +
             " ( " + Fec_lote.COLUMN_ID + " INTEGER, " +
@@ -211,8 +208,8 @@ public final class Contrato {
                     Fec_lote.COLUMN_AREA_ID + " INTEGER, " +
                     Fec_lote.COLUMN_USR_ID + " INTEGER, " +
             " CONSTRAINT pk_fec_lote PRIMARY KEY ( " + Fec_lote.COLUMN_ID + " ), " +
-            " CONSTRAINT fk_fec_lot_area FOREIGN KEY ( " + Area.COLUMN_ID + " ), " +
-            " CONSTRAINT fk_fec_lot_usuario FOREIGN KEY ( " + Usuario_Info.COLUMN_USR_ID + " )); ";
+            " CONSTRAINT fk_fec_lot_area FOREIGN KEY ( "  + Fec_lote.COLUMN_AREA_ID + " ) REFERENCES " + Area.TABLENAME + " (" + Area.COLUMN_ID + " ), " +
+            " CONSTRAINT fk_fec_lot_usuario FOREIGN KEY ( " + Fec_lote.COLUMN_USR_ID  + ") REFERENCES " + Usuario.TABLENAME + " (  " + Usuario.COLUMN_ID + " ));";
 
     public static final String CREATE_TABLE_ENTRADA_FECHADA = "CREATE TABLE " + Fec_entrada.TABLENAME +
             " ( " + Fec_entrada.COLUMN_ID + " INTEGER, " +
@@ -226,7 +223,7 @@ public final class Contrato {
             Fec_entrada.COLUMN_USR_ID + " INTEGER, " +
             Fec_entrada.COLUMN_REG_NUM + " INTEGER, " +
             " CONSTRAINT pk_fec_ent PRIMARY KEY ( " + Fec_entrada.COLUMN_ID + " ), " +
-            " CONSTRAINT fk_fec_ent_lote FOREIGN KEY ( " + Lote.COLUMN_ID + " ), " +
-            " CONSTRAINT fk_fec_ent_usuario FOREIGN KEY ( " + Usuario_Info.COLUMN_USR_ID + " )); ";
+            " CONSTRAINT fk_fec_ent_lote FOREIGN KEY ( " + Fec_entrada.COLUMN_LOTE_ID + " ) REFERENCES " + Lote.TABLENAME + " (" + Lote.COLUMN_ID + " ), " +
+            " CONSTRAINT fk_fec_ent_usuario FOREIGN KEY ( " + Fec_entrada.COLUMN_USR_ID  + ") REFERENCES " + Usuario.TABLENAME + " (  " + Usuario.COLUMN_ID + " ));";
 
 }

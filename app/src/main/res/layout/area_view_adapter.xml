@@ -37,17 +37,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" app:srcCompat="@drawable/ic_menu_camera"
                     android:id="@+id/imgbtnDelete_AreaAdapter" android:layout_weight="1"
-                    android:contentDescription="@string/btn_excluir"/>
+                    android:contentDescription="@string/btn_excluir"
+                    tools:srcCompat="@android:drawable/ic_menu_delete"/>
             <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" app:srcCompat="@drawable/ic_menu_camera"
                     android:id="@+id/imgbtnAlterar_AreaAdapter" android:layout_weight="1"
-                    android:contentDescription="@string/btn_alterar"/>
+                    android:contentDescription="@string/btn_alterar" tools:srcCompat="@android:drawable/ic_menu_edit"/>
             <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" app:srcCompat="@drawable/ic_menu_camera"
                     android:id="@+id/imgbtnNovo_AreaAdapter" android:layout_weight="1"
-                    android:contentDescription="@string/btn_novo"/>
+                    android:contentDescription="@string/btn_novo" tools:srcCompat="@android:drawable/ic_menu_add"/>
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>
 </LinearLayout>

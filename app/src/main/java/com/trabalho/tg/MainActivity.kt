@@ -10,15 +10,24 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
 import android.support.v4.widget.DrawerLayout
 import android.support.design.widget.NavigationView
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentTransaction
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
+import android.view.View
+import com.trabalho.tg.Helper.DBHelper
+import com.trabalho.tg.Model.Usuario
+import kotlinx.android.synthetic.main.activity_login.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MainFragment.OnFragmentInteractionListener, AreaFragment.OnFragmentInteractionListener, FechadoFragment.OnFragmentInteractionListener, QRFragment.OnFragmentInteractionListener {
     override fun onFragmentInteraction(uri: Uri) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    var usuario : ArrayList<Usuario> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,11 +35,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        val fab: FloatingActionButton = findViewById(R.id.fab)
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val toggle = ActionBarDrawerToggle(
@@ -46,6 +50,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         supportFragmentManager.inTransaction {
             add(R.id.frmMainContainer, MainFragment())
         }
+        usuario = intent.extras.get("usuario") as ArrayList<Usuario>
+        var dbHelper : DBHelper = DBHelper(this)
+
+
+
+
     }
 
     override fun onBackPressed() {
@@ -78,26 +88,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (item.itemId) {
             R.id.nav_main -> {
                 if (!MainFragment().isVisible){
-                    supportFragmentManager.inTransaction {
-                        replace(R.id.frmMainContainer, MainFragment())
-                    }
+                    changeFragment(MainFragment(), true)
                 }
 
             }
             R.id.nav_area -> {
-                supportFragmentManager.inTransaction {
-                    replace(R.id.frmMainContainer, AreaFragment())
-                }
+                changeFragment(AreaFragment(), true)
             }
             R.id.nav_fechado -> {
-                supportFragmentManager.inTransaction {
-                    replace(R.id.frmMainContainer, FechadoFragment())
-                }
+                changeFragment(FechadoFragment(), true)
             }
             R.id.nav_qrcode -> {
-                supportFragmentManager.inTransaction {
-                    replace(R.id.frmMainContainer, QRFragment())
-                }
+                changeFragment(QRFragment(), true)
             }
             R.id.nav_opt -> {
 
@@ -109,5 +111,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    fun changeFragment(fragmentName: Fragment, change : Boolean){
+
+        if (!this.isFinishing && !this.isDestroyed){
+            var transaction : FragmentTransaction = supportFragmentManager.beginTransaction()
+            if (change) {
+                transaction.replace(R.id.frmMainContainer,fragmentName).addToBackStack(null).commit()      }
+            else{
+                transaction.add(R.id.frmMainContainer,fragmentName).commit()
+            }
+        }
+
     }
 }

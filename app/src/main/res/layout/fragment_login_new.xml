@@ -16,7 +16,7 @@
                 android:id="@+id/edtNome_LoginNew" android:layout_marginStart="36dp"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginEnd="36dp" app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="120dp"
+                android:layout_marginTop="68dp"
                 app:layout_constraintTop_toTopOf="parent" app:layout_constraintHorizontal_bias="0.0"
                 android:hint="nome de usuário"/>
         <EditText
