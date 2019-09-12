@@ -144,6 +144,7 @@ class LoginNewFragment : Fragment() {
                 val intent = Intent (activity, MainActivity::class.java)
                 intent.putExtra("usuario", user as Serializable)
                 startActivity(intent)
+                activity?.finish()
 
             }
 

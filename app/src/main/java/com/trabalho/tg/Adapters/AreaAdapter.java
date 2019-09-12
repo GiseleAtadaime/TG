@@ -38,10 +38,38 @@ public class AreaAdapter extends RecyclerView.Adapter{
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, int i) {
         final AreaViewHolder areaViewHolder = (AreaViewHolder) viewHolder;
         int pos = areaViewHolder.getAdapterPosition();
         areaViewHolder.nomeText.setText(area.get(pos).getAr_nome());
+
+
+        areaViewHolder.delImagem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        areaViewHolder.addImagem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        areaViewHolder.editImagem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        areaViewHolder.areaImagem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
 
     }
 
@@ -49,7 +77,7 @@ public class AreaAdapter extends RecyclerView.Adapter{
 
     @Override
     public int getItemCount() {
-        return 0;
+        return area.size();
     }
 
     public class AreaViewHolder extends RecyclerView.ViewHolder{
@@ -70,5 +98,6 @@ public class AreaAdapter extends RecyclerView.Adapter{
             editImagem = itemView.findViewById(R.id.imgbtnNovo_AreaAdapter);
 
         }
+
     }
 }

@@ -1,5 +1,6 @@
 package com.trabalho.tg
 
+import android.app.Activity
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -48,18 +49,6 @@ class AreaFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view  = inflater.inflate(R.layout.fragment_area, container, false)
-
-        var area :  ArrayList<Area> = ArrayList()
-        area.add(Area(1))
-        area[0].ar_nome = "Area 1"
-
-        area.add(Area(2))
-        area[1].ar_nome = "Area 2"
-
-        var recyclerView = view.findViewById(R.id.recView_AreaFrag) as RecyclerView
-        recyclerView.layoutManager = LinearLayoutManager(context)
-
-        recyclerView.adapter = AreaAdapter(area, context)
 
         return view
     }
@@ -124,7 +113,17 @@ class AreaFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        var area :  ArrayList<Area> = ArrayList()
+        area.add(Area(1))
+        area[0].ar_nome = "Area 1"
 
+        area.add(Area(2))
+        area[1].ar_nome = "Area 2"
+
+        var recyclerView = view.findViewById<RecyclerView>(R.id.recView_AreaFrag)
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+
+        recyclerView.adapter = AreaAdapter(area, context)
     }
 
 }

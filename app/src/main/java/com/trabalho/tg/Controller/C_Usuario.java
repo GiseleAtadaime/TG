@@ -36,7 +36,7 @@ public class C_Usuario {
             }
         }
         finally {
-
+            db.close();
             return u;
         }
     }
@@ -74,6 +74,7 @@ public class C_Usuario {
             ret = true;
         }
         finally{
+            db.close();
             return ret;
         }
     }
