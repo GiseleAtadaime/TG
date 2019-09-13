@@ -20,12 +20,21 @@ public class AreaAdapter extends RecyclerView.Adapter{
 
     private Context c;
     List<Area> area;
+    AdapterListener listener;
 
-
-    public AreaAdapter(List<Area> area, Context c) {
-        this.c = c;
-        this.area = area;
+    public interface AdapterListener {
+        void onClick(View view, int adapterPosition);
     }
+
+    public AreaAdapter(List<Area> area, Context c, AdapterListener listener) {
+        this.area = area;
+        this.c = c;
+        this.listener = listener;
+
+    }
+
+
+
 
     @NonNull
     @Override
@@ -34,11 +43,11 @@ public class AreaAdapter extends RecyclerView.Adapter{
                 from(viewGroup.getContext()).
                 inflate(R.layout.area_view_adapter, viewGroup,false);
 
-        return new AreaViewHolder(itemView);
+        return new AreaViewHolder(itemView, listener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, int i ) {
         final AreaViewHolder areaViewHolder = (AreaViewHolder) viewHolder;
         int pos = areaViewHolder.getAdapterPosition();
         areaViewHolder.nomeText.setText(area.get(pos).getAr_nome());
@@ -65,12 +74,6 @@ public class AreaAdapter extends RecyclerView.Adapter{
             }
         });
 
-        areaViewHolder.areaImagem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
-
     }
 
 
@@ -80,15 +83,15 @@ public class AreaAdapter extends RecyclerView.Adapter{
         return area.size();
     }
 
-    public class AreaViewHolder extends RecyclerView.ViewHolder{
-
+    public class AreaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        private AdapterListener listener;
         protected ImageView areaImagem;
         protected TextView nomeText;
         protected ImageButton delImagem;
         protected ImageButton addImagem;
         protected ImageButton editImagem;
 
-        public AreaViewHolder(@NonNull View itemView) {
+        public AreaViewHolder(@NonNull View itemView, AdapterListener listener) {
             super(itemView);
 
             areaImagem = itemView.findViewById(R.id.imgAreaAdapter);
@@ -97,6 +100,14 @@ public class AreaAdapter extends RecyclerView.Adapter{
             addImagem = itemView.findViewById(R.id.imgbtnNovo_AreaAdapter);
             editImagem = itemView.findViewById(R.id.imgbtnNovo_AreaAdapter);
 
+            this.listener = listener;
+
+            areaImagem.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view){
+            listener.onClick(view, area.get(getAdapterPosition()).getAr_id());
         }
 
     }

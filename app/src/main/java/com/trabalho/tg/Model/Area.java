@@ -14,6 +14,10 @@ public class Area {
         this.ar_id = ar_id;
     }
 
+    public Integer getAr_id() {
+        return ar_id;
+    }
+
     public String getAr_lote_cont() {
         return ar_lote_cont;
     }

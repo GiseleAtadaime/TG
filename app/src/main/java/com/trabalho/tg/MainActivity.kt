@@ -16,13 +16,29 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.View
+import android.widget.Toast
 import com.trabalho.tg.Helper.DBHelper
+import com.trabalho.tg.Model.Area
 import com.trabalho.tg.Model.Usuario
 import kotlinx.android.synthetic.main.activity_login.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MainFragment.OnFragmentInteractionListener, AreaFragment.OnFragmentInteractionListener, FechadoFragment.OnFragmentInteractionListener, QRFragment.OnFragmentInteractionListener {
+class MainActivity : AppCompatActivity(),
+    NavigationView.OnNavigationItemSelectedListener,
+    MainFragment.OnFragmentInteractionListener,
+    AreaFragment.OnFragmentInteractionListener,
+    FechadoFragment.OnFragmentInteractionListener,
+    QRFragment.OnFragmentInteractionListener,
+    LoteFragment.OnFragmentInteractionListener
+{
+
+
+    override fun onAreaSelected(area: List<Area>, pos : Int) {
+        //Toast.makeText(this, "Escolhido $pos", Toast.LENGTH_SHORT).show()
+        changeFragment(LoteFragment(), true)
+    }
+
     override fun onFragmentInteraction(uri: Uri) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -125,4 +141,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
     }
+
+
 }

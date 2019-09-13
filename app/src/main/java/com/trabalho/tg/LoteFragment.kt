@@ -1,20 +1,12 @@
 package com.trabalho.tg
 
-import android.app.Activity
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import com.trabalho.tg.Adapters.AreaAdapter
-import com.trabalho.tg.Model.Area
-import kotlinx.android.synthetic.main.area_view_adapter.*
-import kotlinx.android.synthetic.main.fragment_area.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -25,13 +17,13 @@ private const val ARG_PARAM2 = "param2"
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [AreaFragment.OnFragmentInteractionListener] interface
+ * [LoteFragment.OnFragmentInteractionListener] interface
  * to handle interaction events.
- * Use the [AreaFragment.newInstance] factory method to
+ * Use the [LoteFragment.newInstance] factory method to
  * create an instance of this fragment.
  *
  */
-class AreaFragment : Fragment() {
+class LoteFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -50,14 +42,12 @@ class AreaFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view  = inflater.inflate(R.layout.fragment_area, container, false)
-
-        return view
+        return inflater.inflate(R.layout.fragment_lote, container, false)
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onAreaSelected(area: List<Area>, pos : Int) {
-        listener?.onAreaSelected(area, pos)
+    fun onButtonPressed(uri: Uri) {
+        listener?.onFragmentInteraction(uri)
     }
 
     override fun onAttach(context: Context) {
@@ -67,9 +57,6 @@ class AreaFragment : Fragment() {
         } else {
             throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
         }
-
-
-
     }
 
     override fun onDetach() {
@@ -90,7 +77,7 @@ class AreaFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onAreaSelected(area: List<Area>, pos : Int)
+        fun onFragmentInteraction(uri: Uri)
     }
 
     companion object {
@@ -100,45 +87,16 @@ class AreaFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment AreaFragment.
+         * @return A new instance of fragment LoteFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            AreaFragment().apply {
+            LoteFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
                 }
             }
     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        var area :  ArrayList<Area> = ArrayList()
-        area.add(Area(1))
-        area[0].ar_nome = "Area 1"
-
-        area.add(Area(2))
-        area[1].ar_nome = "Area 2"
-
-        area.add(Area(3))
-        area[2].ar_nome = "Area 3"
-
-        area.add(Area(4))
-        area[3].ar_nome = "Area 4"
-
-        val mlistener = fun(view : View, position: Int) {
-            Toast.makeText(context, "Position $position", Toast.LENGTH_SHORT).show();
-            onAreaSelected(area, position)
-        }
-
-
-        var recyclerView = view.findViewById<RecyclerView>(R.id.recView_AreaFrag)
-        recyclerView.layoutManager = LinearLayoutManager(activity)
-
-        recyclerView.adapter = AreaAdapter(area, context, mlistener)
-    }
-
 }
-
