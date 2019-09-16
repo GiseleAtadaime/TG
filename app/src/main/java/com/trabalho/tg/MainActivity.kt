@@ -19,6 +19,8 @@ import android.view.View
 import android.widget.Toast
 import com.trabalho.tg.Helper.DBHelper
 import com.trabalho.tg.Model.Area
+import com.trabalho.tg.Model.Entrada
+import com.trabalho.tg.Model.Lote
 import com.trabalho.tg.Model.Usuario
 import kotlinx.android.synthetic.main.activity_login.*
 import java.util.*
@@ -30,10 +32,19 @@ class MainActivity : AppCompatActivity(),
     AreaFragment.OnFragmentInteractionListener,
     FechadoFragment.OnFragmentInteractionListener,
     QRFragment.OnFragmentInteractionListener,
-    LoteFragment.OnFragmentInteractionListener
+    LoteFragment.OnFragmentInteractionListener,
+    LoteDetalheFragment.OnFragmentInteractionListener,
+    EntradaFragment.OnFragmentInteractionListener
 {
 
+    override fun onAlterButtonClick(entrada: ArrayList<Entrada>) {
+        changeFragment(EntradaFragment(), true)
+    }
 
+    override fun onLoteSelected(lote : List<Lote>, pos : Int){
+        //Toast.makeText(this, "Escolhido $pos", Toast.LENGTH_SHORT).show()
+        changeFragment(LoteDetalheFragment(), true)
+    }
     override fun onAreaSelected(area: List<Area>, pos : Int) {
         //Toast.makeText(this, "Escolhido $pos", Toast.LENGTH_SHORT).show()
         changeFragment(LoteFragment(), true)

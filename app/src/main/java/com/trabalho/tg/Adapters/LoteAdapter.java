@@ -6,28 +6,26 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.trabalho.tg.Helper.Contrato;
-import com.trabalho.tg.Model.Area;
+import com.trabalho.tg.Model.Lote;
 import com.trabalho.tg.R;
 
 import java.util.List;
 
-public class AreaAdapter extends RecyclerView.Adapter{
+public class LoteAdapter extends RecyclerView.Adapter{
 
     private Context c;
-    List<Area> area;
+    List<Lote> lote;
     AdapterListener listener;
 
     public interface AdapterListener {
         void onClick(View view, int adapterPosition);
     }
 
-    public AreaAdapter(List<Area> area, Context c, AdapterListener listener) {
-        this.area = area;
+    public LoteAdapter(List<Lote> lote, Context c, AdapterListener listener) {
+        this.lote = lote;
         this.c = c;
         this.listener = listener;
 
@@ -40,31 +38,31 @@ public class AreaAdapter extends RecyclerView.Adapter{
                 from(viewGroup.getContext()).
                 inflate(R.layout.area_view_adapter, viewGroup,false);
 
-        return new AreaViewHolder(itemView, listener);
+        return new LoteViewHolder(itemView, listener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, int i ) {
-        final AreaViewHolder areaViewHolder = (AreaViewHolder) viewHolder;
-        int pos = areaViewHolder.getAdapterPosition();
-        areaViewHolder.nomeText.setText(area.get(pos).getAr_nome());
+        final LoteViewHolder loteViewHolder = (LoteViewHolder) viewHolder;
+        int pos = loteViewHolder.getAdapterPosition();
+        loteViewHolder.nomeText.setText(lote.get(pos).getLot_nome());
 
 
-        areaViewHolder.delImagem.setOnClickListener(new View.OnClickListener() {
+        loteViewHolder.delImagem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
 
-        areaViewHolder.addImagem.setOnClickListener(new View.OnClickListener() {
+        loteViewHolder.addImagem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
 
-        areaViewHolder.editImagem.setOnClickListener(new View.OnClickListener() {
+        loteViewHolder.editImagem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -77,21 +75,21 @@ public class AreaAdapter extends RecyclerView.Adapter{
 
     @Override
     public int getItemCount() {
-        return area.size();
+        return lote.size();
     }
 
-    public class AreaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class LoteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private AdapterListener listener;
-        protected ImageView areaImagem;
+        protected ImageView loteImagem;
         protected TextView nomeText;
         protected ImageButton delImagem;
         protected ImageButton addImagem;
         protected ImageButton editImagem;
 
-        public AreaViewHolder(@NonNull View itemView, AdapterListener listener) {
+        public LoteViewHolder(@NonNull View itemView, AdapterListener listener) {
             super(itemView);
 
-            areaImagem = itemView.findViewById(R.id.imgAreaAdapter);
+            loteImagem = itemView.findViewById(R.id.imgAreaAdapter);
             nomeText = itemView.findViewById(R.id.txtNome_AreaAdapter);
             delImagem = itemView.findViewById(R.id.imgbtnDelete_AreaAdapter);
             addImagem = itemView.findViewById(R.id.imgbtnNovo_AreaAdapter);
@@ -99,12 +97,12 @@ public class AreaAdapter extends RecyclerView.Adapter{
 
             this.listener = listener;
 
-            areaImagem.setOnClickListener(this);
+            loteImagem.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view){
-            listener.onClick(view, area.get(getAdapterPosition()).getAr_id());
+            listener.onClick(view, lote.get(getAdapterPosition()).getLot_id());
         }
 
     }

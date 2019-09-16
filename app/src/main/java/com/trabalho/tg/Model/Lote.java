@@ -12,6 +12,10 @@ public class Lote {
         this.lot_id = lot_id;
     }
 
+    public Integer getLot_id() {
+        return lot_id;
+    }
+
     public String getLot_nome() {
         return lot_nome;
     }

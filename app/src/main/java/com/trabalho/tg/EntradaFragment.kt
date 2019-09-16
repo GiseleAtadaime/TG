@@ -10,10 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.trabalho.tg.Adapters.AreaAdapter
-import com.trabalho.tg.Adapters.LoteAdapter
-import com.trabalho.tg.Model.Area
-import com.trabalho.tg.Model.Lote
+import com.trabalho.tg.Adapters.EntradaAdapter
+import com.trabalho.tg.Model.Entrada
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -24,13 +22,13 @@ private const val ARG_PARAM2 = "param2"
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [LoteFragment.OnFragmentInteractionListener] interface
+ * [EntradaFragment.OnFragmentInteractionListener] interface
  * to handle interaction events.
- * Use the [LoteFragment.newInstance] factory method to
+ * Use the [EntradaFragment.newInstance] factory method to
  * create an instance of this fragment.
  *
  */
-class LoteFragment : Fragment() {
+class EntradaFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -49,12 +47,12 @@ class LoteFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_lote, container, false)
+        return inflater.inflate(R.layout.fragment_entrada, container, false)
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onLoteSelected(lote : List<Lote>, pos : Int) {
-        listener?.onLoteSelected(lote, pos)
+    fun onButtonPressed(uri: Uri) {
+        listener?.onFragmentInteraction(uri)
     }
 
     override fun onAttach(context: Context) {
@@ -84,7 +82,7 @@ class LoteFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onLoteSelected(lote : List<Lote>, pos : Int)
+        fun onFragmentInteraction(uri: Uri)
     }
 
     companion object {
@@ -94,12 +92,12 @@ class LoteFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment LoteFragment.
+         * @return A new instance of fragment EntradaFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            LoteFragment().apply {
+            EntradaFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
@@ -110,33 +108,33 @@ class LoteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var lote : ArrayList<Lote> = ArrayList<Lote>()
-        lote.add(Lote(1))
-        lote[0].lot_nome = "Lote 1"
+        var entrada : ArrayList<Entrada> = ArrayList<Entrada>()
+        entrada.add(Entrada(1))
+        entrada[0].ent_desc = "Entrada 1"
 
-        lote.add(Lote(2))
-        lote[1].lot_nome = "Lote 2"
+        entrada.add(Entrada(2))
+        entrada[1].ent_desc = "Entrada 2"
 
-        lote.add(Lote(3))
-        lote[2].lot_nome = "Lote 3"
+        entrada.add(Entrada(3))
+        entrada[2].ent_desc = "Entrada 3"
 
-        lote.add(Lote(4))
-        lote[3].lot_nome = "Lote 4"
-
-        lote.add(Lote(5))
-        lote[4].lot_nome = "Lote 5"
-
+        entrada.add(Entrada(4))
+        entrada[3].ent_desc = "Entrada 4"
 
         val mlistener = fun(view : View, position: Int) {
             Toast.makeText(context, "Position $position", Toast.LENGTH_SHORT).show();
-            onLoteSelected(lote, position)
+            //onLoteSelected(lote, position)
         }
 
 
-        var recyclerView = view.findViewById<RecyclerView>(R.id.recView_LoteFrag)
+        var recyclerView = view.findViewById<RecyclerView>(R.id.recView_Entrada)
         recyclerView.layoutManager = LinearLayoutManager(activity)
 
-        recyclerView.adapter = LoteAdapter(lote, context, mlistener)
+        recyclerView.adapter = EntradaAdapter(entrada, context, mlistener)
+
+
+
+
 
     }
 }

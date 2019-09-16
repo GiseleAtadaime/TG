@@ -17,6 +17,10 @@ public class Entrada {
         this.ent_numero = ent_numero;
     }
 
+    public Integer getEnt_numero() {
+        return ent_numero;
+    }
+
     public Date getEnt_data() {
         return ent_data;
     }

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             tools:context=".LoteDetalheFragment" android:id="@+id/ConstraintLayout">
+    <ImageView
+            android:src="@drawable/repolho_roxo"
+            android:layout_width="0dp"
+            android:layout_height="215dp"
+            android:id="@+id/imgLoteDet"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:scaleType="centerCrop" android:background="#00FFFFFF"
+            app:layout_constraintHorizontal_bias="0.0"/>
+    <TextView
+            android:text="TextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtNome_LoteDetFrag" android:layout_marginTop="136dp"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" app:layout_constraintHorizontal_bias="0.023"/>
+    <TextView
+            android:text="TextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtData_LoteDetFrag"
+            app:layout_constraintTop_toBottomOf="@+id/txtNome_LoteDetFrag"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp" android:layout_marginTop="16dp"
+            app:layout_constraintHorizontal_bias="0.169"
+            app:layout_constraintEnd_toStartOf="@+id/imgBtnAlt_LoteDetFrag"/>
+    <ImageButton
+            android:src="@drawable/baseline_create_black_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imgBtnAlt_LoteDetFrag" android:layout_marginTop="152dp"
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imgLoteDet"
+            app:layout_constraintEnd_toStartOf="@+id/imgBtnExc_LoteDetFrag" android:layout_marginEnd="8dp"/>
+    <ImageButton
+            android:src="@drawable/baseline_delete_outline_black_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imgBtnExc_LoteDetFrag" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="152dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="@+id/imgLoteDet"/>
+    <android.support.design.widget.FloatingActionButton
+            android:src="@android:drawable/ic_input_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:id="@+id/fBtnAdd_LoteDetFrag" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="28dp" android:layout_marginBottom="32dp"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.996"
+    />
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/fBtnAdd_LoteDetFrag" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" tools:visibility="gone" android:id="@+id/menu_LoteDetFrag"
+            android:visibility="gone">
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="114dp"
+                android:layout_height="134dp" android:layout_marginBottom="8dp"
+                android:layout_marginEnd="12dp">
+            <Button
+                    android:text="Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/btnAdd_LoteDetFrag"/>
+            <Button
+                    android:text="Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/btnAlt_LoteDetFrag"/>
+            <Button
+                    android:text="Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/btnFech_LoteDetFrag"/>
+        </LinearLayout>
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>
