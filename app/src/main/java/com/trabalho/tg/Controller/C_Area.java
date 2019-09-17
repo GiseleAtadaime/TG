@@ -1,5 +1,6 @@
 package com.trabalho.tg.Controller;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import com.trabalho.tg.Helper.Contrato;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 
 public class C_Area {
 
-    public ArrayList<Area> selectUsuario(DBHelper dbHelper){
+    public ArrayList<Area> selectArea(DBHelper dbHelper){
         Cursor c = null;
         ArrayList<Area> a = new ArrayList<>();
 
@@ -37,5 +38,38 @@ public class C_Area {
 
             return a;
         }
+    }
+
+    public Boolean insertArea(DBHelper dbHelper, Area a, Integer uID){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Boolean ret = false;
+
+        ContentValues values = new ContentValues();
+        values.put(Contrato.Area.COLUMN_ID,a.getAr_id());
+        values.put(Contrato.Area.COLUMN_NOME,a.getAr_nome());
+        values.put(Contrato.Area.COLUMN_IMAGEM,a.getAr_imagem());
+        values.put(Contrato.Area.COLUMN_LOTE_CONT,a.getAr_lote_cont());
+        values.put(Contrato.Area.COLUMN_USR_ID, uID);
+        values.put(Contrato.Area.COLUMN_DEL,a.getAr_del());
+
+        try{
+            db.insert(Contrato.Area.TABLENAME, null,values);
+            ret = true;
+        }
+        finally{
+            db.close();
+            return ret;
+        }
+
+    }
+
+    public Boolean updateArea(){
+        return true;
+    }
+
+    public Boolean excludeArea(){
+
+
+        return true;
     }
 }

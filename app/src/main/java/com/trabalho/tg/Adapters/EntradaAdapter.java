@@ -49,6 +49,8 @@ public class EntradaAdapter extends RecyclerView.Adapter{
         //entradaViewHolder.dataText.setText(entrada.get(pos).getEnt_data().toString());
 
 
+
+
     }
 
 
