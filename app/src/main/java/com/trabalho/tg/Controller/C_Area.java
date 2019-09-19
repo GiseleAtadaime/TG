@@ -60,16 +60,38 @@ public class C_Area {
             db.close();
             return ret;
         }
+    }
+
+    public Boolean updateArea(DBHelper dbHelper, Area a, Integer tipo){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Boolean ret = false;
+
+        ContentValues values = new ContentValues();
+
+        switch(tipo){
+            case(1):
+                values.put(Contrato.Area.COLUMN_LOTE_CONT, a.getAr_lote_cont());
+                break;
+            case(2):
+                values.put(Contrato.Area.COLUMN_NOME,a.getAr_nome());
+                break;
+            case(3):
+                values.put(Contrato.Area.COLUMN_IMAGEM,a.getAr_imagem());
+                break;
+            case(4):
+                values.put(Contrato.Area.COLUMN_DEL,a.getAr_del());
+                break;
+        }
+
+        try{
+
+            db.update(Contrato.Area.TABLENAME,values,Contrato.Area.COLUMN_ID + " = ?", new String[]{a.getAr_id().toString()});
+            ret = true;
+        }
+        finally {
+            return ret;
+        }
 
     }
 
-    public Boolean updateArea(){
-        return true;
-    }
-
-    public Boolean excludeArea(){
-
-
-        return true;
-    }
 }

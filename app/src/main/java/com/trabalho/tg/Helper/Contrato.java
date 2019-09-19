@@ -84,13 +84,23 @@ public final class Contrato {
         public static final String COLUMN_NUMERO = "ent_num";
         public static final String COLUMN_LOTE_ID = "ent_lot_id";
         public static final String COLUMN_DATA = "ent_data";
-        public static final String COLUMN_TIPO = "ent_tipo";
-        public static final String COLUMN_DESC = "ent_desc";
-        public static final String COLUMN_VALOR_1 = "ent_valor_1";
-        public static final String COLUMN_VALOR_2 = "ent_valor_2";
-        public static final String COLUMN_CUSTO = "ent_custo";
+        public static final String COLUMN_TIPO = "ent_tipo_numero";
         public static final String COLUMN_USR_ID = "ent_usr_id";
-        public static final String COLUMN_REG_NUM =  "ent_reg_num";
+
+    }
+
+    public static class Tipo_Entrada implements BaseColumns{
+        public static final String TABLENAME = "TIPO_ENTRADA";
+        public static final String COLUMN_TIPO_NUMERO = "tipo_numero";
+        public static final String COLUMN_DESCRICAO = "tipo_descricao";
+        public static final String COLUMN_TEMPO = "tipo_tempo";
+        public static final String COLUMN_TPUN = "tipo_tpun";
+        public static final String COLUMN_QTDE = "tipo_qtde";
+        public static final String COLUMN_QTUN = "tipo_qtun";
+        public static final String COLUMN_MUDAS_BANDEJA = "tipo_mudas_bandeja";
+        public static final String COLUMN_VALOR = "tipo_valor";
+        public static final String COLUMN_REG_NUM = "tipo_reg_num";
+        public static final String COLUMN_USR_ID = "tipo_usr_id";
 
 
     }
@@ -198,6 +208,8 @@ public final class Contrato {
             " CONSTRAINT fk_ent_lote FOREIGN KEY ( " + Entrada.COLUMN_LOTE_ID + " ) REFERENCES  " + Lote.TABLENAME + "( " + Lote.COLUMN_ID + " ), " +
             " CONSTRAINT fk_ent_usuario FOREIGN KEY ( " + Entrada.COLUMN_USR_ID + ") REFERENCES " + Usuario.TABLENAME + " (  " + Usuario.COLUMN_ID + " ));";
 
+    public static final String CREATE_TABLE_TIPO_ENTRADA = "CREATE TABLE " Tipo_Entrada.T
+
     public static final String CREATE_TABLE_LOTE_FECHADO = "CREATE TABLE " + Fec_lote.TABLENAME +
             " ( " + Fec_lote.COLUMN_ID + " INTEGER, " +
                     Fec_lote.COLUMN_NOME + " VARCHAR(60), " +
@@ -225,5 +237,8 @@ public final class Contrato {
             " CONSTRAINT pk_fec_ent PRIMARY KEY ( " + Fec_entrada.COLUMN_ID + " ), " +
             " CONSTRAINT fk_fec_ent_lote FOREIGN KEY ( " + Fec_entrada.COLUMN_LOTE_ID + " ) REFERENCES " + Lote.TABLENAME + " (" + Lote.COLUMN_ID + " ), " +
             " CONSTRAINT fk_fec_ent_usuario FOREIGN KEY ( " + Fec_entrada.COLUMN_USR_ID  + ") REFERENCES " + Usuario.TABLENAME + " (  " + Usuario.COLUMN_ID + " ));";
+
+
+
 
 }
