@@ -11,6 +11,10 @@ public class Reg_Agrotoxico {
         this.reg_numero = reg_numero;
     }
 
+    public Integer getReg_numero() {
+        return reg_numero;
+    }
+
     public String getReg_nomecom() {
         return reg_nomecom;
     }

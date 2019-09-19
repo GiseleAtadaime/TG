@@ -8,9 +8,12 @@ public class Entrada {
     private Date ent_data;
     private Integer ent_tipo;
     private String ent_desc;
-    private Integer ent_valor_1;
-    private Double ent_valor_2;
-    private Double ent_custo;
+    private Double ent_tempo;
+    private String ent_tpun;
+    private Double ent_qtde;
+    private String ent_qtun;
+    private Integer ent_mudas_bandeja;
+    private Double ent_valor;
     private Reg_Agrotoxico ent_reg;
 
     public Entrada(Integer ent_numero) {
@@ -45,28 +48,52 @@ public class Entrada {
         this.ent_desc = ent_desc;
     }
 
-    public Integer getEnt_valor_1() {
-        return ent_valor_1;
+    public Double getEnt_tempo() {
+        return ent_tempo;
     }
 
-    public void setEnt_valor_1(Integer ent_valor_1) {
-        this.ent_valor_1 = ent_valor_1;
+    public void setEnt_tempo(Double ent_tempo) {
+        this.ent_tempo = ent_tempo;
     }
 
-    public Double getEnt_valor_2() {
-        return ent_valor_2;
+    public String getEnt_tpun() {
+        return ent_tpun;
     }
 
-    public void setEnt_valor_2(Double ent_valor_2) {
-        this.ent_valor_2 = ent_valor_2;
+    public void setEnt_tpun(String ent_tpun) {
+        this.ent_tpun = ent_tpun;
     }
 
-    public Double getEnt_custo() {
-        return ent_custo;
+    public Double getEnt_qtde() {
+        return ent_qtde;
     }
 
-    public void setEnt_custo(Double ent_custo) {
-        this.ent_custo = ent_custo;
+    public void setEnt_qtde(Double ent_qtde) {
+        this.ent_qtde = ent_qtde;
+    }
+
+    public String getEnt_qtun() {
+        return ent_qtun;
+    }
+
+    public void setEnt_qtun(String ent_qtun) {
+        this.ent_qtun = ent_qtun;
+    }
+
+    public Integer getEnt_mudas_bandeja() {
+        return ent_mudas_bandeja;
+    }
+
+    public void setEnt_mudas_bandeja(Integer ent_mudas_bandeja) {
+        this.ent_mudas_bandeja = ent_mudas_bandeja;
+    }
+
+    public Double getEnt_valor() {
+        return ent_valor;
+    }
+
+    public void setEnt_valor(Double ent_valor) {
+        this.ent_valor = ent_valor;
     }
 
     public Reg_Agrotoxico getEnt_reg() {

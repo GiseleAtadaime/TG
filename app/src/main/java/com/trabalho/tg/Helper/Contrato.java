@@ -65,8 +65,8 @@ public final class Contrato {
 
 
 
-        public static final Integer STATUS_DELETADO = 1;
-        public static final Integer STATUS_ATIVO = 0;
+        public static final String STATUS_DELETADO = "D";
+        public static final String STATUS_ATIVO = "A";
 
     }
 

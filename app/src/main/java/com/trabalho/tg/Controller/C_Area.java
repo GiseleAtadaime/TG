@@ -11,12 +11,19 @@ import java.util.ArrayList;
 
 public class C_Area {
 
-    public ArrayList<Area> selectArea(DBHelper dbHelper){
+    public ArrayList<Area> selectArea(DBHelper dbHelper, Boolean aberto){
         Cursor c = null;
         ArrayList<Area> a = new ArrayList<>();
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String query = "SELECT * FROM " + Contrato.Area.TABLENAME  +  ";";
+        String query = "SELECT * FROM " + Contrato.Area.TABLENAME;
+
+        if (!aberto){
+            query.concat(" WHERE " + Contrato.Area.COLUMN_DEL + " = '" + Contrato.Area.STATUS_ATIVO + "';");
+        }
+        else{
+            query.concat(" WHERE " + Contrato.Area.COLUMN_DEL + " = '" + Contrato.Area.STATUS_DELETADO + "';");
+        }
 
         try{
             c = db.rawQuery(query,null);
@@ -62,26 +69,17 @@ public class C_Area {
         }
     }
 
-    public Boolean updateArea(DBHelper dbHelper, Area a, Integer tipo){
+    public Boolean updateArea(DBHelper dbHelper, Area a){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         Boolean ret = false;
 
         ContentValues values = new ContentValues();
 
-        switch(tipo){
-            case(1):
-                values.put(Contrato.Area.COLUMN_LOTE_CONT, a.getAr_lote_cont());
-                break;
-            case(2):
-                values.put(Contrato.Area.COLUMN_NOME,a.getAr_nome());
-                break;
-            case(3):
-                values.put(Contrato.Area.COLUMN_IMAGEM,a.getAr_imagem());
-                break;
-            case(4):
-                values.put(Contrato.Area.COLUMN_DEL,a.getAr_del());
-                break;
-        }
+        values.put(Contrato.Area.COLUMN_LOTE_CONT, a.getAr_lote_cont());
+        values.put(Contrato.Area.COLUMN_NOME,a.getAr_nome());
+        values.put(Contrato.Area.COLUMN_IMAGEM,a.getAr_imagem());
+        values.put(Contrato.Area.COLUMN_DEL,a.getAr_del());
+
 
         try{
 

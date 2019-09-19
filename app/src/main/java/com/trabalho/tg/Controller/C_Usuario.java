@@ -64,6 +64,7 @@ public class C_Usuario {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         Boolean ret = false;
 
+        /*TESTE */
         ContentValues values = new ContentValues();
         values.put(Contrato.Usuario.COLUMN_NOME, u.getUsr_nome());
         values.put(Contrato.Usuario.COLUMN_EMAIL, u.getUsr_email());
