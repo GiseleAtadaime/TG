@@ -72,17 +72,17 @@ public final class Contrato {
 
     public static class Lote implements BaseColumns{
         public static final String TABLENAME = "LOTE";
-        public static final String COLUMN_ID = "lot_id";
-        public static final String COLUMN_NOME = "lot_nome";
-        public static final String COLUMN_IMAGEM = "lot_imagem";
-        public static final String COLUMN_AREA_ID = "lot_area_id";
-        public static final String COLUMN_USR_ID = "lot_usr_id";
+        public static final String COLUMN_ID = "lote_id";
+        public static final String COLUMN_NOME = "lote_nome";
+        public static final String COLUMN_IMAGEM = "lote_imagem";
+        public static final String COLUMN_AREA_ID = "lote_area_id";
+        public static final String COLUMN_USR_ID = "lote_usr_id";
 
     }
     public static class Entrada implements BaseColumns{
         public static final String TABLENAME = "ENTRADA";
         public static final String COLUMN_NUMERO = "ent_num";
-        public static final String COLUMN_LOTE_ID = "ent_lot_id";
+        public static final String COLUMN_LOTE_ID = "ent_lote_id";
         public static final String COLUMN_DATA = "ent_data";
         public static final String COLUMN_TIPO = "ent_tipo_numero";
         public static final String COLUMN_USR_ID = "ent_usr_id";
@@ -102,33 +102,47 @@ public final class Contrato {
         public static final String COLUMN_REG_NUM = "tipo_reg_num";
         public static final String COLUMN_USR_ID = "tipo_usr_id";
 
-
     }
 
     public static class Fec_lote implements BaseColumns{
-        public static final String TABLENAME = "FEC_LOTE";
-        public static final String COLUMN_ID = "fec_id";
-        public static final String COLUMN_NOME = "fec_nome";
-        public static final String COLUMN_IMAGEM = "fec_imagem";
-        public static final String COLUMN_PDF_LINK = "fec_pdf_link";
-        public static final String COLUMN_LOT_USERPDF_LINK = "fec_lot_userpdf_link";
-        public static final String COLUMN_QRCODE_LINK = "fec_qrcode_link";
-        public static final String COLUMN_AREA_ID = "fec_area_id";
-        public static final String COLUMN_USR_ID = "fec_usr_id";
+        public static final String TABLENAME = "LOTE_HIST";
+        public static final String COLUMN_ID = "lote_id";
+        public static final String COLUMN_NOME = "lote_nome";
+        public static final String COLUMN_IMAGEM = "lote_imagem";
+        public static final String COLUMN_PDF_LINK = "lote_pdf_link";
+        public static final String COLUMN_LOT_USERPDF_LINK = "lote_lote_userpdf_link";
+        public static final String COLUMN_QRCODE_LINK = "lote_qrcode_link";
+        public static final String COLUMN_AREA_ID = "lote_area_id";
+        public static final String COLUMN_USR_ID = "lote_usr_id";
     }
 
     public static class Fec_entrada implements BaseColumns{
-        public static final String TABLENAME = "FEC_ENTRADA";
-        public static final String COLUMN_ID = "fent_id";
-        public static final String COLUMN_LOTE_ID = "fent_lot_id";
-        public static final String COLUMN_DATA = "fent_data";
-        public static final String COLUMN_TIPO = "fent_tipo";
-        public static final String COLUMN_DESC = "fent_desc";
-        public static final String COLUMN_VALOR_1 = "fent_valor_1";
-        public static final String COLUMN_VALOR_2 = "fent_valor_2";
-        public static final String COLUMN_CUSTO = "fent_custo";
-        public static final String COLUMN_REG_NUM = "fent_reg_num";
-        public static final String COLUMN_USR_ID = "fent_usr_id";
+        public static final String TABLENAME = "ENTRADA_HIST";
+        public static final String COLUMN_ID = "ent_id";
+        public static final String COLUMN_LOTE_ID = "ent_lote_id";
+        public static final String COLUMN_DATA = "ent_data";
+        public static final String COLUMN_TIPO = "ent_tipo";
+        public static final String COLUMN_DESC = "ent_desc";
+        public static final String COLUMN_VALOR_1 = "ent_valor_1";
+        public static final String COLUMN_VALOR_2 = "ent_valor_2";
+        public static final String COLUMN_CUSTO = "ent_custo";
+        public static final String COLUMN_REG_NUM = "ent_reg_num";
+        public static final String COLUMN_USR_ID = "ent_usr_id";
+
+    }
+
+    public static class Fec_Tipo_Entrada implements BaseColumns{
+        public static final String TABLENAME = "TIPO_ENTRADA";
+        public static final String COLUMN_TIPO_NUMERO = "tipo_numero";
+        public static final String COLUMN_DESCRICAO = "tipo_descricao";
+        public static final String COLUMN_TEMPO = "tipo_tempo";
+        public static final String COLUMN_TPUN = "tipo_tpun";
+        public static final String COLUMN_QTDE = "tipo_qtde";
+        public static final String COLUMN_QTUN = "tipo_qtun";
+        public static final String COLUMN_MUDAS_BANDEJA = "tipo_mudas_bandeja";
+        public static final String COLUMN_VALOR = "tipo_valor";
+        public static final String COLUMN_REG_NUM = "tipo_reg_num";
+        public static final String COLUMN_USR_ID = "tipo_usr_id";
 
     }
 
@@ -197,18 +211,26 @@ public final class Contrato {
             " ( " + Entrada.COLUMN_NUMERO + " INTEGER, " +
                     Entrada.COLUMN_LOTE_ID + " INTEGER, " +
                     Entrada.COLUMN_DATA + " DATETIME, " +
-                    Entrada.COLUMN_TIPO + " VARCHAR(10), " +
-                    Entrada.COLUMN_DESC + " VARCHAR(20), " +
-                    Entrada.COLUMN_VALOR_1 + " INTEGER, " +
-                    Entrada.COLUMN_VALOR_2 + " NUMERIC(10,2), " +
-                    Entrada.COLUMN_CUSTO + " NUMERIC(10,2), " +
+                    Entrada.COLUMN_TIPO + " INTEGER, " +
                     Entrada.COLUMN_USR_ID + " INTEGER, " +
-                    Entrada.COLUMN_REG_NUM + " INTEGER, " +
             " CONSTRAINT pk_ent PRIMARY KEY ( " + Entrada.COLUMN_NUMERO + " ), " +
             " CONSTRAINT fk_ent_lote FOREIGN KEY ( " + Entrada.COLUMN_LOTE_ID + " ) REFERENCES  " + Lote.TABLENAME + "( " + Lote.COLUMN_ID + " ), " +
             " CONSTRAINT fk_ent_usuario FOREIGN KEY ( " + Entrada.COLUMN_USR_ID + ") REFERENCES " + Usuario.TABLENAME + " (  " + Usuario.COLUMN_ID + " ));";
 
-    public static final String CREATE_TABLE_TIPO_ENTRADA = "CREATE TABLE " Tipo_Entrada.T
+    public static final String CREATE_TABLE_TIPO_ENTRADA = "CREATE TABLE " + Tipo_Entrada.TABLENAME +
+            " ( " + Tipo_Entrada.COLUMN_TIPO_NUMERO + " INTEGER, " +
+                    Tipo_Entrada.COLUMN_DESCRICAO + " VARCHAR(20), " +
+                    Tipo_Entrada.COLUMN_TEMPO + " NUMERIC(10,2), " +
+                    Tipo_Entrada.COLUMN_TPUN + " VARCHAR(1), " +
+                    Tipo_Entrada.COLUMN_QTDE + " NUMERIC(10,2), " +
+                    Tipo_Entrada.COLUMN_QTUN + " VARCHAR(1), " +
+                    Tipo_Entrada.COLUMN_MUDAS_BANDEJA + " INTEGER, " +
+                    Tipo_Entrada.COLUMN_VALOR + " NUMERIC(10,2), " +
+                    Tipo_Entrada.COLUMN_REG_NUM + " INTEGER, " +
+                    Tipo_Entrada.COLUMN_USR_ID + " INTEGER, " +
+            " CONSTRAINT pk_tp PRIMARY KEY ( " + Tipo_Entrada.COLUMN_TIPO_NUMERO + " ), " +
+            " CONSTRAINT fk_tp_reg FOREIGN KEY ( " + Tipo_Entrada.COLUMN_REG_NUM + " ) REFERENCES  " + Reg_Agrotoxico.TABLENAME + "( " + Reg_Agrotoxico.COLUMN_NUMERO + " ), " +
+            " CONSTRAINT fk_tp_usuario FOREIGN KEY ( " + Tipo_Entrada.COLUMN_USR_ID + ") REFERENCES " + Usuario.TABLENAME + " (  " + Usuario.COLUMN_ID + " ));";
 
     public static final String CREATE_TABLE_LOTE_FECHADO = "CREATE TABLE " + Fec_lote.TABLENAME +
             " ( " + Fec_lote.COLUMN_ID + " INTEGER, " +
@@ -240,5 +262,19 @@ public final class Contrato {
 
 
 
+    public static final String CREATE_TABLE_FEC_TIPO_ENTRADA = "CREATE TABLE " + Tipo_Entrada.TABLENAME +
+            " ( " + Fec_Tipo_Entrada.COLUMN_TIPO_NUMERO + " INTEGER, " +
+            Fec_Tipo_Entrada.COLUMN_DESCRICAO + " VARCHAR(20), " +
+            Fec_Tipo_Entrada.COLUMN_TEMPO + " NUMERIC(10,2), " +
+            Fec_Tipo_Entrada.COLUMN_TPUN + " VARCHAR(1), " +
+            Fec_Tipo_Entrada.COLUMN_QTDE + " NUMERIC(10,2), " +
+            Fec_Tipo_Entrada.COLUMN_QTUN + " VARCHAR(1), " +
+            Fec_Tipo_Entrada.COLUMN_MUDAS_BANDEJA + " INTEGER, " +
+            Fec_Tipo_Entrada.COLUMN_VALOR + " NUMERIC(10,2), " +
+            Fec_Tipo_Entrada.COLUMN_REG_NUM + " INTEGER, " +
+            Fec_Tipo_Entrada.COLUMN_USR_ID + " INTEGER, " +
+            " CONSTRAINT pk_tp PRIMARY KEY ( " + Fec_Tipo_Entrada.COLUMN_TIPO_NUMERO + " ), " +
+            " CONSTRAINT fk_tp_reg FOREIGN KEY ( " + Fec_Tipo_Entrada.COLUMN_REG_NUM + " ) REFERENCES  " + Reg_Agrotoxico.TABLENAME + "( " + Reg_Agrotoxico.COLUMN_NUMERO + " ), " +
+            " CONSTRAINT fk_tp_usuario FOREIGN KEY ( " + Fec_Tipo_Entrada.COLUMN_USR_ID + ") REFERENCES " + Usuario.TABLENAME + " (  " + Usuario.COLUMN_ID + " ));";
 
 }
