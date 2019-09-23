@@ -26,7 +26,7 @@ public final class Contrato {
         public static final String COLUMN_SITE = "info_site";
         public static final String COLUMN_TELEFONE = "info_telefone";
         public static final String COLUMN_RZSOCIAL = "info_rzsocial";
-        public static final String COLUMN_END_ID = "info_end_id";
+
 
 
     }
@@ -34,6 +34,7 @@ public final class Contrato {
     public static class Endereco implements BaseColumns{
         public static final String TABLENAME = "ENDERECO";
         public static final String COLUMN_ID = "end_id";
+        public static final String COLUMN_INFO_ID = "end_info_id";
         public static final String COLUMN_LOGRADOURO = "end_logradouro";
         public static final String COLUMN_CARTX = "end_cartx";
         public static final String COLUMN_CARTY = "end_carty";
@@ -163,12 +164,12 @@ public final class Contrato {
                     Usuario_Info.COLUMN_SITE + " VARCHAR(60), " +
                     Usuario_Info.COLUMN_TELEFONE + " INTEGER, " +
                     Usuario_Info.COLUMN_RZSOCIAL + " VARCHAR(100), " +
-                    Usuario_Info.COLUMN_END_ID + " INTEGER, " +
             " CONSTRAINT pk_info PRIMARY KEY ( " + Usuario_Info.COLUMN_INFO_ID + " ), " +
             " CONSTRAINT fk_info_usuario FOREIGN KEY ( " + Usuario_Info.COLUMN_USR_ID + ") REFERENCES " + Usuario.TABLENAME + " (  " +  Usuario.COLUMN_ID + " ));";
 
     public static final String CREATE_TABLE_ENDERECO = "CREATE TABLE " + Endereco.TABLENAME +
             " ( " + Endereco.COLUMN_ID + " INTEGER, " +
+                    Endereco.COLUMN_INFO_ID + " INTEGER, " +
                     Endereco.COLUMN_LOGRADOURO + " VARCHAR(60), " +
                     Endereco.COLUMN_CARTX + " NUMERIC(3,2), " +
                     Endereco.COLUMN_CARTY + " NUMERIC(3,2), " +
@@ -178,6 +179,7 @@ public final class Contrato {
                     Endereco.COLUMN_UF + " VARCHAR(2), " +
                     Endereco.COLUMN_USR_ID + " INTEGER, " +
             " CONSTRAINT pk_endereco PRIMARY KEY ( " + Endereco.COLUMN_ID + " ), " +
+            " CONSTRAINT fk_end_info_id FOREIGN KEY ( " + Endereco.COLUMN_INFO_ID  + ") REFERENCES " + Usuario_Info.TABLENAME + " (  " + Usuario_Info.COLUMN_INFO_ID + " ), " +
             " CONSTRAINT fk_end_usuario FOREIGN KEY ( " + Endereco.COLUMN_USR_ID  + ") REFERENCES " + Usuario.TABLENAME + " (  " + Usuario.COLUMN_ID + " ));";
 
     public static final String CREATE_TABLE_REG_AGROTOXICO = "CREATE TABLE " + Reg_Agrotoxico.TABLENAME +

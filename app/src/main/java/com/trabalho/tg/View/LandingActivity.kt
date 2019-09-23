@@ -1,8 +1,10 @@
-package com.trabalho.tg
+package com.trabalho.tg.View
 
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.trabalho.tg.R
+import com.trabalho.tg.View.Login.LoginActivity
 
 class LandingActivity : AppCompatActivity() {
 

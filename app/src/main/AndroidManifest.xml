@@ -18,13 +18,13 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
-                android:name=".MainActivity"
+                android:name=".View.MainActivity"
                 android:label="@string/title_activity_main"
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".LoginActivity">
+        <activity android:name=".View.Login.LoginActivity">
         </activity>
-        <activity android:name=".LandingActivity">
+        <activity android:name=".View.LandingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

@@ -1,20 +1,21 @@
-package com.trabalho.tg
+package com.trabalho.tg.View.Login
 
-import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
-import android.widget.Toast
-import com.trabalho.tg.Adapters.AreaAdapter
-import com.trabalho.tg.Model.Area
-import kotlinx.android.synthetic.main.area_view_adapter.*
-import kotlinx.android.synthetic.main.fragment_area.*
+import com.trabalho.tg.Controller.C_Usuario
+import com.trabalho.tg.Helper.DBHelper
+import com.trabalho.tg.Model.Usuario
+import com.trabalho.tg.R
+import com.trabalho.tg.View.MainActivity
+import kotlinx.android.synthetic.main.fragment_login_new.*
+import java.io.Serializable
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -25,13 +26,13 @@ private const val ARG_PARAM2 = "param2"
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [AreaFragment.OnFragmentInteractionListener] interface
+ * [LoginNewFragment.OnFragmentInteractionListener] interface
  * to handle interaction events.
- * Use the [AreaFragment.newInstance] factory method to
+ * Use the [LoginNewFragment.newInstance] factory method to
  * create an instance of this fragment.
  *
  */
-class AreaFragment : Fragment() {
+class LoginNewFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -50,14 +51,12 @@ class AreaFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view  = inflater.inflate(R.layout.fragment_area, container, false)
-
-        return view
+        return inflater.inflate(R.layout.fragment_login_new, container, false)
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onAreaSelected(area: List<Area>, pos : Int) {
-        listener?.onAreaSelected(area, pos)
+    fun onButtonPressed(uri: Uri) {
+        listener?.onFragmentInteraction(uri)
     }
 
     override fun onAttach(context: Context) {
@@ -67,9 +66,6 @@ class AreaFragment : Fragment() {
         } else {
             throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
         }
-
-
-
     }
 
     override fun onDetach() {
@@ -90,7 +86,7 @@ class AreaFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onAreaSelected(area: List<Area>, pos : Int)
+        fun onFragmentInteraction(uri: Uri)
     }
 
     companion object {
@@ -100,12 +96,12 @@ class AreaFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment AreaFragment.
+         * @return A new instance of fragment LoginNewFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            AreaFragment().apply {
+            LoginNewFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
@@ -115,30 +111,43 @@ class AreaFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var area :  ArrayList<Area> = ArrayList()
-        area.add(Area(1))
-        area[0].ar_nome = "Area 1"
+        edtVerifCode_LoginNew.visibility = GONE
+        btnValidar_LoginNew.visibility = GONE
 
-        area.add(Area(2))
-        area[1].ar_nome = "Area 2"
 
-        area.add(Area(3))
-        area[2].ar_nome = "Area 3"
+        btnCria_LoginNew.setOnClickListener {
+/*
+                var helper = CognitoHelper(it.context)
 
-        area.add(Area(4))
-        area[3].ar_nome = "Area 4"
+                println(edtSenha_LoginNew.text.toString())
+                helper.registerUser(edtNome_LoginNew.text.toString(),edtEmail_LoginNew.text.toString(),edtEmail_LoginNew.text.toString())
 
-        val mlistener = fun(view : View, position: Int) {
-            Toast.makeText(context, "Position $position", Toast.LENGTH_SHORT).show();
-            onAreaSelected(area, position)
+                edtVerifCode_LoginNew.visibility = VISIBLE
+                btnValidar_LoginNew.visibility = VISIBLE
+*/
+            //val intent = Intent (activity, MainActivity::class.java)
+            //startActivity(intent)
+            val dbHelper = DBHelper(context)
+            val cUsuario = C_Usuario()
+
+            var u = Usuario(0)
+            u.usr_nome = edtNome_LoginNew.text.toString()
+            u.usr_email = edtEmail_LoginNew.text.toString()
+            u.usr_senha = edtSenha_LoginNew.text.toString()
+            if(cUsuario.insertUsuario(dbHelper,u)){
+                println("Inserido com sucesso!!")
+            }
+
+            var user = cUsuario.selectUsuario(dbHelper)
+            if (user != null) {
+                val intent = Intent (activity, MainActivity::class.java)
+                intent.putExtra("usuario", user as Serializable)
+                startActivity(intent)
+                activity?.finish()
+
+            }
+
         }
 
-
-        var recyclerView = view.findViewById<RecyclerView>(R.id.recView_AreaFrag)
-        recyclerView.layoutManager = LinearLayoutManager(activity)
-
-        recyclerView.adapter = AreaAdapter(area, context, mlistener)
     }
-
 }
-

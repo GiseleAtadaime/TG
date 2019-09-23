@@ -9,11 +9,16 @@ public class User_Info {
     private String info_cnpj;
     private Integer info_telefone;
     private String info_rzsocial;
+    private String info_site;
     private ArrayList<Endereco> info_endereco = new ArrayList<Endereco>();
 
 
     public User_Info(Integer info_id) {
         this.info_id = info_id;
+    }
+
+    public Integer getInfo_id() {
+        return info_id;
     }
 
     public String getInfo_nomefantasia() {
@@ -46,6 +51,14 @@ public class User_Info {
 
     public void setInfo_rzsocial(String info_rzsocial) {
         this.info_rzsocial = info_rzsocial;
+    }
+
+    public String getInfo_site() {
+        return info_site;
+    }
+
+    public void setInfo_site(String info_site) {
+        this.info_site = info_site;
     }
 
     public ArrayList<Endereco> getInfo_endereco() {

@@ -34,7 +34,7 @@ public class C_Area {
                     a.get(i).setAr_nome(c.getString(c.getColumnIndex(Contrato.Area.COLUMN_NOME)));
                     a.get(i).setAr_imagem(c.getString(c.getColumnIndex(Contrato.Area.COLUMN_IMAGEM)));
                     a.get(i).setAr_lote_cont(c.getString(c.getColumnIndex(Contrato.Area.COLUMN_LOTE_CONT)));
-                    a.get(i).setAr_del(c.getInt(c.getColumnIndex(Contrato.Area.COLUMN_DEL)));
+                    a.get(i).setAr_del(c.getString(c.getColumnIndex(Contrato.Area.COLUMN_DEL)));
                     i++;
                 }
                 while(c.moveToNext());

@@ -3,8 +3,12 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context=".View.EntradaFragment" android:background="#9C7575">
-    <android.support.v7.widget.RecyclerView
+             tools:context=".View.Dialogs.EntradaAlterDialogFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent" android:id="@+id/recView_Entrada"/>
+            android:layout_height="match_parent"
+            android:text="@string/hello_blank_fragment"/>
+
 </FrameLayout>

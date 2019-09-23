@@ -1,13 +1,14 @@
 package com.trabalho.tg.Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Area {
+public class Area implements Serializable {
     private Integer ar_id;
     private String ar_lote_cont;
     private String ar_imagem;
     private String ar_nome;
-    private Integer ar_del;
+    private String ar_del;
     private ArrayList<Lote> ar_lote = new ArrayList<>();
 
     public Area(Integer ar_id) {
@@ -42,11 +43,11 @@ public class Area {
         this.ar_nome = ar_nome;
     }
 
-    public Integer getAr_del() {
+    public String getAr_del() {
         return ar_del;
     }
 
-    public void setAr_del(Integer ar_del) {
+    public void setAr_del(String ar_del) {
         this.ar_del = ar_del;
     }
 

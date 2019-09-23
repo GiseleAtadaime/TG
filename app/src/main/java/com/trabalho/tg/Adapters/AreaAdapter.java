@@ -1,5 +1,6 @@
 package com.trabalho.tg.Adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +25,9 @@ public class AreaAdapter extends RecyclerView.Adapter{
 
     public interface AdapterListener {
         void onClick(View view, int adapterPosition);
+        void onClick2(Area area);
     }
+
 
     public AreaAdapter(List<Area> area, Context c, AdapterListener listener) {
         this.area = area;
@@ -88,7 +91,7 @@ public class AreaAdapter extends RecyclerView.Adapter{
         protected ImageButton addImagem;
         protected ImageButton editImagem;
 
-        public AreaViewHolder(@NonNull View itemView, AdapterListener listener) {
+        public AreaViewHolder(@NonNull View itemView, final AdapterListener listener) {
             super(itemView);
 
             areaImagem = itemView.findViewById(R.id.imgAreaAdapter);
@@ -99,7 +102,18 @@ public class AreaAdapter extends RecyclerView.Adapter{
 
             this.listener = listener;
 
-            areaImagem.setOnClickListener(this);
+            areaImagem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onClick(v, area.get(getAdapterPosition()).getAr_id());
+                }
+            });
+            itemView.findViewById(R.id.imgbtnNovo_AreaAdapter).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onClick2(area.get(getAdapterPosition()));
+                }
+            });
         }
 
         @Override

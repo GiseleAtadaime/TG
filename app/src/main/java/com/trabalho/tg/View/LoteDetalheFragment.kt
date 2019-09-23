@@ -1,22 +1,15 @@
-package com.trabalho.tg
+package com.trabalho.tg.View
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
-import com.trabalho.tg.Controller.C_Usuario
-import com.trabalho.tg.Helper.CognitoHelper
-import com.trabalho.tg.Helper.DBHelper
-import com.trabalho.tg.Model.Usuario
-import kotlinx.android.synthetic.main.fragment_login.*
-import kotlinx.android.synthetic.main.fragment_login_new.*
-import java.io.Serializable
+import com.trabalho.tg.Model.Entrada
+import com.trabalho.tg.R
+import kotlinx.android.synthetic.main.fragment_lote_detalhe.*
+import kotlin.collections.ArrayList
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -27,13 +20,13 @@ private const val ARG_PARAM2 = "param2"
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [LoginNewFragment.OnFragmentInteractionListener] interface
+ * [LoteDetalheFragment.OnFragmentInteractionListener] interface
  * to handle interaction events.
- * Use the [LoginNewFragment.newInstance] factory method to
+ * Use the [LoteDetalheFragment.newInstance] factory method to
  * create an instance of this fragment.
  *
  */
-class LoginNewFragment : Fragment() {
+class LoteDetalheFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -52,12 +45,12 @@ class LoginNewFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login_new, container, false)
+        return inflater.inflate(R.layout.fragment_lote_detalhe, container, false)
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
+    fun onAlterButtonClick(entrada : ArrayList<Entrada>) {
+        listener?.onAlterButtonClick(entrada)
     }
 
     override fun onAttach(context: Context) {
@@ -87,7 +80,7 @@ class LoginNewFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+        fun onAlterButtonClick(entrada : ArrayList<Entrada>)
     }
 
     companion object {
@@ -97,12 +90,12 @@ class LoginNewFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment LoginNewFragment.
+         * @return A new instance of fragment LoteDetalheFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            LoginNewFragment().apply {
+            LoteDetalheFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
@@ -112,43 +105,27 @@ class LoginNewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        edtVerifCode_LoginNew.visibility = GONE
-        btnValidar_LoginNew.visibility = GONE
 
 
-        btnCria_LoginNew.setOnClickListener {
-/*
-                var helper = CognitoHelper(it.context)
-
-                println(edtSenha_LoginNew.text.toString())
-                helper.registerUser(edtNome_LoginNew.text.toString(),edtEmail_LoginNew.text.toString(),edtEmail_LoginNew.text.toString())
-
-                edtVerifCode_LoginNew.visibility = VISIBLE
-                btnValidar_LoginNew.visibility = VISIBLE
-*/
-            //val intent = Intent (activity, MainActivity::class.java)
-            //startActivity(intent)
-            val dbHelper = DBHelper(context)
-            val cUsuario = C_Usuario()
-
-            var u = Usuario(0)
-            u.usr_nome = edtNome_LoginNew.text.toString()
-            u.usr_email = edtEmail_LoginNew.text.toString()
-            u.usr_senha = edtSenha_LoginNew.text.toString()
-            if(cUsuario.insertUsuario(dbHelper,u)){
-                println("Inserido com sucesso!!")
-            }
-
-            var user = cUsuario.selectUsuario(dbHelper)
-            if (user.size != 0) {
-                val intent = Intent (activity, MainActivity::class.java)
-                intent.putExtra("usuario", user as Serializable)
-                startActivity(intent)
-                activity?.finish()
+        fBtnAdd_LoteDetFrag.setOnClickListener{
+            if (menu_LoteDetFrag.visibility == View.VISIBLE){
+                menu_LoteDetFrag.visibility = View.GONE
 
             }
+            else{
+                menu_LoteDetFrag.visibility = View.VISIBLE
 
+            }
         }
+
+        var entrada = ArrayList<Entrada>()
+        entrada.add(Entrada(1))
+        entrada[0].ent_desc = "entrada 1"
+
+        btnAlt_LoteDetFrag.setOnClickListener{
+            onAlterButtonClick(entrada)
+        }
+
 
     }
 }

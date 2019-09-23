@@ -73,8 +73,10 @@ public class EntradaAdapter extends RecyclerView.Adapter{
             nomeText = itemView.findViewById(R.id.txtTitulo_EntViewAdapter);
             dataText = itemView.findViewById(R.id.txtData_EntViewAdapter);
 
-
             this.listener = listener;
+            itemView.setOnClickListener(this);
+
+
 
         }
 

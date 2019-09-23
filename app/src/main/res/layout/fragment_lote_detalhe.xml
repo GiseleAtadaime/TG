@@ -4,7 +4,7 @@
                                              xmlns:tools="http://schemas.android.com/tools"
                                              android:layout_width="match_parent"
                                              android:layout_height="match_parent"
-                                             tools:context=".LoteDetalheFragment" android:id="@+id/ConstraintLayout">
+                                             tools:context=".View.LoteDetalheFragment" android:id="@+id/ConstraintLayout">
     <ImageView
             android:src="@drawable/repolho_roxo"
             android:layout_width="0dp"
@@ -61,30 +61,24 @@
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.996"
     />
     <LinearLayout
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/fBtnAdd_LoteDetFrag" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="8dp" tools:visibility="gone" android:id="@+id/menu_LoteDetFrag"
             android:visibility="gone">
-        <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="114dp"
-                android:layout_height="134dp" android:layout_marginBottom="8dp"
-                android:layout_marginEnd="12dp">
-            <Button
-                    android:text="Button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/btnAdd_LoteDetFrag"/>
-            <Button
-                    android:text="Button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/btnAlt_LoteDetFrag"/>
-            <Button
-                    android:text="Button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/btnFech_LoteDetFrag"/>
-        </LinearLayout>
+        <Button
+                android:text="fechar lote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/btnFech_LoteDetFrag"/>
+        <Button
+                android:text="nova entrada"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/btnAdd_LoteDetFrag"/>
+        <Button
+                android:text="ver entradas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/btnAlt_LoteDetFrag"/>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

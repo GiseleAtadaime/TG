@@ -15,6 +15,10 @@ public class Endereco {
         this.end_id = end_id;
     }
 
+    public Integer getEnd_id() {
+        return end_id;
+    }
+
     public String getEnd_logradouro() {
         return end_logradouro;
     }

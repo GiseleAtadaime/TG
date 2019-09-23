@@ -1,25 +1,14 @@
-package com.trabalho.tg
+package com.trabalho.tg.View.Dialogs
 
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.text.TextUtils.replace
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.amazonaws.metrics.AwsSdkMetrics.add
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserAttributes
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserCodeDeliveryDetails
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHandler
-import com.amazonaws.regions.Regions
-import com.trabalho.tg.Helper.CognitoHelper
-import kotlinx.android.synthetic.main.fragment_login.*
-import java.lang.reflect.Field
 
+import com.trabalho.tg.R
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,13 +18,13 @@ private const val ARG_PARAM2 = "param2"
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [LoginFragment.OnFragmentInteractionListener] interface
+ * [EntradaAlterDialogFragment.OnFragmentInteractionListener] interface
  * to handle interaction events.
- * Use the [LoginFragment.newInstance] factory method to
+ * Use the [EntradaAlterDialogFragment.newInstance] factory method to
  * create an instance of this fragment.
  *
  */
-class LoginFragment : Fragment() {
+class EntradaAlterDialogFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -47,9 +36,6 @@ class LoginFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-
-
-
     }
 
     override fun onCreateView(
@@ -57,7 +43,7 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false)
+        return inflater.inflate(R.layout.fragment_entrada_alter_dialog, container, false)
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -77,8 +63,6 @@ class LoginFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
         listener = null
-
-
     }
 
     /**
@@ -104,32 +88,16 @@ class LoginFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment LoginFragment.
+         * @return A new instance of fragment EntradaAlterDialogFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            LoginFragment().apply {
+            EntradaAlterDialogFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
                 }
             }
     }
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        btnEntrar_Login.setOnClickListener {
-
-            //val intent = Intent (activity, MainActivity::class.java)
-            //startActivity(intent)
-        }
-
-        btnCriar_Login.setOnClickListener {
-            LoginActivity().changeFragment(LoginNewFragment(), true)
-        }
-
-    }
-
-
 }

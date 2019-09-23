@@ -1,39 +1,45 @@
-package com.trabalho.tg
+package com.trabalho.tg.View
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import com.trabalho.tg.Adapters.AreaAdapter
+import com.trabalho.tg.Controller.C_Area
+import com.trabalho.tg.Helper.Contrato
+import com.trabalho.tg.Helper.DBHelper
+import com.trabalho.tg.Model.Area
+import com.trabalho.tg.R
+import java.io.Serializable
 
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val ARG_PARAM1 = "area"
 
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [QRFragment.OnFragmentInteractionListener] interface
+ * [AreaFragment.OnFragmentInteractionListener] interface
  * to handle interaction events.
- * Use the [QRFragment.newInstance] factory method to
+ * Use the [AreaFragment.newInstance] factory method to
  * create an instance of this fragment.
  *
  */
-class QRFragment : Fragment() {
+class AreaFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var area: ArrayList<Area>? = null
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            area = it.getSerializable(ARG_PARAM1) as ArrayList<Area>
         }
     }
 
@@ -42,12 +48,18 @@ class QRFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_qr, container, false)
+        val view  = inflater.inflate(R.layout.fragment_area, container, false)
+
+        return view
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
+    fun onAreaSelected(area: List<Area>, pos : Int) {
+        listener?.onAreaSelected(area, pos)
+    }
+
+    fun showAreaDialog(area : Area){
+        listener?.showAreaDialog(area)
     }
 
     override fun onAttach(context: Context) {
@@ -57,6 +69,7 @@ class QRFragment : Fragment() {
         } else {
             throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
         }
+
     }
 
     override fun onDetach() {
@@ -77,7 +90,8 @@ class QRFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+        fun onAreaSelected(area: List<Area>, pos : Int)
+        fun showAreaDialog(area : Area)
     }
 
     companion object {
@@ -85,18 +99,37 @@ class QRFragment : Fragment() {
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
-         * @param param1 Parameter 1.
+         * @param area Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment QRFragment.
+         * @return A new instance of fragment AreaFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            QRFragment().apply {
+        fun newInstance(area: ArrayList<Area>) =
+            AreaFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putSerializable(ARG_PARAM1, area as Serializable)
                 }
             }
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        var dbHelper = DBHelper(context)
+        var c_area = C_Area()
+
+        val mlistener = fun(view : View, position: Int, aread : Area) {
+            Toast.makeText(context, "Position $position", Toast.LENGTH_SHORT).show();
+            onAreaSelected(area!!, position)
+            showAreaDialog(aread)
+        }
+
+        var recyclerView = view.findViewById<RecyclerView>(R.id.recView_AreaFrag)
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+
+        recyclerView.adapter = AreaAdapter(area!!, context, mlistener)
+    }
+
 }
+

@@ -1,4 +1,4 @@
-package com.trabalho.tg
+package com.trabalho.tg.View
 
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction

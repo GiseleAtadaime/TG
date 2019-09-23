@@ -11,9 +11,9 @@ import java.util.ArrayList;
 
 public class C_Usuario {
 
-    public ArrayList<Usuario> selectUsuario(DBHelper dbHelper){
+    public Usuario selectUsuario(DBHelper dbHelper){
         Cursor c = null;
-        ArrayList<Usuario> u = new ArrayList<>();
+        Usuario u = null;
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String query = "SELECT * FROM " + Contrato.Usuario.TABLENAME  +  ";";
@@ -23,14 +23,11 @@ public class C_Usuario {
             c = db.rawQuery(query,null);
             Integer i = 0;
             if (c.moveToFirst()) {
-                do{
-                    u.add(new Usuario(c.getInt(c.getColumnIndex(Contrato.Usuario.COLUMN_ID))));
-                    u.get(i).setUsr_nome(c.getString(c.getColumnIndex(Contrato.Usuario.COLUMN_NOME)));
-                    u.get(i).setUsr_email(c.getString(c.getColumnIndex(Contrato.Usuario.COLUMN_EMAIL)));
-                    u.get(i).setUsr_senha(c.getString(c.getColumnIndex(Contrato.Usuario.COLUMN_SENHA)));
-                    i++;
-                }
-                while(c.moveToNext());
+                u = new Usuario(c.getInt(c.getColumnIndex(Contrato.Usuario.COLUMN_ID)));
+                u.setUsr_nome(c.getString(c.getColumnIndex(Contrato.Usuario.COLUMN_NOME)));
+                u.setUsr_email(c.getString(c.getColumnIndex(Contrato.Usuario.COLUMN_EMAIL)));
+                u.setUsr_senha(c.getString(c.getColumnIndex(Contrato.Usuario.COLUMN_SENHA)));
+                i++;
 
                 c.close();
             }

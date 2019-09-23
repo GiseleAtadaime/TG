@@ -1,10 +1,7 @@
-package com.trabalho.tg
+package com.trabalho.tg.View
 
-import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
@@ -15,15 +12,15 @@ import android.support.v4.app.FragmentTransaction
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
-import android.view.View
-import android.widget.Toast
+import com.trabalho.tg.Controller.C_Area
 import com.trabalho.tg.Helper.DBHelper
 import com.trabalho.tg.Model.Area
 import com.trabalho.tg.Model.Entrada
 import com.trabalho.tg.Model.Lote
 import com.trabalho.tg.Model.Usuario
-import kotlinx.android.synthetic.main.activity_login.*
-import java.util.*
+import com.trabalho.tg.R
+import com.trabalho.tg.View.Dialogs.AreaAlterDialogFragment
+import com.trabalho.tg.View.Dialogs.EntradaDialogFragment
 import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(),
@@ -34,8 +31,13 @@ class MainActivity : AppCompatActivity(),
     QRFragment.OnFragmentInteractionListener,
     LoteFragment.OnFragmentInteractionListener,
     LoteDetalheFragment.OnFragmentInteractionListener,
-    EntradaFragment.OnFragmentInteractionListener
+    EntradaFragment.OnFragmentInteractionListener,
+    EntradaDialogFragment.OnFragmentInteractionListener
 {
+
+    override fun onEntradaSelected(entrada: Entrada) {
+        showDialogFragment(1, entrada)
+    }
 
     override fun onAlterButtonClick(entrada: ArrayList<Entrada>) {
         changeFragment(EntradaFragment(), true)
@@ -54,7 +56,7 @@ class MainActivity : AppCompatActivity(),
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    var usuario : ArrayList<Usuario> = ArrayList()
+    lateinit var usuario : Usuario
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,9 +79,9 @@ class MainActivity : AppCompatActivity(),
         supportFragmentManager.inTransaction {
             add(R.id.frmMainContainer, MainFragment())
         }
-        usuario = intent.extras.get("usuario") as ArrayList<Usuario>
+        usuario = intent.extras.get("usuario") as Usuario
         var dbHelper : DBHelper = DBHelper(this)
-
+        usuario.usr_area = C_Area().selectArea(dbHelper, true)
 
 
 
@@ -120,7 +122,7 @@ class MainActivity : AppCompatActivity(),
 
             }
             R.id.nav_area -> {
-                changeFragment(AreaFragment(), true)
+                changeFragment(AreaFragment.newInstance(usuario.usr_area), true)
             }
             R.id.nav_fechado -> {
                 changeFragment(FechadoFragment(), true)
@@ -150,8 +152,21 @@ class MainActivity : AppCompatActivity(),
                 transaction.add(R.id.frmMainContainer,fragmentName).commit()
             }
         }
+    }
+
+    fun showDialogFragment(tipo : Int, entrada : Entrada){
+        var transaction : FragmentTransaction = supportFragmentManager.beginTransaction()
+
+        var entFragment = EntradaDialogFragment.newInstance(entrada)
+        entFragment.show(transaction,"true")
 
     }
 
+    override fun showAreaDialog(area : Area){
+        var transaction : FragmentTransaction = supportFragmentManager.beginTransaction()
+
+        var areaFragment = AreaAlterDialogFragment.newInstance(area)
+        areaFragment.show(transaction,"true")
+    }
 
 }

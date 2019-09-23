@@ -1,19 +1,13 @@
-package com.trabalho.tg
+package com.trabalho.tg.View
 
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import com.trabalho.tg.Model.Entrada
-import kotlinx.android.synthetic.main.fragment_lote_detalhe.*
-import java.util.*
-import kotlin.collections.ArrayList
+import com.trabalho.tg.R
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -24,13 +18,13 @@ private const val ARG_PARAM2 = "param2"
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [LoteDetalheFragment.OnFragmentInteractionListener] interface
+ * [MainFragment.OnFragmentInteractionListener] interface
  * to handle interaction events.
- * Use the [LoteDetalheFragment.newInstance] factory method to
+ * Use the [MainFragment.newInstance] factory method to
  * create an instance of this fragment.
  *
  */
-class LoteDetalheFragment : Fragment() {
+class MainFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -49,12 +43,12 @@ class LoteDetalheFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_lote_detalhe, container, false)
+        return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onAlterButtonClick(entrada : ArrayList<Entrada>) {
-        listener?.onAlterButtonClick(entrada)
+    fun onButtonPressed(uri: Uri) {
+        listener?.onFragmentInteraction(uri)
     }
 
     override fun onAttach(context: Context) {
@@ -84,7 +78,7 @@ class LoteDetalheFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onAlterButtonClick(entrada : ArrayList<Entrada>)
+        fun onFragmentInteraction(uri: Uri)
     }
 
     companion object {
@@ -94,42 +88,16 @@ class LoteDetalheFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment LoteDetalheFragment.
+         * @return A new instance of fragment MainFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            LoteDetalheFragment().apply {
+            MainFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
                 }
             }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-
-        fBtnAdd_LoteDetFrag.setOnClickListener{
-            if (menu_LoteDetFrag.visibility == View.VISIBLE){
-                menu_LoteDetFrag.visibility = View.GONE
-
-            }
-            else{
-                menu_LoteDetFrag.visibility = View.VISIBLE
-
-            }
-        }
-
-        var entrada = ArrayList<Entrada>()
-        entrada.add(Entrada(1))
-        entrada[0].ent_desc = "entrada 1"
-
-        btnAlt_LoteDetFrag.setOnClickListener{
-            onAlterButtonClick(entrada)
-        }
-
-
     }
 }

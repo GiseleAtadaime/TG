@@ -1,8 +1,11 @@
 package com.trabalho.tg.Model;
 
+import com.trabalho.tg.R;
+
+import java.io.Serializable;
 import java.util.Date;
 
-public class Entrada {
+public class Entrada implements Serializable {
 
     private Integer ent_numero;
     private Date ent_data;
@@ -102,6 +105,11 @@ public class Entrada {
 
     public void setEnt_reg(Reg_Agrotoxico ent_reg) {
         this.ent_reg = ent_reg;
+    }
+
+    public Integer getEntradaColor(){
+
+        return R.color.agrotoxico;
     }
 
 }
