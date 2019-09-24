@@ -19,8 +19,7 @@ import com.trabalho.tg.Model.Entrada
 import com.trabalho.tg.Model.Lote
 import com.trabalho.tg.Model.Usuario
 import com.trabalho.tg.R
-import com.trabalho.tg.View.Dialogs.AreaAlterDialogFragment
-import com.trabalho.tg.View.Dialogs.EntradaDialogFragment
+import com.trabalho.tg.View.Detalhe.AreaCriaAlterDialog
 import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(),
@@ -32,11 +31,11 @@ class MainActivity : AppCompatActivity(),
     LoteFragment.OnFragmentInteractionListener,
     LoteDetalheFragment.OnFragmentInteractionListener,
     EntradaFragment.OnFragmentInteractionListener,
-    EntradaDialogFragment.OnFragmentInteractionListener
+    AreaCriaAlterDialog.OnFragmentInteractionListener
 {
 
     override fun onEntradaSelected(entrada: Entrada) {
-        showDialogFragment(1, entrada)
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onAlterButtonClick(entrada: ArrayList<Entrada>) {
@@ -47,9 +46,21 @@ class MainActivity : AppCompatActivity(),
         //Toast.makeText(this, "Escolhido $pos", Toast.LENGTH_SHORT).show()
         changeFragment(LoteDetalheFragment(), true)
     }
-    override fun onAreaSelected(area: List<Area>, pos : Int) {
+    override fun onAreaSelected(area: List<Area>, pos : Int, tipo : Int) {
         //Toast.makeText(this, "Escolhido $pos", Toast.LENGTH_SHORT).show()
-        changeFragment(LoteFragment(), true)
+        if (tipo == 0) { //lote
+            changeFragment(LoteFragment(), true)
+        }
+        else if(tipo == 1) { //alterar
+            changeFragment(AreaCriaAlterDialog.newInstance(area.get(pos -1), tipo), true)
+        }
+        else if (tipo == 2){ // deletar
+            changeFragment(AreaCriaAlterDialog.newInstance(area.get(pos -1), tipo), true)
+        }
+        else if(tipo == 3){ //adicionar
+            changeFragment(AreaCriaAlterDialog.newInstance(area.get(pos -1), tipo), true)
+        }
+
     }
 
     override fun onFragmentInteraction(uri: Uri) {
@@ -82,8 +93,15 @@ class MainActivity : AppCompatActivity(),
         usuario = intent.extras.get("usuario") as Usuario
         var dbHelper : DBHelper = DBHelper(this)
         usuario.usr_area = C_Area().selectArea(dbHelper, true)
-
-
+        if (usuario.usr_area.size == 0){
+            var area = Area(1)
+            area.ar_imagem = null
+            area.ar_nome = "area 1"
+            area.ar_lote_cont = "A"
+            if (C_Area().insertArea(dbHelper, area, usuario.usr_id)){
+                usuario.usr_area = C_Area().selectArea(dbHelper, true)
+            }
+        }
 
     }
 
@@ -154,19 +172,8 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
-    fun showDialogFragment(tipo : Int, entrada : Entrada){
-        var transaction : FragmentTransaction = supportFragmentManager.beginTransaction()
 
-        var entFragment = EntradaDialogFragment.newInstance(entrada)
-        entFragment.show(transaction,"true")
 
-    }
 
-    override fun showAreaDialog(area : Area){
-        var transaction : FragmentTransaction = supportFragmentManager.beginTransaction()
-
-        var areaFragment = AreaAlterDialogFragment.newInstance(area)
-        areaFragment.show(transaction,"true")
-    }
 
 }

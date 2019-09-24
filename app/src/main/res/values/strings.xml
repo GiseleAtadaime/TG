@@ -34,6 +34,11 @@
     <string name="varea_imagem">Imagem da area</string>
     <string name="varea_nome">Codigo da area</string>
 
+    <!--Area Alter Fragment-->
+
+    <string name="alter_area">Alterar</string>
+    <string name="cria_area">Criar</string>
+
     <!--QR View Adapter-->
     <string name="vqr_imagem">Qr imagem</string>
 
@@ -41,4 +46,6 @@
     <string name="btn_excluir">Botão excluir</string>
     <string name="btn_alterar">Botão alterar</string>
     <string name="btn_novo">Botão novo</string>
+    <string name="cancelar">Cancelar</string>
+
 </resources>

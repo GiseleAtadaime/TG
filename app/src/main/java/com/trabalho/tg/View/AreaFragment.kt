@@ -49,17 +49,12 @@ class AreaFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view  = inflater.inflate(R.layout.fragment_area, container, false)
-
         return view
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onAreaSelected(area: List<Area>, pos : Int) {
-        listener?.onAreaSelected(area, pos)
-    }
-
-    fun showAreaDialog(area : Area){
-        listener?.showAreaDialog(area)
+    fun onAreaSelected(area: List<Area>, pos : Int, tipo : Int) {
+        listener?.onAreaSelected(area, pos, tipo)
     }
 
     override fun onAttach(context: Context) {
@@ -90,8 +85,7 @@ class AreaFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onAreaSelected(area: List<Area>, pos : Int)
-        fun showAreaDialog(area : Area)
+        fun onAreaSelected(area: List<Area>, pos : Int, tipo : Int)
     }
 
     companion object {
@@ -119,11 +113,12 @@ class AreaFragment : Fragment() {
         var dbHelper = DBHelper(context)
         var c_area = C_Area()
 
-        val mlistener = fun(view : View, position: Int, aread : Area) {
-            Toast.makeText(context, "Position $position", Toast.LENGTH_SHORT).show();
-            onAreaSelected(area!!, position)
-            showAreaDialog(aread)
+        val mlistener = fun(view : View, position: Int , tipo : Int) {
+            Toast.makeText(context, "Position $position e tipo : $tipo", Toast.LENGTH_SHORT).show();
+            onAreaSelected(area!!, position, tipo)
+
         }
+
 
         var recyclerView = view.findViewById<RecyclerView>(R.id.recView_AreaFrag)
         recyclerView.layoutManager = LinearLayoutManager(activity)

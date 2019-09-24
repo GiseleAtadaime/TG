@@ -24,8 +24,7 @@ public class AreaAdapter extends RecyclerView.Adapter{
     AdapterListener listener;
 
     public interface AdapterListener {
-        void onClick(View view, int adapterPosition);
-        void onClick2(Area area);
+        void onClick(View view, int adapterPosition, Integer tipo);
     }
 
 
@@ -51,29 +50,6 @@ public class AreaAdapter extends RecyclerView.Adapter{
         final AreaViewHolder areaViewHolder = (AreaViewHolder) viewHolder;
         int pos = areaViewHolder.getAdapterPosition();
         areaViewHolder.nomeText.setText(area.get(pos).getAr_nome());
-
-
-        areaViewHolder.delImagem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        areaViewHolder.addImagem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        areaViewHolder.editImagem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
     }
 
 
@@ -85,6 +61,7 @@ public class AreaAdapter extends RecyclerView.Adapter{
 
     public class AreaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private AdapterListener listener;
+
         protected ImageView areaImagem;
         protected TextView nomeText;
         protected ImageButton delImagem;
@@ -98,28 +75,46 @@ public class AreaAdapter extends RecyclerView.Adapter{
             nomeText = itemView.findViewById(R.id.txtNome_AreaAdapter);
             delImagem = itemView.findViewById(R.id.imgbtnDelete_AreaAdapter);
             addImagem = itemView.findViewById(R.id.imgbtnNovo_AreaAdapter);
-            editImagem = itemView.findViewById(R.id.imgbtnNovo_AreaAdapter);
+            editImagem = itemView.findViewById(R.id.imgbtnAlterar_AreaAdapter);
 
             this.listener = listener;
 
             areaImagem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onClick(v, area.get(getAdapterPosition()).getAr_id());
+                    listener.onClick(v, area.get(getAdapterPosition()).getAr_id(), 0);
                 }
             });
-            itemView.findViewById(R.id.imgbtnNovo_AreaAdapter).setOnClickListener(new View.OnClickListener() {
+
+            editImagem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onClick2(area.get(getAdapterPosition()));
+                    listener.onClick(v, area.get(getAdapterPosition()).getAr_id(), 1);
                 }
             });
+
+            delImagem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onClick(v, area.get(getAdapterPosition()).getAr_id(), 2);
+                }
+            });
+
+            addImagem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onClick(v, area.get(getAdapterPosition()).getAr_id(), 3);
+                }
+            });
+
         }
 
         @Override
         public void onClick(View view){
-            listener.onClick(view, area.get(getAdapterPosition()).getAr_id());
+            listener.onClick(view, area.get(getAdapterPosition()).getAr_id(), 0);
         }
+
+
 
     }
 }

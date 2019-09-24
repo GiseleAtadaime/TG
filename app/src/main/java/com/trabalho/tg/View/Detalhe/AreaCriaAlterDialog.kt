@@ -1,40 +1,44 @@
-package com.trabalho.tg.View.Dialogs
+package com.trabalho.tg.View.Detalhe
 
 import android.content.Context
+import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.trabalho.tg.Model.Entrada
+import android.widget.TextView
+import com.trabalho.tg.Model.Area
 import com.trabalho.tg.R
-import kotlinx.android.synthetic.main.entrada_dialog.*
+import kotlinx.android.synthetic.main.fragment_area_alter_dialog.*
 import java.io.Serializable
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
+private const val AREAPAM = "param1"
+private const val TIPOPAM = "param2"
 
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [EntradaDialogFragment.OnFragmentInteractionListener] interface
+ * [AreaCriaAlterDialog.OnFragmentInteractionListener] interface
  * to handle interaction events.
- * Use the [EntradaDialogFragment.newInstance] factory method to
+ * Use the [AreaCriaAlterDialog.newInstance] factory method to
  * create an instance of this fragment.
  *
  */
-class EntradaDialogFragment : DialogFragment() {
+class AreaCriaAlterDialog : Fragment() {
     // TODO: Rename and change types of parameters
-    private var param1: Entrada? = null
+    private var areaPam: Area? = null
+    private var tipoPam: Int? = null
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getSerializable(ARG_PARAM1) as Entrada
+            areaPam = it.getSerializable(AREAPAM) as Area
+            tipoPam = it.getInt(TIPOPAM)
         }
     }
 
@@ -42,9 +46,7 @@ class EntradaDialogFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view  = inflater.inflate(R.layout.entrada_dialog, container, false)
-
-        return view
+        return inflater.inflate(R.layout.fragment_area_alter_dialog, container, false)
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -89,14 +91,15 @@ class EntradaDialogFragment : DialogFragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment EntradaDialogFragment.
+         * @return A new instance of fragment AreaCriaAlterDialog.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: Entrada) =
-            EntradaDialogFragment().apply {
+        fun newInstance(areaPam: Area, tipoPam: Int) =
+            AreaCriaAlterDialog().apply {
                 arguments = Bundle().apply {
-                    putSerializable(ARG_PARAM1, param1 as Serializable)
+                    putSerializable(AREAPAM, areaPam as Serializable)
+                    putInt(TIPOPAM, tipoPam)
                 }
             }
     }
@@ -104,13 +107,15 @@ class EntradaDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if(param1 != null){
-            txtTipo_EntradaDialog.text = param1!!.ent_desc
+        edtTxtNome_AreaDialog.setText(areaPam!!.ar_nome)
+
+
+
+        if (tipoPam == 1){
+            btnCriarAlt_AreaDialog.text = getString(R.string.alter_area)
         }
-
-
-        imgBtnAlter_EntradaDialog.setOnClickListener(){
-
+        else{
+            btnCriarAlt_AreaDialog.text = getString(R.string.cria_area)
         }
     }
 }
