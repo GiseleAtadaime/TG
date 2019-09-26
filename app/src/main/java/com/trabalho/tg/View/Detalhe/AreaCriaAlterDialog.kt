@@ -176,6 +176,7 @@ class AreaCriaAlterDialog : Fragment() {
 
                         builder.setPositiveButton(android.R.string.yes) { dialog, which ->
                             dialog.dismiss()
+                            listener?.onCloseAreaDialog()
                         }
 
                         builder.show()

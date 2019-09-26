@@ -1,5 +1,6 @@
 package com.trabalho.tg.View
 
+import android.app.AlertDialog
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.view.GravityCompat
@@ -12,7 +13,9 @@ import android.support.v4.app.FragmentTransaction
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
+import android.widget.Toast
 import com.trabalho.tg.Controller.C_Area
+import com.trabalho.tg.Helper.Contrato
 import com.trabalho.tg.Helper.DBHelper
 import com.trabalho.tg.Model.Area
 import com.trabalho.tg.Model.Entrada
@@ -38,34 +41,56 @@ class MainActivity : AppCompatActivity(),
 
     override fun onCloseAreaDialog() {
         usuario.usr_area = C_Area().selectArea(DBHelper(this), true)
-        changeFragment(AreaFragment.newInstance(usuario.usr_area), true)
+        removeFragment("AREA_ALTER_FRAGMENT")
+        changeFragment(AreaFragment.newInstance(usuario.usr_area), true, "AREA_FRAGMENT")
     }
     override fun onEntradaSelected(entrada: Entrada) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onAlterButtonClick(entrada: ArrayList<Entrada>) {
-        changeFragment(EntradaFragment(), true)
+        changeFragment(EntradaFragment(), true, "ENTRADA_FRAGMENT")
     }
 
     override fun onLoteSelected(lote : List<Lote>, pos : Int){
         //Toast.makeText(this, "Escolhido $pos", Toast.LENGTH_SHORT).show()
-        changeFragment(LoteDetalheFragment(), true)
+        changeFragment(LoteDetalheFragment(), true, "LOTE_DETALHE_FRAGMENT")
     }
     override fun onAreaSelected(area: List<Area>, pos : Int, tipo : Int) {
         //Toast.makeText(this, "Escolhido $pos", Toast.LENGTH_SHORT).show()
         if (tipo == 0) { //lote
-            changeFragment(LoteFragment(), true)
+            changeFragment(LoteFragment(), true, "LOTE_FRAGMENT")
         }
         else if(tipo == 1) { //alterar
-            changeFragment(AreaCriaAlterDialog.newInstance(area.get(pos -1), tipo, usuario.usr_id), true)
+            changeFragment(AreaCriaAlterDialog.newInstance(area.get(pos -1), tipo, usuario.usr_id), true, "AREA_ALTER_FRAGMENT")
         }
         else if (tipo == 2){ // deletar
-            changeFragment(AreaCriaAlterDialog.newInstance(area.get(pos -1), tipo, usuario.usr_id), true)
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Deletar área")
+            builder.setMessage("Tem certeza que deseja apagar a área ${area.get(pos-1).ar_nome}? Esta operação não pode ser desfeita!")
+
+            builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+                area.get(pos -1).ar_del = Contrato.Area.STATUS_DELETADO
+                if (C_Area().updateArea(DBHelper(this),area.get(pos -1))){
+                    dialog.dismiss()
+                    onCloseAreaDialog()
+                }
+                else{
+                    Toast.makeText(this, "Não foi possível apagar a área selecionada!", Toast.LENGTH_SHORT).show()
+                    area.get(pos -1).ar_del = Contrato.Area.STATUS_ATIVO
+                    dialog.dismiss()
+                }
+
+            }
+            builder.setNegativeButton(android.R.string.no){dialog, which ->
+                dialog.dismiss()
+            }
+
+            builder.show()
 
         }
         else if(tipo == 3){ //adicionar
-            changeFragment(AreaCriaAlterDialog.newInstance(area.get(pos -1), tipo, usuario.usr_id), true)
+            changeFragment(AreaCriaAlterDialog.newInstance(area.get(pos -1), tipo, usuario.usr_id), true , "AREA_ALTER_FRAGMENT")
         }
 
     }
@@ -142,18 +167,18 @@ class MainActivity : AppCompatActivity(),
         when (item.itemId) {
             R.id.nav_main -> {
                 if (!MainFragment().isVisible){
-                    changeFragment(MainFragment(), true)
+                    changeFragment(MainFragment(), true, "MAIN_FRAGMENT")
                 }
 
             }
             R.id.nav_area -> {
-                changeFragment(AreaFragment.newInstance(usuario.usr_area), true)
+                changeFragment(AreaFragment.newInstance(usuario.usr_area), true, "AREA_FRAGMENT")
             }
             R.id.nav_fechado -> {
-                changeFragment(FechadoFragment(), true)
+                changeFragment(FechadoFragment(), true, "FECHADO_FRAGMENT")
             }
             R.id.nav_qrcode -> {
-                changeFragment(QRFragment(), true)
+                changeFragment(QRFragment(), true, "QRCODE_FRAGMENT")
             }
             R.id.nav_opt -> {
 
@@ -167,19 +192,19 @@ class MainActivity : AppCompatActivity(),
         return true
     }
 
-    fun changeFragment(fragmentName: Fragment, change : Boolean){
+    fun changeFragment(fragmentName: Fragment, change : Boolean, tag : String){
 
         if (!this.isFinishing && !this.isDestroyed){
             var transaction : FragmentTransaction = supportFragmentManager.beginTransaction()
             if (change) {
-                transaction.replace(R.id.frmMainContainer,fragmentName).addToBackStack(null).commit()      }
+                transaction.replace(R.id.frmMainContainer,fragmentName, tag).addToBackStack(null).commit()      }
             else{
-                transaction.add(R.id.frmMainContainer,fragmentName).commit()
+                transaction.add(R.id.frmMainContainer,fragmentName, tag).commit()
             }
         }
     }
-    fun removeFragment(fragmentName: Fragment){
-        val fragment = supportFragmentManager.findFragmentByTag(fragmentName.tag)
+    fun removeFragment(tag : String){
+        val fragment = supportFragmentManager.findFragmentByTag(tag)
         if (fragment != null)
             supportFragmentManager.beginTransaction().remove(fragment).commit()
     }

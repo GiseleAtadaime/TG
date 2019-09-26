@@ -18,7 +18,7 @@ public class C_Area {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String query = "SELECT * FROM " + Contrato.Area.TABLENAME;
 
-        if (!aberto){
+        if (aberto){
             query.concat(" WHERE " + Contrato.Area.COLUMN_DEL + " = '" + Contrato.Area.STATUS_ATIVO + "';");
         }
         else{
