@@ -23,7 +23,8 @@
             android:id="@+id/edtTxtNome_AreaDialog"
             app:layout_constraintStart_toEndOf="@+id/imgArea_DialogFragment" android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0" tools:layout_editor_absoluteY="40dp"/>
+            app:layout_constraintHorizontal_bias="0.0" android:layout_marginTop="24dp"
+            app:layout_constraintTop_toTopOf="parent"/>
     <Spinner
             android:layout_width="0dp"
             android:layout_height="42dp"
@@ -33,7 +34,7 @@
             app:layout_constraintHorizontal_bias="0.0" android:layout_marginTop="12dp"
             app:layout_constraintTop_toBottomOf="@+id/lblCont_AreaAlterDialog"
             app:layout_constraintBottom_toBottomOf="@+id/imgArea_DialogFragment"
-            app:layout_constraintVertical_bias="1.0"/>
+            app:layout_constraintVertical_bias="0.333"/>
     <Button
             android:text="@string/alter_area"
             android:layout_width="0dp"
@@ -60,7 +61,14 @@
             android:id="@+id/lblCont_AreaAlterDialog" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="8dp"
             app:layout_constraintStart_toEndOf="@+id/imgArea_DialogFragment" android:layout_marginStart="8dp"
-            app:layout_constraintHorizontal_bias="0.0" android:layout_marginTop="20dp"
+            app:layout_constraintHorizontal_bias="0.0" android:layout_marginTop="16dp"
             app:layout_constraintTop_toBottomOf="@+id/edtTxtNome_AreaDialog"/>
+    <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtExemplo_AlterAreaFragment" android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@+id/spiContagem_AreaDialog"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toEndOf="@+id/imgArea_DialogFragment" android:layout_marginStart="8dp"/>
 
 </android.support.constraint.ConstraintLayout>

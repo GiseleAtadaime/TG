@@ -52,7 +52,6 @@ public class C_Area {
         Boolean ret = false;
 
         ContentValues values = new ContentValues();
-        values.put(Contrato.Area.COLUMN_ID,a.getAr_id());
         values.put(Contrato.Area.COLUMN_NOME,a.getAr_nome());
         values.put(Contrato.Area.COLUMN_IMAGEM,a.getAr_imagem());
         values.put(Contrato.Area.COLUMN_LOTE_CONT,a.getAr_lote_cont());

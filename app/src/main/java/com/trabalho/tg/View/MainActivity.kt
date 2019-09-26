@@ -22,6 +22,8 @@ import com.trabalho.tg.R
 import com.trabalho.tg.View.Detalhe.AreaCriaAlterDialog
 import kotlin.collections.ArrayList
 
+
+
 class MainActivity : AppCompatActivity(),
     NavigationView.OnNavigationItemSelectedListener,
     MainFragment.OnFragmentInteractionListener,
@@ -34,6 +36,10 @@ class MainActivity : AppCompatActivity(),
     AreaCriaAlterDialog.OnFragmentInteractionListener
 {
 
+    override fun onCloseAreaDialog() {
+        usuario.usr_area = C_Area().selectArea(DBHelper(this), true)
+        changeFragment(AreaFragment.newInstance(usuario.usr_area), true)
+    }
     override fun onEntradaSelected(entrada: Entrada) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -52,13 +58,14 @@ class MainActivity : AppCompatActivity(),
             changeFragment(LoteFragment(), true)
         }
         else if(tipo == 1) { //alterar
-            changeFragment(AreaCriaAlterDialog.newInstance(area.get(pos -1), tipo), true)
+            changeFragment(AreaCriaAlterDialog.newInstance(area.get(pos -1), tipo, usuario.usr_id), true)
         }
         else if (tipo == 2){ // deletar
-            changeFragment(AreaCriaAlterDialog.newInstance(area.get(pos -1), tipo), true)
+            changeFragment(AreaCriaAlterDialog.newInstance(area.get(pos -1), tipo, usuario.usr_id), true)
+
         }
         else if(tipo == 3){ //adicionar
-            changeFragment(AreaCriaAlterDialog.newInstance(area.get(pos -1), tipo), true)
+            changeFragment(AreaCriaAlterDialog.newInstance(area.get(pos -1), tipo, usuario.usr_id), true)
         }
 
     }
@@ -94,9 +101,9 @@ class MainActivity : AppCompatActivity(),
         var dbHelper : DBHelper = DBHelper(this)
         usuario.usr_area = C_Area().selectArea(dbHelper, true)
         if (usuario.usr_area.size == 0){
-            var area = Area(1)
+            var area = Area(0)
             area.ar_imagem = null
-            area.ar_nome = "area 1"
+            area.ar_nome = "area normal 1"
             area.ar_lote_cont = "A"
             if (C_Area().insertArea(dbHelper, area, usuario.usr_id)){
                 usuario.usr_area = C_Area().selectArea(dbHelper, true)
@@ -170,6 +177,11 @@ class MainActivity : AppCompatActivity(),
                 transaction.add(R.id.frmMainContainer,fragmentName).commit()
             }
         }
+    }
+    fun removeFragment(fragmentName: Fragment){
+        val fragment = supportFragmentManager.findFragmentByTag(fragmentName.tag)
+        if (fragment != null)
+            supportFragmentManager.beginTransaction().remove(fragment).commit()
     }
 
 

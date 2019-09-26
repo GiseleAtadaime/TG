@@ -157,18 +157,17 @@ public final class Contrato {
                     Usuario.COLUMN_FOTOPERFIL + " VARCHAR(60)); ";
 
     public static final String CREATE_TABLE_USUARIO_INFO = "CREATE TABLE " + Usuario_Info.TABLENAME +
-            " ( " + Usuario_Info.COLUMN_INFO_ID + " INTEGER, " +
+            " ( " + Usuario_Info.COLUMN_INFO_ID + " INTEGER CONSTRAINT pk_info PRIMARY KEY AUTOINCREMENT, " +
                     Usuario_Info.COLUMN_USR_ID + " INTEGER, " +
                     Usuario_Info.COLUMN_NOMEFANTASIA + " VARCHAR(60), " +
                     Usuario_Info.COLUMN_CNPJ + " VARCHAR(14), " +
                     Usuario_Info.COLUMN_SITE + " VARCHAR(60), " +
                     Usuario_Info.COLUMN_TELEFONE + " INTEGER, " +
                     Usuario_Info.COLUMN_RZSOCIAL + " VARCHAR(100), " +
-            " CONSTRAINT pk_info PRIMARY KEY ( " + Usuario_Info.COLUMN_INFO_ID + " ), " +
             " CONSTRAINT fk_info_usuario FOREIGN KEY ( " + Usuario_Info.COLUMN_USR_ID + ") REFERENCES " + Usuario.TABLENAME + " (  " +  Usuario.COLUMN_ID + " ));";
 
     public static final String CREATE_TABLE_ENDERECO = "CREATE TABLE " + Endereco.TABLENAME +
-            " ( " + Endereco.COLUMN_ID + " INTEGER, " +
+            " ( " + Endereco.COLUMN_ID + " INTEGER CONSTRAINT pk_endereco PRIMARY KEY AUTOINCREMENT,  " +
                     Endereco.COLUMN_INFO_ID + " INTEGER, " +
                     Endereco.COLUMN_LOGRADOURO + " VARCHAR(60), " +
                     Endereco.COLUMN_CARTX + " NUMERIC(3,2), " +
@@ -178,49 +177,44 @@ public final class Contrato {
                     Endereco.COLUMN_CIDADE + " VARCHAR(60), " +
                     Endereco.COLUMN_UF + " VARCHAR(2), " +
                     Endereco.COLUMN_USR_ID + " INTEGER, " +
-            " CONSTRAINT pk_endereco PRIMARY KEY ( " + Endereco.COLUMN_ID + " ), " +
             " CONSTRAINT fk_end_info_id FOREIGN KEY ( " + Endereco.COLUMN_INFO_ID  + ") REFERENCES " + Usuario_Info.TABLENAME + " (  " + Usuario_Info.COLUMN_INFO_ID + " ), " +
             " CONSTRAINT fk_end_usuario FOREIGN KEY ( " + Endereco.COLUMN_USR_ID  + ") REFERENCES " + Usuario.TABLENAME + " (  " + Usuario.COLUMN_ID + " ));";
 
     public static final String CREATE_TABLE_REG_AGROTOXICO = "CREATE TABLE " + Reg_Agrotoxico.TABLENAME +
-            " ( " + Reg_Agrotoxico.COLUMN_NUMERO + " INTEGER, " +
+            " ( " + Reg_Agrotoxico.COLUMN_NUMERO + " INTEGER CONSTRAINT pk_agrotox PRIMARY KEY AUTOINCREMENT, " +
                     Reg_Agrotoxico.COLUMN_NOMECOM + " VARCHAR(60), " +
                     Reg_Agrotoxico.COLUMN_EMPRESA + " VARCHAR(60), " +
-                    Reg_Agrotoxico.COLUMN_ING_ATIVO + " VARCHAR(60), " +
-            " CONSTRAINT pk_agrotox PRIMARY KEY ( " + Reg_Agrotoxico.COLUMN_NUMERO + " ))";
+                    Reg_Agrotoxico.COLUMN_ING_ATIVO + " VARCHAR(60))";
 
     public static final String CREATE_TABLE_AREA = "CREATE TABLE " + Area.TABLENAME +
-            " ( " + Area.COLUMN_ID + " INTEGER, " +
+            " ( " + Area.COLUMN_ID + " INTEGER CONSTRAINT pk_area PRIMARY KEY AUTOINCREMENT, " +
                     Area.COLUMN_LOTE_CONT + " VARCHAR(20), " +
                     Area.COLUMN_IMAGEM + " VARCHAR(60), " +
                     Area.COLUMN_NOME + " VARCHAR(60), " +
                     Area.COLUMN_DEL + " INTEGER, " +
                     Area.COLUMN_USR_ID + " INTEGER, " +
-            " CONSTRAINT pk_area PRIMARY KEY ( " + Area.COLUMN_ID + " ), " +
             " CONSTRAINT fk_ar_usuario FOREIGN KEY ( " + Area.COLUMN_USR_ID  + ") REFERENCES " + Usuario.TABLENAME + " (  " + Usuario.COLUMN_ID + " ));";
 
     public static final String CREATE_TABLE_LOTE = "CREATE TABLE " + Lote.TABLENAME +
-            " ( " + Lote.COLUMN_ID + " INTEGER, " +
+            " ( " + Lote.COLUMN_ID + " INTEGER CONSTRAINT pk_lote PRIMARY KEY AUTOINCREMENT,  " +
                     Lote.COLUMN_NOME + " VARCHAR(60), " +
                     Lote.COLUMN_IMAGEM + " VARCHAR(60), " +
                     Lote.COLUMN_AREA_ID + " INTEGER, " +
                     Lote.COLUMN_USR_ID + " INTEGER, " +
-            " CONSTRAINT pk_lote PRIMARY KEY ( " + Lote.COLUMN_ID + " ), " +
             " CONSTRAINT fk_lot_area FOREIGN KEY ( " + Lote.COLUMN_AREA_ID + " ) REFERENCES " + Area.COLUMN_ID  + " ( "    + Area.COLUMN_ID + " ), " +
             " CONSTRAINT fk_lot_usuario FOREIGN KEY ( " + Lote.COLUMN_USR_ID  + ") REFERENCES " + Usuario.TABLENAME + " (  " + Usuario.COLUMN_ID + " ));";
 
     public static final String CREATE_TABLE_ENTRADA = "CREATE TABLE " + Entrada.TABLENAME +
-            " ( " + Entrada.COLUMN_NUMERO + " INTEGER, " +
+            " ( " + Entrada.COLUMN_NUMERO + " INTEGER CONSTRAINT pk_ent PRIMARY KEY AUTOINCREMENT,  " +
                     Entrada.COLUMN_LOTE_ID + " INTEGER, " +
                     Entrada.COLUMN_DATA + " DATETIME, " +
                     Entrada.COLUMN_TIPO + " INTEGER, " +
                     Entrada.COLUMN_USR_ID + " INTEGER, " +
-            " CONSTRAINT pk_ent PRIMARY KEY ( " + Entrada.COLUMN_NUMERO + " ), " +
             " CONSTRAINT fk_ent_lote FOREIGN KEY ( " + Entrada.COLUMN_LOTE_ID + " ) REFERENCES  " + Lote.TABLENAME + "( " + Lote.COLUMN_ID + " ), " +
             " CONSTRAINT fk_ent_usuario FOREIGN KEY ( " + Entrada.COLUMN_USR_ID + ") REFERENCES " + Usuario.TABLENAME + " (  " + Usuario.COLUMN_ID + " ));";
 
     public static final String CREATE_TABLE_TIPO_ENTRADA = "CREATE TABLE " + Tipo_Entrada.TABLENAME +
-            " ( " + Tipo_Entrada.COLUMN_TIPO_NUMERO + " INTEGER, " +
+            " ( " + Tipo_Entrada.COLUMN_TIPO_NUMERO + " INTEGER CONSTRAINT pk_tp PRIMARY KEY AUTOINCREMENT,  " +
                     Tipo_Entrada.COLUMN_DESCRICAO + " VARCHAR(20), " +
                     Tipo_Entrada.COLUMN_TEMPO + " NUMERIC(10,2), " +
                     Tipo_Entrada.COLUMN_TPUN + " VARCHAR(1), " +
@@ -230,12 +224,11 @@ public final class Contrato {
                     Tipo_Entrada.COLUMN_VALOR + " NUMERIC(10,2), " +
                     Tipo_Entrada.COLUMN_REG_NUM + " INTEGER, " +
                     Tipo_Entrada.COLUMN_USR_ID + " INTEGER, " +
-            " CONSTRAINT pk_tp PRIMARY KEY ( " + Tipo_Entrada.COLUMN_TIPO_NUMERO + " ), " +
             " CONSTRAINT fk_tp_reg FOREIGN KEY ( " + Tipo_Entrada.COLUMN_REG_NUM + " ) REFERENCES  " + Reg_Agrotoxico.TABLENAME + "( " + Reg_Agrotoxico.COLUMN_NUMERO + " ), " +
             " CONSTRAINT fk_tp_usuario FOREIGN KEY ( " + Tipo_Entrada.COLUMN_USR_ID + ") REFERENCES " + Usuario.TABLENAME + " (  " + Usuario.COLUMN_ID + " ));";
 
     public static final String CREATE_TABLE_LOTE_FECHADO = "CREATE TABLE " + Fec_lote.TABLENAME +
-            " ( " + Fec_lote.COLUMN_ID + " INTEGER, " +
+            " ( " + Fec_lote.COLUMN_ID + " INTEGER CONSTRAINT pk_fec_lote PRIMARY KEY AUTOINCREMENT,  " +
                     Fec_lote.COLUMN_NOME + " VARCHAR(60), " +
                     Fec_lote.COLUMN_IMAGEM + " VARCHAR(60), " +
                     Fec_lote.COLUMN_PDF_LINK + " VARCHAR(60), " +
@@ -243,12 +236,11 @@ public final class Contrato {
                     Fec_lote.COLUMN_QRCODE_LINK + " VARCHAR(60), " +
                     Fec_lote.COLUMN_AREA_ID + " INTEGER, " +
                     Fec_lote.COLUMN_USR_ID + " INTEGER, " +
-            " CONSTRAINT pk_fec_lote PRIMARY KEY ( " + Fec_lote.COLUMN_ID + " ), " +
             " CONSTRAINT fk_fec_lot_area FOREIGN KEY ( "  + Fec_lote.COLUMN_AREA_ID + " ) REFERENCES " + Area.TABLENAME + " (" + Area.COLUMN_ID + " ), " +
             " CONSTRAINT fk_fec_lot_usuario FOREIGN KEY ( " + Fec_lote.COLUMN_USR_ID  + ") REFERENCES " + Usuario.TABLENAME + " (  " + Usuario.COLUMN_ID + " ));";
 
     public static final String CREATE_TABLE_ENTRADA_FECHADA = "CREATE TABLE " + Fec_entrada.TABLENAME +
-            " ( " + Fec_entrada.COLUMN_ID + " INTEGER, " +
+            " ( " + Fec_entrada.COLUMN_ID + " INTEGER CONSTRAINT pk_fec_ent PRIMARY KEY AUTOINCREMENT, " +
             Fec_entrada.COLUMN_LOTE_ID + " INTEGER, " +
             Fec_entrada.COLUMN_DATA + " DATETIME, " +
             Fec_entrada.COLUMN_TIPO + " VARCHAR(10), " +
@@ -258,14 +250,13 @@ public final class Contrato {
             Fec_entrada.COLUMN_CUSTO + " NUMERIC(10,2), " +
             Fec_entrada.COLUMN_USR_ID + " INTEGER, " +
             Fec_entrada.COLUMN_REG_NUM + " INTEGER, " +
-            " CONSTRAINT pk_fec_ent PRIMARY KEY ( " + Fec_entrada.COLUMN_ID + " ), " +
             " CONSTRAINT fk_fec_ent_lote FOREIGN KEY ( " + Fec_entrada.COLUMN_LOTE_ID + " ) REFERENCES " + Lote.TABLENAME + " (" + Lote.COLUMN_ID + " ), " +
             " CONSTRAINT fk_fec_ent_usuario FOREIGN KEY ( " + Fec_entrada.COLUMN_USR_ID  + ") REFERENCES " + Usuario.TABLENAME + " (  " + Usuario.COLUMN_ID + " ));";
 
 
 
     public static final String CREATE_TABLE_FEC_TIPO_ENTRADA = "CREATE TABLE " + Tipo_Entrada.TABLENAME +
-            " ( " + Fec_Tipo_Entrada.COLUMN_TIPO_NUMERO + " INTEGER, " +
+            " ( " + Fec_Tipo_Entrada.COLUMN_TIPO_NUMERO + " INTEGER CONSTRAINT pk_tp PRIMARY KEY AUTOINCREMENT, " +
             Fec_Tipo_Entrada.COLUMN_DESCRICAO + " VARCHAR(20), " +
             Fec_Tipo_Entrada.COLUMN_TEMPO + " NUMERIC(10,2), " +
             Fec_Tipo_Entrada.COLUMN_TPUN + " VARCHAR(1), " +
@@ -275,7 +266,6 @@ public final class Contrato {
             Fec_Tipo_Entrada.COLUMN_VALOR + " NUMERIC(10,2), " +
             Fec_Tipo_Entrada.COLUMN_REG_NUM + " INTEGER, " +
             Fec_Tipo_Entrada.COLUMN_USR_ID + " INTEGER, " +
-            " CONSTRAINT pk_tp PRIMARY KEY ( " + Fec_Tipo_Entrada.COLUMN_TIPO_NUMERO + " ), " +
             " CONSTRAINT fk_tp_reg FOREIGN KEY ( " + Fec_Tipo_Entrada.COLUMN_REG_NUM + " ) REFERENCES  " + Reg_Agrotoxico.TABLENAME + "( " + Reg_Agrotoxico.COLUMN_NUMERO + " ), " +
             " CONSTRAINT fk_tp_usuario FOREIGN KEY ( " + Fec_Tipo_Entrada.COLUMN_USR_ID + ") REFERENCES " + Usuario.TABLENAME + " (  " + Usuario.COLUMN_ID + " ));";
 

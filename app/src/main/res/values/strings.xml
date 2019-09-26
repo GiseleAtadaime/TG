@@ -48,4 +48,13 @@
     <string name="btn_novo">Botão novo</string>
     <string name="cancelar">Cancelar</string>
 
+    <!-- Spinners-->
+    <string-array name="LoteContArray">
+        <item>Data + Letra</item>
+        <item>Data + Número</item>
+    </string-array>
+
+
+
+
 </resources>
