@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity(),
         changeFragment(LoteDetalheFragment(), true, "LOTE_DETALHE_FRAGMENT")
     }
     override fun onAreaSelected(area: List<Area>, pos : Int, tipo : Int) {
-        //Toast.makeText(this, "Escolhido $pos", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Escolhido $pos", Toast.LENGTH_SHORT).show()
         if (tipo == 0) { //lote
             changeFragment(LoteFragment(), true, "LOTE_FRAGMENT")
         }
@@ -67,17 +67,17 @@ class MainActivity : AppCompatActivity(),
         else if (tipo == 2){ // deletar
             val builder = AlertDialog.Builder(this)
             builder.setTitle("Deletar área")
-            builder.setMessage("Tem certeza que deseja apagar a área ${area.get(pos-1).ar_nome}? Esta operação não pode ser desfeita!")
+            builder.setMessage("Tem certeza que deseja apagar a área ${area.get(pos).ar_nome}? Esta operação não pode ser desfeita!")
 
             builder.setPositiveButton(android.R.string.yes) { dialog, which ->
-                area.get(pos -1).ar_del = Contrato.Area.STATUS_DELETADO
+                area.get(pos).ar_del = Contrato.Area.STATUS_DELETADO
                 if (C_Area().updateArea(DBHelper(this),area.get(pos -1))){
                     dialog.dismiss()
                     onCloseAreaDialog()
                 }
                 else{
                     Toast.makeText(this, "Não foi possível apagar a área selecionada!", Toast.LENGTH_SHORT).show()
-                    area.get(pos -1).ar_del = Contrato.Area.STATUS_ATIVO
+                    area.get(pos).ar_del = Contrato.Area.STATUS_ATIVO
                     dialog.dismiss()
                 }
 
@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity(),
 
         }
         else if(tipo == 3){ //adicionar
-            changeFragment(AreaCriaAlterDialog.newInstance(area.get(pos -1), tipo, usuario.usr_id), true , "AREA_ALTER_FRAGMENT")
+            changeFragment(AreaCriaAlterDialog.newInstance(area.get(pos), tipo, usuario.usr_id), true , "AREA_ALTER_FRAGMENT")
         }
 
     }

@@ -19,10 +19,10 @@ public class C_Area {
         String query = "SELECT * FROM " + Contrato.Area.TABLENAME;
 
         if (aberto){
-            query.concat(" WHERE " + Contrato.Area.COLUMN_DEL + " = '" + Contrato.Area.STATUS_ATIVO + "';");
+            query = query.concat(" WHERE " + Contrato.Area.COLUMN_DEL + " = '" + Contrato.Area.STATUS_ATIVO + "';");
         }
         else{
-            query.concat(" WHERE " + Contrato.Area.COLUMN_DEL + " = '" + Contrato.Area.STATUS_DELETADO + "';");
+            query = query.concat(" WHERE " + Contrato.Area.COLUMN_DEL + " = '" + Contrato.Area.STATUS_DELETADO + "';");
         }
 
         try{

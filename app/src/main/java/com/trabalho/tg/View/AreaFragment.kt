@@ -110,9 +110,6 @@ class AreaFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var dbHelper = DBHelper(context)
-        var c_area = C_Area()
-
         val mlistener = fun(view : View, position: Int , tipo : Int) {
             Toast.makeText(context, "Position $position e tipo : $tipo", Toast.LENGTH_SHORT).show();
             onAreaSelected(area!!, position, tipo)

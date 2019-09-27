@@ -52,8 +52,6 @@ public class AreaAdapter extends RecyclerView.Adapter{
         areaViewHolder.nomeText.setText(area.get(pos).getAr_nome());
     }
 
-
-
     @Override
     public int getItemCount() {
         return area.size();
@@ -82,28 +80,28 @@ public class AreaAdapter extends RecyclerView.Adapter{
             areaImagem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onClick(v, area.get(getAdapterPosition()).getAr_id(), 0);
+                    listener.onClick(v, getAdapterPosition(), 0);
                 }
             });
 
             editImagem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onClick(v, area.get(getAdapterPosition()).getAr_id(), 1);
+                    listener.onClick(v, getAdapterPosition(), 1);
                 }
             });
 
             delImagem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onClick(v, area.get(getAdapterPosition()).getAr_id(), 2);
+                    listener.onClick(v, getAdapterPosition(), 2);
                 }
             });
 
             addImagem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onClick(v, area.get(getAdapterPosition()).getAr_id(), 3);
+                    listener.onClick(v, getAdapterPosition(), 3);
                 }
             });
 
@@ -111,7 +109,7 @@ public class AreaAdapter extends RecyclerView.Adapter{
 
         @Override
         public void onClick(View view){
-            listener.onClick(view, area.get(getAdapterPosition()).getAr_id(), 0);
+            listener.onClick(view,getAdapterPosition(), 0);
         }
 
 
