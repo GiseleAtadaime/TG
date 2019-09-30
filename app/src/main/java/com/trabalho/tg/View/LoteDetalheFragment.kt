@@ -7,15 +7,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.trabalho.tg.Model.Entrada
+import com.trabalho.tg.Model.Lote
 import com.trabalho.tg.R
 import kotlinx.android.synthetic.main.fragment_lote_detalhe.*
+import java.io.Serializable
 import kotlin.collections.ArrayList
 
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val LOTEPAM = "param1"
+private const val USERID = "userid"
+private const val AREAID = "areaid"
 
 /**
  * A simple [Fragment] subclass.
@@ -28,15 +31,17 @@ private const val ARG_PARAM2 = "param2"
  */
 class LoteDetalheFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var lotePam: Lote? = null
+    private var userid: Int? = null
+    private var areaId: Int? = null
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            lotePam = it.getSerializable(LOTEPAM) as Lote
+            userid = it.getInt(USERID)
+            areaId = it.getInt(AREAID)
         }
     }
 
@@ -49,8 +54,8 @@ class LoteDetalheFragment : Fragment() {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onAlterButtonClick(entrada : ArrayList<Entrada>) {
-        listener?.onAlterButtonClick(entrada)
+    fun onAlterButtonClick(lote : Lote,  tipo : Int,areaId :Int, userId : Int, loteId : Int) {
+        listener?.onAlterButtonClick(lote, tipo, areaId, userId, loteId)
     }
 
     override fun onAttach(context: Context) {
@@ -80,7 +85,7 @@ class LoteDetalheFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onAlterButtonClick(entrada : ArrayList<Entrada>)
+        fun onAlterButtonClick(lote : Lote, tipo : Int, areaId :Int, userId : Int, loteId : Int)
     }
 
     companion object {
@@ -94,11 +99,12 @@ class LoteDetalheFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(lotePam: Lote, user : Int, areaId : Int) =
             LoteDetalheFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putSerializable(LOTEPAM, lotePam as Serializable)
+                    putInt(USERID, user)
+                    putInt(AREAID, areaId)
                 }
             }
     }
@@ -106,6 +112,7 @@ class LoteDetalheFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        txtNome_LoteDetFrag.text = lotePam!!.lot_nome
 
         fBtnAdd_LoteDetFrag.setOnClickListener{
             if (menu_LoteDetFrag.visibility == View.VISIBLE){
@@ -118,14 +125,26 @@ class LoteDetalheFragment : Fragment() {
             }
         }
 
-        var entrada = ArrayList<Entrada>()
-        entrada.add(Entrada(1))
-        entrada[0].ent_desc = "entrada 1"
 
-        btnAlt_LoteDetFrag.setOnClickListener{
-            onAlterButtonClick(entrada)
+        imgBtnAlt_LoteDetFrag.setOnClickListener{
+            onAlterButtonClick(lotePam!!,1, areaId!!,userid!!,lotePam!!.lot_id)
         }
 
+        imgBtnExc_LoteDetFrag.setOnClickListener{
+            onAlterButtonClick(lotePam!!,2, areaId!!,userid!!,lotePam!!.lot_id)
+        }
+
+        btnFech_LoteDetFrag.setOnClickListener{
+            onAlterButtonClick(lotePam!!,3, areaId!!,userid!!,lotePam!!.lot_id)
+        }
+
+        btnAdd_LoteDetFrag.setOnClickListener{
+            onAlterButtonClick(lotePam!!,4, areaId!!,userid!!,lotePam!!.lot_id)
+        }
+
+        btnAlt_LoteDetFrag.setOnClickListener{
+            onAlterButtonClick(lotePam!!,5, areaId!!,userid!!,lotePam!!.lot_id)
+        }
 
     }
 }

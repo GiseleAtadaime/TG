@@ -44,7 +44,6 @@ public class C_Lote {
         Boolean ret = false;
 
         ContentValues values = new ContentValues();
-        values.put(Contrato.Lote.COLUMN_ID,l.getLot_id());
         values.put(Contrato.Lote.COLUMN_NOME,l.getLot_nome());
         values.put(Contrato.Lote.COLUMN_IMAGEM,l.getLot_imagem());
         values.put(Contrato.Lote.COLUMN_AREA_ID, aID);

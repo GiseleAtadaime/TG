@@ -103,6 +103,25 @@ public final class Contrato {
         public static final String COLUMN_REG_NUM = "tipo_reg_num";
         public static final String COLUMN_USR_ID = "tipo_usr_id";
 
+        public static final String AGROTOXICO = "agrotoxico";
+        public static final String IRRIGACAO = "irrigacao";
+        public static final String PLANTIO = "plantio";
+        public static final String ADUBACAO = "adubacao";
+        public static final String PREJUIZO = "prejuizo";
+        public static final String MAO_DE_OBRA = "mao de obra";
+        public static final String COLHEITA = "colheita";
+
+        public static final String TEMPO_TIPO_AGROTOX = "A";
+        public static final String TEMPO_TIPO_IRRIG = "I";
+        public static final String TEMPO_TIPO_MAO_DE_OBRA = "M";
+        public static final String QTDE_TIPO_AGROTOX = "D";
+        public static final String QTDE_TIPO_PLANTIO = "M";
+        public static final String QTDE_TIPO_ADUBACAO = "A";
+        public static final String QTDE_TIPO_PREJUIZO = "P";
+        public static final String QTDE_TIPO_MAO_DE_OBRA = "R";
+        public static final String QTDE_TIPO_COLHEITA = "C";
+
+
     }
 
     public static class Fec_lote implements BaseColumns{
@@ -133,7 +152,7 @@ public final class Contrato {
     }
 
     public static class Fec_Tipo_Entrada implements BaseColumns{
-        public static final String TABLENAME = "TIPO_ENTRADA";
+        public static final String TABLENAME = "TIPO_ENTRADA_HIST";
         public static final String COLUMN_TIPO_NUMERO = "tipo_numero";
         public static final String COLUMN_DESCRICAO = "tipo_descricao";
         public static final String COLUMN_TEMPO = "tipo_tempo";
@@ -145,6 +164,23 @@ public final class Contrato {
         public static final String COLUMN_REG_NUM = "tipo_reg_num";
         public static final String COLUMN_USR_ID = "tipo_usr_id";
 
+        public static final String AGROTOXICO = "agrotoxico";
+        public static final String IRRIGACAO = "irrigacao";
+        public static final String PLANTIO = "plantio";
+        public static final String ADUBACAO = "adubacao";
+        public static final String PREJUIZO = "prejuizo";
+        public static final String MAO_DE_OBRA = "mao de obra";
+        public static final String COLHEITA = "colheita";
+
+        public static final String TEMPO_TIPO_AGROTOX = "A";
+        public static final String TEMPO_TIPO_IRRIG = "I";
+        public static final String TEMPO_TIPO_MAO_DE_OBRA = "M";
+        public static final String QTDE_TIPO_AGROTOX = "D";
+        public static final String QTDE_TIPO_PLANTIO = "M";
+        public static final String QTDE_TIPO_ADUBACAO = "A";
+        public static final String QTDE_TIPO_PREJUIZO = "P";
+        public static final String QTDE_TIPO_MAO_DE_OBRA = "R";
+        public static final String QTDE_TIPO_COLHEITA = "C";
     }
 
     //Table creations
@@ -255,7 +291,7 @@ public final class Contrato {
 
 
 
-    public static final String CREATE_TABLE_FEC_TIPO_ENTRADA = "CREATE TABLE " + Tipo_Entrada.TABLENAME +
+    public static final String CREATE_TABLE_FEC_TIPO_ENTRADA = "CREATE TABLE " + Fec_Tipo_Entrada.TABLENAME +
             " ( " + Fec_Tipo_Entrada.COLUMN_TIPO_NUMERO + " INTEGER CONSTRAINT pk_tp PRIMARY KEY AUTOINCREMENT, " +
             Fec_Tipo_Entrada.COLUMN_DESCRICAO + " VARCHAR(20), " +
             Fec_Tipo_Entrada.COLUMN_TEMPO + " NUMERIC(10,2), " +

@@ -11,13 +11,16 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.trabalho.tg.Adapters.EntradaAdapter
 import com.trabalho.tg.Model.Entrada
+import com.trabalho.tg.Model.Lote
 import com.trabalho.tg.R
+import java.io.Serializable
 
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val LOTEPAM = "param1"
+private const val USERID = "userid"
+private const val AREAID = "areaid"
 
 /**
  * A simple [Fragment] subclass.
@@ -30,15 +33,17 @@ private const val ARG_PARAM2 = "param2"
  */
 class EntradaFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var lotePam: Lote? = null
+    private var userid: Int? = null
+    private var areaId: Int? = null
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            lotePam = it.getSerializable(LOTEPAM) as Lote
+            userid = it.getInt(USERID)
+            areaId = it.getInt(AREAID)
         }
     }
 
@@ -96,11 +101,12 @@ class EntradaFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(lotePam: Lote, user : Int, areaId : Int) =
             EntradaFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putSerializable(LOTEPAM, lotePam as Serializable)
+                    putInt(USERID, user)
+                    putInt(AREAID, areaId)
                 }
             }
     }
@@ -108,33 +114,15 @@ class EntradaFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var entrada : ArrayList<Entrada> = ArrayList<Entrada>()
-        entrada.add(Entrada(1))
-        entrada[0].ent_desc = "Entrada 1"
-
-        entrada.add(Entrada(2))
-        entrada[1].ent_desc = "Entrada 2"
-
-        entrada.add(Entrada(3))
-        entrada[2].ent_desc = "Entrada 3"
-
-        entrada.add(Entrada(4))
-        entrada[3].ent_desc = "Entrada 4"
-
         val mlistener = fun(view : View, position: Int) {
             Toast.makeText(context, "Entrada position:  $position", Toast.LENGTH_SHORT).show()
-            onEntradaSelected(entrada[position])
+            onEntradaSelected(lotePam!!.lot_ent[position])
         }
-
 
         var recyclerView = view.findViewById<RecyclerView>(R.id.recView_Entrada)
         recyclerView.layoutManager = LinearLayoutManager(activity)
 
-        recyclerView.adapter = EntradaAdapter(entrada, context, mlistener)
-
-
-
-
+        recyclerView.adapter = EntradaAdapter(lotePam!!.lot_ent, context, mlistener)
 
     }
 }

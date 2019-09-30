@@ -54,7 +54,8 @@
         <item>Data + Número</item>
     </string-array>
 
-
+    <string name="spi_data">Data + Letra</string>
+    <string name="spi_num">Data + Numero</string>
 
 
 </resources>

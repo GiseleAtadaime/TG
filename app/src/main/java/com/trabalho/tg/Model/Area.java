@@ -1,7 +1,10 @@
 package com.trabalho.tg.Model;
 
+import com.trabalho.tg.R;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+
 
 public class Area implements Serializable {
     private Integer ar_id;
@@ -23,8 +26,18 @@ public class Area implements Serializable {
         return ar_lote_cont;
     }
 
-    public void setAr_lote_cont(String ar_lote_cont) {
-        this.ar_lote_cont = ar_lote_cont;
+    public void setAr_lote_cont(Integer id_lote) {
+        if (id_lote == 0){
+            this.ar_lote_cont = "Data + Letra";
+        }
+        else{
+            this.ar_lote_cont = "Data + Numero";
+
+        }
+    }
+
+    public void setAr_lote_cont(String loteCont){
+        this.ar_lote_cont = loteCont;
     }
 
     public String getAr_imagem() {
@@ -62,4 +75,14 @@ public class Area implements Serializable {
     public void addLote(Lote lote){
         ar_lote.add(lote);
     }
+
+    public Integer getLoteContID(){
+        Integer ret = 0;
+        if (ar_lote_cont.compareTo("Data + Numero") == 0){
+            ret = 1;
+        }
+        return ret;
+    }
+
+
 }

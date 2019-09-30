@@ -2,50 +2,52 @@ package com.trabalho.tg.View.Detalhe
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
-import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
-import com.trabalho.tg.Controller.C_Area
+import android.widget.TextView
+import android.widget.Toast
+import com.trabalho.tg.Controller.C_Lote
 import com.trabalho.tg.Helper.DBHelper
-import com.trabalho.tg.Model.Area
+import com.trabalho.tg.Model.Lote
 import com.trabalho.tg.R
-import kotlinx.android.synthetic.main.fragment_area_alter_dialog.*
+import kotlinx.android.synthetic.main.fragment_lote_alter_dialog.*
 import java.io.Serializable
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val AREAPAM = "param1"
+private const val LOTEPAM = "param1"
 private const val TIPOPAM = "param2"
 private const val USERID = "userid"
+private const val AREAID = "areaid"
 
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [AreaCriaAlterDialog.OnFragmentInteractionListener] interface
+ * [LoteCriaAlterDialog.OnFragmentInteractionListener] interface
  * to handle interaction events.
- * Use the [AreaCriaAlterDialog.newInstance] factory method to
+ * Use the [LoteCriaAlterDialog.newInstance] factory method to
  * create an instance of this fragment.
  *
  */
-class AreaCriaAlterDialog : Fragment() {
+class LoteCriaAlterDialog : Fragment() {
     // TODO: Rename and change types of parameters
-    private var areaPam: Area? = null
+    private var lotePam: Lote? = null
     private var tipoPam: Int? = null
     private var userid: Int? = null
+    private var areaId: Int? = null
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            areaPam = it.getSerializable(AREAPAM) as Area
+            lotePam = it.getSerializable(LOTEPAM) as Lote
             tipoPam = it.getInt(TIPOPAM)
             userid = it.getInt(USERID)
+            areaId = it.getInt(AREAID)
         }
     }
 
@@ -53,12 +55,12 @@ class AreaCriaAlterDialog : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_area_alter_dialog, container, false)
+        return inflater.inflate(R.layout.fragment_lote_alter_dialog, container, false)
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onCloseAreaDialog() {
-        listener?.onCloseAreaDialog()
+    fun onCloseLoteDialog(areaId : Int) {
+        listener?.onCloseLoteDialog(areaId)
     }
 
     override fun onAttach(context: Context) {
@@ -88,7 +90,7 @@ class AreaCriaAlterDialog : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onCloseAreaDialog()
+        fun onCloseLoteDialog(areaId: Int)
     }
 
     companion object {
@@ -98,16 +100,17 @@ class AreaCriaAlterDialog : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment AreaCriaAlterDialog.
+         * @return A new instance of fragment LoteCriaAlterDialog.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(areaPam: Area, tipoPam: Int, user : Int) =
-            AreaCriaAlterDialog().apply {
+        fun newInstance(lotePam: Lote, tipoPam: Int, user : Int, areaId : Int) =
+            LoteCriaAlterDialog().apply {
                 arguments = Bundle().apply {
-                    putSerializable(AREAPAM, areaPam as Serializable)
+                    putSerializable(LOTEPAM, lotePam as Serializable)
                     putInt(TIPOPAM, tipoPam)
                     putInt(USERID, user)
+                    putInt(AREAID, areaId)
                 }
             }
     }
@@ -115,59 +118,35 @@ class AreaCriaAlterDialog : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        btnDismiss_LoteDialog.text = getString(R.string.cancelar)
 
-
-        var adapter = ArrayAdapter.createFromResource(context,R.array.LoteContArray, android.R.layout.simple_spinner_dropdown_item)
-
-        btnDismiss_AreaDialog.setOnClickListener(){
-            listener?.onCloseAreaDialog()
+        btnDismiss_LoteDialog.setOnClickListener(){
+            listener?.onCloseLoteDialog(areaId!!)
         }
-
-        spiContagem_AreaDialog.adapter = adapter
-
-        spiContagem_AreaDialog.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if(position == 0){
-                    txtExemplo_AlterAreaFragment.setText("Exemplo: 12122019_A")
-                }
-                else{
-                    txtExemplo_AlterAreaFragment.setText("Exemplo: 12122019_01")
-                }
-
-            }
-
-        }
-
 
         if (tipoPam == 1){//Alterar
-            edtTxtNome_AreaDialog.setText(areaPam!!.ar_nome)
+            edtTxtNome_LoteDialog.setText(lotePam!!.lot_nome)
 
-            btnCriarAlt_AreaDialog.text = getString(R.string.alter_area)
+            btnCriaAlter_LoteDialog.text = getString(R.string.alter_area)
 
-            spiContagem_AreaDialog.setSelection(areaPam!!.getLoteContID())
 
-            btnCriarAlt_AreaDialog.setOnClickListener{
-                if (edtTxtNome_AreaDialog.text.isNullOrBlank()){
-                    Toast.makeText(context, "Informe o nome para a área!", Toast.LENGTH_SHORT).show()
+            btnCriaAlter_LoteDialog.setOnClickListener{
+                if (edtTxtNome_LoteDialog.text.isNullOrBlank()){
+                    Toast.makeText(context, "Informe o nome para o lote!", Toast.LENGTH_SHORT).show()
                 }
                 else{
-                    var area = Area(areaPam!!.ar_id)
-                    area.setAr_lote_cont(spiContagem_AreaDialog.selectedItemId.toInt())
-                    area.ar_nome = edtTxtNome_AreaDialog.text.toString()
-                    area.ar_del = "A"
+                    var lote = Lote(lotePam!!.lot_id)
+                    lote.lot_nome = edtTxtNome_LoteDialog.text.toString()
+                    lote.lot_imagem = null
 
-                    if (C_Area().updateArea(DBHelper(context), area)){
+                    if (C_Lote().updateLote(DBHelper(context), lote)){
                         val builder = AlertDialog.Builder(context)
-                        builder.setTitle("Alterar área")
-                        builder.setMessage("A ${area.ar_nome} foi alterada com successo!")
+                        builder.setTitle("Alterar lote")
+                        builder.setMessage("O ${lote.lot_nome} foi alterado com successo!")
 
                         builder.setPositiveButton(android.R.string.yes) { dialog, which ->
                             dialog.dismiss()
-                            listener?.onCloseAreaDialog()
+                            listener?.onCloseLoteDialog(areaId!!)
                         }
 
                         builder.show()
@@ -176,28 +155,27 @@ class AreaCriaAlterDialog : Fragment() {
             }
         }
         else{//Criar
-            edtTxtNome_AreaDialog.setText("")
-            btnCriarAlt_AreaDialog.text = getString(R.string.cria_area)
+            edtTxtNome_LoteDialog.setText("")
+            btnCriaAlter_LoteDialog.text = getString(R.string.cria_area)
 
-            btnCriarAlt_AreaDialog.setOnClickListener{
-                if (edtTxtNome_AreaDialog.text.isNullOrBlank()){
-                    Toast.makeText(context, "Informe o nome para a área!", Toast.LENGTH_SHORT).show()
+            btnCriaAlter_LoteDialog.setOnClickListener{
+                if (edtTxtNome_LoteDialog.text.isNullOrBlank()){
+                    Toast.makeText(context, "Informe o nome para o lote!", Toast.LENGTH_SHORT).show()
                 }
                 else{
 
-                    var area = Area(0)
-                    area.setAr_lote_cont(spiContagem_AreaDialog.selectedItemId.toInt())
-                    area.ar_nome = edtTxtNome_AreaDialog.text.toString()
-                    area.ar_del = "A"
+                    var lote = Lote(0)
+                    lote.lot_imagem = null
+                    lote.lot_nome = edtTxtNome_LoteDialog.text.toString()
 
-                    if (C_Area().insertArea(DBHelper(context), area , userid)){
+                    if (C_Lote().insertLote(DBHelper(context), lote ,areaId, userid)){
                         val builder = AlertDialog.Builder(context)
-                        builder.setTitle("Criação de área")
-                        builder.setMessage("A área foi criada com successo!")
+                        builder.setTitle("Criação de lote")
+                        builder.setMessage("O lote foi criado com successo!")
 
                         builder.setPositiveButton(android.R.string.yes) { dialog, which ->
                             dialog.dismiss()
-                            listener?.onCloseAreaDialog()
+                            listener?.onCloseLoteDialog(areaId!!)
                         }
 
                         builder.show()
@@ -205,8 +183,5 @@ class AreaCriaAlterDialog : Fragment() {
                 }
             }
         }
-
-
     }
-
 }

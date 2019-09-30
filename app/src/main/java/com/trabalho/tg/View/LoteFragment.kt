@@ -10,14 +10,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.trabalho.tg.Adapters.LoteAdapter
+import com.trabalho.tg.Controller.C_Lote
+import com.trabalho.tg.Helper.DBHelper
+import com.trabalho.tg.Model.Area
 import com.trabalho.tg.Model.Lote
 import com.trabalho.tg.R
+import java.io.Serializable
 
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val AREAPAM = "areaPam"
 
 /**
  * A simple [Fragment] subclass.
@@ -30,15 +33,14 @@ private const val ARG_PARAM2 = "param2"
  */
 class LoteFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var areaPam: Area? = null
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            areaPam = it.getSerializable(AREAPAM) as Area
+
         }
     }
 
@@ -51,8 +53,8 @@ class LoteFragment : Fragment() {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onLoteSelected(lote : List<Lote>, pos : Int) {
-        listener?.onLoteSelected(lote, pos)
+    fun onLoteSelected(lote : List<Lote>, pos : Int, tipo : Int, areaId: Int) {
+        listener?.onLoteSelected(lote, pos, tipo, areaId)
     }
 
     override fun onAttach(context: Context) {
@@ -82,7 +84,7 @@ class LoteFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onLoteSelected(lote : List<Lote>, pos : Int)
+        fun onLoteSelected(lote : List<Lote>, pos : Int, tipo : Int, areaId : Int)
     }
 
     companion object {
@@ -96,11 +98,10 @@ class LoteFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(areaPam: Area) =
             LoteFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putSerializable(AREAPAM, areaPam as Serializable)
                 }
             }
     }
@@ -108,33 +109,16 @@ class LoteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var lote : ArrayList<Lote> = ArrayList<Lote>()
-        lote.add(Lote(1))
-        lote[0].lot_nome = "Lote 1"
-
-        lote.add(Lote(2))
-        lote[1].lot_nome = "Lote 2"
-
-        lote.add(Lote(3))
-        lote[2].lot_nome = "Lote 3"
-
-        lote.add(Lote(4))
-        lote[3].lot_nome = "Lote 4"
-
-        lote.add(Lote(5))
-        lote[4].lot_nome = "Lote 5"
-
-
-        val mlistener = fun(view : View, position: Int) {
+        val mlistener = fun(view : View, position: Int, tipo : Int) {
             Toast.makeText(context, "Position $position", Toast.LENGTH_SHORT).show();
-            onLoteSelected(lote, position)
+            onLoteSelected(areaPam!!.ar_lote, position, tipo, areaPam!!.ar_id)
         }
 
 
         var recyclerView = view.findViewById<RecyclerView>(R.id.recView_LoteFrag)
         recyclerView.layoutManager = LinearLayoutManager(activity)
 
-        recyclerView.adapter = LoteAdapter(lote, context, mlistener)
+        recyclerView.adapter = LoteAdapter(areaPam!!.ar_lote, context, mlistener)
 
     }
 }

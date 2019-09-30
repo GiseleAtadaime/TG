@@ -51,37 +51,64 @@ public class C_Entrada {
         }
     }
 
+    public Integer selectLastTipoEntradaID(DBHelper dbHelper){
+        Cursor c = null;
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Integer id = 0;
+        String query = "SELECT MAX(" + Contrato.Tipo_Entrada.COLUMN_TIPO_NUMERO + ") FROM " + Contrato.Tipo_Entrada.TABLENAME;
+
+        try{
+            c = db.rawQuery(query,null);
+            if(c.moveToFirst()){
+                id = c.getInt(c.getColumnIndex("MAX(" + Contrato.Tipo_Entrada.COLUMN_TIPO_NUMERO + ")"));
+            }
+            c.close();
+        }
+        finally {
+            return id;
+        }
+    }
+
+
     public Boolean insertEntrada(DBHelper dbHelper, Entrada e, Integer lID, Integer uID){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
+        SQLiteDatabase dbR = dbHelper.getReadableDatabase();
         Boolean ret = false;
 
         ContentValues values = new ContentValues();
-        values.put(Contrato.Entrada.COLUMN_NUMERO,e.getEnt_numero());
-        //values.put(Contrato.Entrada.COLUMN_DATA,e.getEnt_data());
-        values.put(Contrato.Entrada.COLUMN_LOTE_ID,lID);
-        values.put(Contrato.Entrada.COLUMN_TIPO,e.getEnt_tipo());
-        values.put(Contrato.Entrada.COLUMN_USR_ID, uID);
 
         ContentValues valuesTipo = new ContentValues();
-        values.put(Contrato.Tipo_Entrada.COLUMN_TIPO_NUMERO,e.getEnt_tipo());
-        values.put(Contrato.Tipo_Entrada.COLUMN_DESCRICAO,e.getEnt_desc());
-        values.put(Contrato.Tipo_Entrada.COLUMN_TEMPO,e.getEnt_tempo());
-        values.put(Contrato.Tipo_Entrada.COLUMN_TPUN,e.getEnt_tpun());
-        values.put(Contrato.Tipo_Entrada.COLUMN_QTDE,e.getEnt_qtde());
-        values.put(Contrato.Tipo_Entrada.COLUMN_QTUN,e.getEnt_qtun());
-        values.put(Contrato.Tipo_Entrada.COLUMN_MUDAS_BANDEJA,e.getEnt_mudas_bandeja());
-        values.put(Contrato.Tipo_Entrada.COLUMN_VALOR,e.getEnt_valor());
-        values.put(Contrato.Tipo_Entrada.COLUMN_REG_NUM,e.getEnt_reg().getReg_numero());
-        values.put(Contrato.Tipo_Entrada.COLUMN_USR_ID,uID);
+        valuesTipo.put(Contrato.Tipo_Entrada.COLUMN_DESCRICAO,e.getEnt_desc());
+        valuesTipo.put(Contrato.Tipo_Entrada.COLUMN_TEMPO,e.getEnt_tempo());
+        valuesTipo.put(Contrato.Tipo_Entrada.COLUMN_TPUN,e.getEnt_tpun());
+        valuesTipo.put(Contrato.Tipo_Entrada.COLUMN_QTDE,e.getEnt_qtde());
+        valuesTipo.put(Contrato.Tipo_Entrada.COLUMN_QTUN,e.getEnt_qtun());
+        valuesTipo.put(Contrato.Tipo_Entrada.COLUMN_MUDAS_BANDEJA,e.getEnt_mudas_bandeja());
+        valuesTipo.put(Contrato.Tipo_Entrada.COLUMN_VALOR,e.getEnt_valor());
+
+        if (e.getEnt_reg() != null){
+            valuesTipo.put(Contrato.Tipo_Entrada.COLUMN_REG_NUM,e.getEnt_reg().getReg_numero());
+        }
+        else{
+            valuesTipo.put(Contrato.Tipo_Entrada.COLUMN_REG_NUM, (byte[]) null);
+        }
+        valuesTipo.put(Contrato.Tipo_Entrada.COLUMN_USR_ID,uID);
 
         try{
-            db.insert(Contrato.Entrada.TABLENAME, null,values);
             db.insert(Contrato.Tipo_Entrada.TABLENAME, null, valuesTipo);
+
+            //values.put(Contrato.Entrada.COLUMN_DATA,e.getEnt_data());
+            values.put(Contrato.Entrada.COLUMN_LOTE_ID,lID);
+            values.put(Contrato.Entrada.COLUMN_TIPO,selectLastTipoEntradaID(dbHelper));
+            values.put(Contrato.Entrada.COLUMN_USR_ID, uID);
+
+            db.insert(Contrato.Entrada.TABLENAME, null,values);
+
             ret = true;
             db.setTransactionSuccessful();
         }
         finally{
-            db.endTransaction();
             db.close();
             return ret;
         }

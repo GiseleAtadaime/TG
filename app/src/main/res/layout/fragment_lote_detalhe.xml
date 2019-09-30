@@ -18,21 +18,11 @@
             android:text="TextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/txtNome_LoteDetFrag" android:layout_marginTop="136dp"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp" app:layout_constraintHorizontal_bias="0.023"/>
-    <TextView
-            android:text="TextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/txtData_LoteDetFrag"
-            app:layout_constraintTop_toBottomOf="@+id/txtNome_LoteDetFrag"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp" android:layout_marginTop="16dp"
-            app:layout_constraintHorizontal_bias="0.169"
-            app:layout_constraintEnd_toStartOf="@+id/imgBtnAlt_LoteDetFrag"/>
+            android:id="@+id/txtNome_LoteDetFrag" android:layout_marginTop="164dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/imgBtnAlt_LoteDetFrag" android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="@+id/imgBtnAlt_LoteDetFrag"/>
     <ImageButton
             android:src="@drawable/baseline_create_black_24"
             android:layout_width="wrap_content"
