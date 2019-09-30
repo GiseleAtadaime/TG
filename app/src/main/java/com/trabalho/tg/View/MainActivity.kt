@@ -45,9 +45,12 @@ class MainActivity : AppCompatActivity(),
 {
 
     override fun onCloseLoteDialog(areaID: Int) {
-        usuario.usr_area[usuario.usr_area.indexOfFirst { it.ar_id == areaID }]
-            .ar_lote = C_Lote().selectLote(DBHelper(this), areaID)
+        var indexArea = usuario.usr_area.indexOfFirst { it.ar_id == areaID }
+
+        usuario.usr_area[indexArea].ar_lote = C_Lote().selectLote(DBHelper(this), areaID)
+
         removeFragment("LOTE_ALTER_FRAGMENT")
+
         changeFragment(LoteFragment.newInstance(usuario.usr_area[usuario.usr_area.indexOfFirst { it.ar_id == areaID }]),
             true, "LOTE_FRAGMENT")
     }
@@ -63,33 +66,61 @@ class MainActivity : AppCompatActivity(),
 
     override fun onAlterButtonClick(lote : Lote,  tipo : Int, areaId :Int, userId : Int, loteId : Int) {
         var indexArea = usuario.usr_area.indexOfFirst { it.ar_id == areaId }
+        var indexLote = usuario.usr_area[indexArea].ar_lote.indexOfFirst { it.lot_id ==  loteId}
 
         if(tipo == 1){//Alter lote
-
+            changeFragment(LoteCriaAlterDialog.newInstance(
+                usuario.usr_area[indexArea].ar_lote[indexLote]
+                ,tipo,usuario.usr_id,areaId),true, "LOTE_ALTER_FRAGMENT")
         }
         else if(tipo == 2){//Del lote
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Deletar lote")
+            builder.setMessage("Tem certeza que deseja apagar o lote " +
+                    "${usuario.usr_area[indexArea].ar_lote[indexLote].lot_nome}? Esta operação não pode ser desfeita!")
 
+            builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+                if(indexLote != 0){
+                    /*
+                }
+                    if (C_Area().updateArea(DBHelper(this), lote[pos])){
+                        dialog.dismiss()
+                        onCloseAreaDialog()
+                    }
+                    else{
+                        Toast.makeText(this, "Não foi possível apagar o lote selecionado!", Toast.LENGTH_SHORT).show()
+                        dialog.dismiss()
+                    }*/
+                }
+                else{Toast.makeText(this, "Não é possível apagar pois só há este lote cadastrado!", Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
+                }
+
+            }
+            builder.setNegativeButton(android.R.string.no){dialog, which ->
+                dialog.dismiss()
+            }
+
+            builder.show()
         }
         else if(tipo == 3){//Fechar lote
 
         }
         else if(tipo == 4){//Novo entrada
+
+
+
         }
         else if(tipo == 5){//Ver entradas
-            usuario.usr_area[indexArea].
-            ar_lote[usuario.usr_area[indexArea].ar_lote.indexOfFirst { it.lot_id ==  loteId}].
-                lot_ent = C_Entrada().selectEntrada(DBHelper(this),loteId)
+            usuario.usr_area[indexArea].ar_lote[indexLote].lot_ent = C_Entrada().selectEntrada(DBHelper(this),loteId)
 
-            if (usuario.usr_area[indexArea].
-                    ar_lote[usuario.usr_area[indexArea].ar_lote.indexOfFirst { it.lot_id ==  loteId}].
-                    lot_ent.size == 0){
+            if (usuario.usr_area[indexArea].ar_lote[indexLote].lot_ent.size == 0){
                 createEntrada(areaId, loteId)
             }
-            usuario.usr_area[indexArea].
-            ar_lote[usuario.usr_area[indexArea].ar_lote.indexOfFirst { it.lot_id ==  loteId}].
-                lot_ent = C_Entrada().selectEntrada(DBHelper(this),loteId)
-            changeFragment(EntradaFragment.newInstance( usuario.usr_area[indexArea].
-                ar_lote[usuario.usr_area[indexArea].ar_lote.indexOfFirst { it.lot_id ==  loteId}],
+            usuario.usr_area[indexArea].ar_lote[indexLote].lot_ent = C_Entrada().selectEntrada(DBHelper(this),loteId)
+
+            changeFragment(EntradaFragment.newInstance(
+                usuario.usr_area[indexArea].ar_lote[indexLote],
                 usuario.usr_id,areaId), true, "ENTRADA_FRAGMENT")
         }
 
@@ -98,10 +129,10 @@ class MainActivity : AppCompatActivity(),
 
     override fun onLoteSelected(lote : List<Lote>, pos : Int, tipo : Int, areaId : Int){
         //Toast.makeText(this, "Escolhido $pos", Toast.LENGTH_SHORT).show()
-
+        var indexArea = usuario.usr_area.indexOfFirst { it.ar_id == areaId }
         if (tipo == 0) { //lote
             changeFragment(LoteDetalheFragment.newInstance(usuario.
-                usr_area[usuario.usr_area.indexOfFirst { it.ar_id == areaId }].ar_lote[pos]
+                usr_area[indexArea].ar_lote[pos]
                 ,usuario.usr_id, areaId), true, "LOTE_DETALHE_FRAGMENT")
         }
         else if(tipo == 1 || tipo == 3) { //alterar
