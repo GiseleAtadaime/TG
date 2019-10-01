@@ -64,6 +64,8 @@ class MainActivity : AppCompatActivity(),
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+
+    //Alter button for lote fragment
     override fun onAlterButtonClick(lote : Lote,  tipo : Int, areaId :Int, userId : Int, loteId : Int) {
         var indexArea = usuario.usr_area.indexOfFirst { it.ar_id == areaId }
         var indexLote = usuario.usr_area[indexArea].ar_lote.indexOfFirst { it.lot_id ==  loteId}
@@ -80,23 +82,22 @@ class MainActivity : AppCompatActivity(),
                     "${usuario.usr_area[indexArea].ar_lote[indexLote].lot_nome}? Esta operação não pode ser desfeita!")
 
             builder.setPositiveButton(android.R.string.yes) { dialog, which ->
-                if(indexLote != 0){
-                    /*
-                }
-                    if (C_Area().updateArea(DBHelper(this), lote[pos])){
+                if(usuario.usr_area[indexArea].ar_lote.size > 1){
+                    if (C_Lote().deleteLote(DBHelper(this), usuario.usr_area[indexArea].ar_lote[indexLote])){
                         dialog.dismiss()
-                        onCloseAreaDialog()
+                        onCloseLoteDialog(areaId)
                     }
-                    else{
+                    else {
                         Toast.makeText(this, "Não foi possível apagar o lote selecionado!", Toast.LENGTH_SHORT).show()
                         dialog.dismiss()
-                    }*/
+                    }
                 }
-                else{Toast.makeText(this, "Não é possível apagar pois só há este lote cadastrado!", Toast.LENGTH_SHORT).show()
-                    dialog.dismiss()
+                else{
+                        Toast.makeText(this, "Não é possível apagar pois só há este lote cadastrado!", Toast.LENGTH_SHORT).show()
+                        dialog.dismiss()
                 }
-
             }
+
             builder.setNegativeButton(android.R.string.no){dialog, which ->
                 dialog.dismiss()
             }
@@ -123,12 +124,9 @@ class MainActivity : AppCompatActivity(),
                 usuario.usr_area[indexArea].ar_lote[indexLote],
                 usuario.usr_id,areaId), true, "ENTRADA_FRAGMENT")
         }
-
-
     }
 
     override fun onLoteSelected(lote : List<Lote>, pos : Int, tipo : Int, areaId : Int){
-        //Toast.makeText(this, "Escolhido $pos", Toast.LENGTH_SHORT).show()
         var indexArea = usuario.usr_area.indexOfFirst { it.ar_id == areaId }
         if (tipo == 0) { //lote
             changeFragment(LoteDetalheFragment.newInstance(usuario.
@@ -145,19 +143,18 @@ class MainActivity : AppCompatActivity(),
             builder.setMessage("Tem certeza que deseja apagar o lote ${lote[pos].lot_nome}? Esta operação não pode ser desfeita!")
 
             builder.setPositiveButton(android.R.string.yes) { dialog, which ->
-                if(pos != 0){
-                    /*
-                }
-                    if (C_Area().updateArea(DBHelper(this), lote[pos])){
+                if(usuario.usr_area[indexArea].ar_lote.size > 1){
+                    if (C_Lote().deleteLote(DBHelper(this), usuario.usr_area[indexArea].ar_lote[pos])){
                         dialog.dismiss()
-                        onCloseAreaDialog()
+                        onCloseLoteDialog(areaId)
                     }
-                    else{
+                    else {
                         Toast.makeText(this, "Não foi possível apagar o lote selecionado!", Toast.LENGTH_SHORT).show()
                         dialog.dismiss()
-                    }*/
+                    }
                 }
-                else{Toast.makeText(this, "Não é possível apagar pois só há este lote cadastrado!", Toast.LENGTH_SHORT).show()
+                else{
+                    Toast.makeText(this, "Não é possível apagar pois só há este lote cadastrado!", Toast.LENGTH_SHORT).show()
                     dialog.dismiss()
                 }
 
@@ -173,7 +170,6 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onAreaSelected(area: List<Area>, pos : Int, tipo : Int) {
-        Toast.makeText(this, "Escolhido $pos", Toast.LENGTH_SHORT).show()
         if (tipo == 0) { //lote
             usuario.usr_area[pos].ar_lote = C_Lote().selectLote(DBHelper(this),usuario.usr_area[pos].ar_id)
             if (usuario.usr_area[pos].ar_lote.size == 0){
@@ -192,7 +188,7 @@ class MainActivity : AppCompatActivity(),
             builder.setMessage("Tem certeza que deseja apagar a área ${area[pos].ar_nome}? Esta operação não pode ser desfeita!")
 
             builder.setPositiveButton(android.R.string.yes) { dialog, which ->
-                if(pos != 0){
+                if(usuario.usr_area.size > 1){
                     area[pos].ar_del = Contrato.Area.STATUS_DELETADO
                     if (C_Area().updateArea(DBHelper(this), area[pos])){
                         dialog.dismiss()
@@ -253,7 +249,6 @@ class MainActivity : AppCompatActivity(),
         if (usuario.usr_area.size == 0){
             createArea()
         }
-
     }
 
     override fun onBackPressed() {

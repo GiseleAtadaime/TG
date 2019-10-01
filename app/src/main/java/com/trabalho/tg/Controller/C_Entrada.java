@@ -147,4 +147,41 @@ public class C_Entrada {
         }
 
     }
+
+    public Boolean deleteEntrada(DBHelper dbHelper, Entrada entrada){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Boolean ret = false;
+        Integer tipoEntradaID = entrada.getEnt_tipo();
+        try{
+
+            db.delete(Contrato.Entrada.TABLENAME,Contrato.Entrada.COLUMN_NUMERO + " = ?", new String[]{entrada.getEnt_numero().toString()});
+            db.delete(Contrato.Tipo_Entrada.TABLENAME,Contrato.Tipo_Entrada.COLUMN_TIPO_NUMERO + " = ?", new String[]{tipoEntradaID.toString()});
+
+            ret = true;
+        }
+        finally {
+            return ret;
+        }
+    }
+    
+    public Boolean deleteAllEntradasByLote(DBHelper dbHelper, Integer loteID){
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Boolean ret = false;
+        ArrayList<Entrada> entradas = null;
+        Integer i = 0;
+        try{
+            entradas = selectEntrada(dbHelper,loteID);
+
+            for(i=0;i< entradas.size() - 1;i++){
+                db.delete(Contrato.Entrada.TABLENAME,Contrato.Entrada.COLUMN_NUMERO + " = ?", new String[]{entradas.get(i).getEnt_numero().toString()});
+                db.delete(Contrato.Tipo_Entrada.TABLENAME,Contrato.Tipo_Entrada.COLUMN_TIPO_NUMERO + " = ?", new String[]{entradas.get(i).getEnt_tipo().toString()});
+            }
+            ret = true;
+        }
+        finally {
+            return ret;
+        }
+        
+    }
 }
