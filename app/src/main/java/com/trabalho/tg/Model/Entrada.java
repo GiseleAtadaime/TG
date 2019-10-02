@@ -3,7 +3,10 @@ package com.trabalho.tg.Model;
 import com.trabalho.tg.R;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class Entrada implements Serializable {
 
@@ -31,7 +34,18 @@ public class Entrada implements Serializable {
         return ent_data;
     }
 
-    public void setEnt_data(Date ent_data) {
+    public void setEnt_data(Integer dia, Integer mes, Integer ano) {
+
+        Calendar c = Calendar.getInstance();
+        Date date = new Date();
+        c.clear();
+        c.set(ano, mes, dia);
+        date = c.getTime();
+
+        this.ent_data = date;
+    }
+
+    public void setEnt_data(Date ent_data){
         this.ent_data = ent_data;
     }
 

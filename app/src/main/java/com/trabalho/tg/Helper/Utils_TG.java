@@ -17,17 +17,20 @@ public class Utils_TG {
         }
     }
 
-    public Date formatDate(Integer dia, Integer mes, Integer ano){
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "dd-mm-yyyy HH:mm:ss", Locale.getDefault());
-        Date date = new Date();
-        c.clear();
-        c.set(dia, mes, ano);
-        date = c.getTime();
+    public String formatDate(Date data, Boolean type){
+        SimpleDateFormat dateFormat;
+        if(type){
+            dateFormat = new SimpleDateFormat(
+                    "dd-MM-yyyy HH:mm:ss", Locale.getDefault());
+        }
+        else{
+            dateFormat = new SimpleDateFormat(
+                    "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        }
 
-        return date;
+        return dateFormat.format(data);
     }
+
 
 
 

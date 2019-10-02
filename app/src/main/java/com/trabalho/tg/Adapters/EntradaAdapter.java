@@ -46,7 +46,7 @@ public class EntradaAdapter extends RecyclerView.Adapter{
         int pos = entradaViewHolder.getAdapterPosition();
 
         entradaViewHolder.nomeText.setText(entrada.get(pos).getEnt_desc());
-        //entradaViewHolder.dataText.setText(entrada.get(pos).getEnt_data().toString());
+        entradaViewHolder.dataText.setText(entrada.get(pos).getEnt_data().toString());
 
     }
 

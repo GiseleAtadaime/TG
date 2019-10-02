@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import com.trabalho.tg.Helper.Contrato;
 import com.trabalho.tg.Helper.DBHelper;
+import com.trabalho.tg.Helper.Utils_TG;
 import com.trabalho.tg.Model.Entrada;
 import com.trabalho.tg.Model.Reg_Agrotoxico;
 
@@ -98,7 +99,7 @@ public class C_Entrada {
         try{
             db.insert(Contrato.Tipo_Entrada.TABLENAME, null, valuesTipo);
 
-            //values.put(Contrato.Entrada.COLUMN_DATA,e.getEnt_data());
+            values.put(Contrato.Entrada.COLUMN_DATA, new Utils_TG().formatDate(e.getEnt_data(), false));
             values.put(Contrato.Entrada.COLUMN_LOTE_ID,lID);
             values.put(Contrato.Entrada.COLUMN_TIPO,selectLastTipoEntradaID(dbHelper));
             values.put(Contrato.Entrada.COLUMN_USR_ID, uID);

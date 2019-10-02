@@ -26,6 +26,7 @@ import com.trabalho.tg.Model.Lote
 import com.trabalho.tg.Model.Usuario
 import com.trabalho.tg.R
 import com.trabalho.tg.View.Detalhe.AreaCriaAlterDialog
+import com.trabalho.tg.View.Detalhe.EntradaDetalheDialog
 import com.trabalho.tg.View.Detalhe.LoteCriaAlterDialog
 import kotlin.collections.ArrayList
 
@@ -61,7 +62,7 @@ class MainActivity : AppCompatActivity(),
         changeFragment(AreaFragment.newInstance(usuario.usr_area), true, "AREA_FRAGMENT")
     }
     override fun onEntradaSelected(entrada: Entrada) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        changeFragment(EntradaDetalheDialog(), true, "ENTRADA_DETALHE_DIALOG")
     }
 
 
@@ -348,7 +349,7 @@ class MainActivity : AppCompatActivity(),
         var dbHelper : DBHelper = DBHelper(this)
         var entrada = Entrada(0)
         entrada.ent_desc = Contrato.Tipo_Entrada.PLANTIO
-        entrada.ent_data = Utils_TG().formatDate(12,12,2019)
+        entrada.setEnt_data(12,12,2019)
         entrada.ent_tipo = 0
         entrada.ent_tempo = null
         entrada.ent_tpun = null
