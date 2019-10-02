@@ -11,7 +11,7 @@ import java.util.Locale;
 public class Entrada implements Serializable {
 
     private Integer ent_numero;
-    private Date ent_data;
+    private Date ent_data = new Date();
     private Integer ent_tipo;
     private String ent_desc;
     private Double ent_tempo;
@@ -36,13 +36,49 @@ public class Entrada implements Serializable {
 
     public void setEnt_data(Integer dia, Integer mes, Integer ano) {
 
-        Calendar c = Calendar.getInstance();
-        Date date = new Date();
-        c.clear();
-        c.set(ano, mes, dia);
-        date = c.getTime();
+        switch (mes){
+            case 1:
+              mes = Calendar.JANUARY;
+              break;
+            case 2:
+                mes =Calendar.FEBRUARY;
+                break;
+            case 3:
+                mes =Calendar.MARCH;
+                break;
+            case 4:
+                mes =Calendar.APRIL;
+                break;
+            case 5:
+                mes =Calendar.MAY;
+                break;
+            case 6:
+                mes =Calendar.JUNE;
+                break;
+            case 7:
+                mes =Calendar.JULY;
+                break;
+            case 8:
+                mes =Calendar.AUGUST;
+                break;
+            case 9:
+                mes =Calendar.SEPTEMBER;
+                break;
+            case 10:
+                mes =Calendar.OCTOBER;
+                break;
+            case 11:
+                mes =Calendar.NOVEMBER;
+                break;
+            case 12:
+                mes =Calendar.DECEMBER;
+                break;
+        }
 
-        this.ent_data = date;
+        Calendar c = Calendar.getInstance();
+        c.clear();
+        c.set(ano, mes, dia, 0,0,0);
+        this.ent_data = c.getTime();
     }
 
     public void setEnt_data(Date ent_data){

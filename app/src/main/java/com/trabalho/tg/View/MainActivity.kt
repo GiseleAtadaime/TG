@@ -349,7 +349,7 @@ class MainActivity : AppCompatActivity(),
         var dbHelper : DBHelper = DBHelper(this)
         var entrada = Entrada(0)
         entrada.ent_desc = Contrato.Tipo_Entrada.PLANTIO
-        entrada.setEnt_data(12,12,2019)
+        entrada.setEnt_data(10,10,2018)
         entrada.ent_tipo = 0
         entrada.ent_tempo = null
         entrada.ent_tpun = null

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.trabalho.tg.Helper.Utils_TG;
 import com.trabalho.tg.Model.Entrada;
 import com.trabalho.tg.R;
 
@@ -46,8 +47,8 @@ public class EntradaAdapter extends RecyclerView.Adapter{
         int pos = entradaViewHolder.getAdapterPosition();
 
         entradaViewHolder.nomeText.setText(entrada.get(pos).getEnt_desc());
-        entradaViewHolder.dataText.setText(entrada.get(pos).getEnt_data().toString());
-
+        entradaViewHolder.dataText.setText(new Utils_TG().formatDate(entrada.get(pos).getEnt_data(),true));
+        System.out.println("nada");
     }
 
 
