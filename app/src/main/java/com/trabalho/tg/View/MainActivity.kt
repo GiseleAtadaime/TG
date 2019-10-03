@@ -42,7 +42,8 @@ class MainActivity : AppCompatActivity(),
     LoteDetalheFragment.OnFragmentInteractionListener,
     EntradaFragment.OnFragmentInteractionListener,
     AreaCriaAlterDialog.OnFragmentInteractionListener,
-    LoteCriaAlterDialog.OnFragmentInteractionListener
+    LoteCriaAlterDialog.OnFragmentInteractionListener,
+    EntradaDetalheDialog.OnFragmentInteractionListener
 {
 
     override fun onCloseLoteDialog(areaID: Int) {
@@ -61,8 +62,8 @@ class MainActivity : AppCompatActivity(),
         removeFragment("AREA_ALTER_FRAGMENT")
         changeFragment(AreaFragment.newInstance(usuario.usr_area), true, "AREA_FRAGMENT")
     }
-    override fun onEntradaSelected(entrada: Entrada) {
-        changeFragment(EntradaDetalheDialog(), true, "ENTRADA_DETALHE_DIALOG")
+    override fun onEntradaSelected(entrada: Entrada, userId : Int, areaId : Int, loteId : Int) {
+        changeFragment(EntradaDetalheDialog.newInstance(entrada, userId,areaId,loteId), true, "ENTRADA_DETALHE_DIALOG")
     }
 
 

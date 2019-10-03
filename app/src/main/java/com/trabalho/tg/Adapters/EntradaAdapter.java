@@ -48,7 +48,6 @@ public class EntradaAdapter extends RecyclerView.Adapter{
 
         entradaViewHolder.nomeText.setText(entrada.get(pos).getEnt_desc());
         entradaViewHolder.dataText.setText(new Utils_TG().formatDate(entrada.get(pos).getEnt_data(),true));
-        System.out.println("nada");
     }
 
 
@@ -80,7 +79,7 @@ public class EntradaAdapter extends RecyclerView.Adapter{
 
         @Override
         public void onClick(View view){
-            listener.onClick(view, entrada.get(getAdapterPosition()).getEnt_numero());
+            listener.onClick(view, getAdapterPosition());
         }
 
     }

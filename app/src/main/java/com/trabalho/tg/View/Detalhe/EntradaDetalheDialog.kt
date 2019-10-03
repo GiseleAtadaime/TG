@@ -7,14 +7,19 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.trabalho.tg.Helper.Utils_TG
+import com.trabalho.tg.Model.Entrada
 
 import com.trabalho.tg.R
+import kotlinx.android.synthetic.main.fragment_entrada_detalhe_dialog.*
+import java.io.Serializable
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
+private const val ENTRADA = "param1"
+private const val USERID = "userid"
+private const val AREAID = "areaid"
+private const val LOTEID = "loteid"
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
@@ -26,15 +31,19 @@ private const val ARG_PARAM2 = "param2"
  */
 class EntradaDetalheDialog : Fragment() {
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var entrada: Entrada? = null
+    private var userid: Int? = null
+    private var areaId: Int? = null
+    private var loteId: Int? = null
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            entrada = it.getSerializable(ENTRADA) as Entrada
+            userid = it.getInt(USERID)
+            areaId = it.getInt(AREAID)
+            loteId = it.getInt(LOTEID)
         }
     }
 
@@ -92,12 +101,34 @@ class EntradaDetalheDialog : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(entrada: Entrada, user : Int, areaId : Int, loteId : Int) =
             EntradaDetalheDialog().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putSerializable(ENTRADA, entrada as Serializable)
+                    putInt(USERID, user)
+                    putInt(AREAID, areaId)
+                    putInt(LOTEID,loteId)
                 }
             }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        txtTipo_EntradaDetalhe.text = entrada!!.ent_desc
+        txtData_EntradaDetalhe.text = Utils_TG().formatDate(entrada!!.ent_data, true)
+
+        if (entrada!!.ent_tpun != null){
+
+            if(entrada!!.ent_qtde != null){
+
+            }
+        }
+        else{
+            txtTipo2_EntradaDetalhe.visibility = View.GONE
+            txtTipoValor2_EntradaDetalhe.visibility = View.GONE
+        }
+
+
     }
 }

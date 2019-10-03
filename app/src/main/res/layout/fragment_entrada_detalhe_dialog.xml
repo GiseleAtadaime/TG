@@ -1,6 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".View.Detalhe.EntradaDetalheDialog"/>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             tools:context=".View.Detalhe.EntradaDetalheDialog"
+                                             android:id="@+id/frameLayout3">
+    <ImageView
+            android:src="@color/plantio"
+            android:layout_width="37dp"
+            android:layout_height="0dp"
+            android:id="@+id/imgColor_EntradaDetalhe" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="0.0"/>
+    <ImageButton
+            android:src="@drawable/baseline_create_black_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imgBtnAlter_EntradaDetalhe" app:layout_constraintEnd_toStartOf="@+id/imgBtnDelete_EntradaDetalhe"
+            android:layout_marginEnd="8dp" app:layout_constraintStart_toEndOf="@+id/imgColor_EntradaDetalhe"
+            android:layout_marginStart="8dp" android:layout_marginTop="16dp" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.975"/>
+    <ImageButton
+            android:src="@drawable/baseline_delete_outline_black_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imgBtnDelete_EntradaDetalhe" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp" app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imgBtnAlter_EntradaDetalhe" app:layout_constraintVertical_bias="0.0"/>
+    <TextView
+            android:text="TextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtTipo_EntradaDetalhe" app:layout_constraintStart_toEndOf="@+id/imgColor_EntradaDetalhe"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            android:layout_marginTop="72dp" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.03"/>
+    <TextView
+            android:text="TextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtData_EntradaDetalhe" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toEndOf="@+id/imgColor_EntradaDetalhe" android:layout_marginStart="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/txtTipo_EntradaDetalhe" android:layout_marginTop="12dp"
+            app:layout_constraintHorizontal_bias="0.501"/>
+    <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:id="@+id/txtTipo1_EntradaDetalhe"
+            app:layout_constraintStart_toEndOf="@+id/imgColor_EntradaDetalhe" android:layout_marginStart="8dp"
+            android:layout_marginTop="20dp" app:layout_constraintTop_toBottomOf="@+id/txtData_EntradaDetalhe"
+    />
+    <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtTipo2_EntradaDetalhe" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/txtData_EntradaDetalhe" app:layout_constraintStart_toEndOf="@+id/txtTipo1_EntradaDetalhe"
+            android:layout_marginStart="8dp" android:layout_marginTop="20dp"
+            app:layout_constraintHorizontal_bias="0.495"/>
+    <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtTipoValor1_EntradaDetalhe" app:layout_constraintStart_toEndOf="@+id/imgColor_EntradaDetalhe"
+            android:layout_marginStart="8dp" android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/txtTipo1_EntradaDetalhe"/>
+    <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtTipoValor2_EntradaDetalhe" android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/txtTipo2_EntradaDetalhe" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" app:layout_constraintStart_toEndOf="@+id/txtTipoValor1_EntradaDetalhe"
+            android:layout_marginStart="8dp"/>
+    <TextView
+            android:text="TextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtMudas_EntradaDetalhe" app:layout_constraintStart_toEndOf="@+id/imgColor_EntradaDetalhe"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/txtTipoValor2_EntradaDetalhe" android:layout_marginTop="40dp"
+            app:layout_constraintHorizontal_bias="0.0"/>
+    <TextView
+            android:text="TextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtValor_EntradaDetalhe" app:layout_constraintStart_toEndOf="@+id/imgColor_EntradaDetalhe"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/txtMudas_EntradaDetalhe"
+            app:layout_constraintHorizontal_bias="0.03"/>
+    <TextView
+            android:text="TextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtNomeCom_EntradaDetalhe"
+            app:layout_constraintTop_toBottomOf="@+id/txtValor_EntradaDetalhe" app:layout_constraintStart_toEndOf="@+id/imgColor_EntradaDetalhe"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            android:layout_marginTop="40dp" app:layout_constraintHorizontal_bias="0.0"/>
+    <TextView
+            android:text="TextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtEmpresa_EntradaDetalhe" android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@+id/txtNomeCom_EntradaDetalhe" app:layout_constraintStart_toEndOf="@+id/imgColor_EntradaDetalhe"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintHorizontal_bias="0.0"/>
+    <TextView
+            android:text="TextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtIng_EntradaDetalhe"
+            app:layout_constraintTop_toBottomOf="@+id/txtEmpresa_EntradaDetalhe" app:layout_constraintStart_toEndOf="@+id/imgColor_EntradaDetalhe"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            android:layout_marginTop="20dp" app:layout_constraintHorizontal_bias="0.0"/>
+</android.support.constraint.ConstraintLayout>

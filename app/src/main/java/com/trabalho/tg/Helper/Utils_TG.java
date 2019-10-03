@@ -21,7 +21,7 @@ public class Utils_TG {
         SimpleDateFormat dateFormat;
         if(type){
             dateFormat = new SimpleDateFormat(
-                    "dd-MM-yyyy HH:mm:ss", Locale.getDefault());
+                    "dd/MM/yyyy", Locale.getDefault());
         }
         else{
             dateFormat = new SimpleDateFormat(

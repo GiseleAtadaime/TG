@@ -56,8 +56,8 @@ class EntradaFragment : Fragment() {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onEntradaSelected(entrada : Entrada) {
-        listener?.onEntradaSelected(entrada)
+    fun onEntradaSelected(entrada : Entrada, userId : Int, areaId : Int, loteId : Int) {
+        listener?.onEntradaSelected(entrada, userId, areaId, loteId)
     }
 
     override fun onAttach(context: Context) {
@@ -87,7 +87,7 @@ class EntradaFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onEntradaSelected(entrada : Entrada)
+        fun onEntradaSelected(entrada : Entrada,userId : Int, areaId : Int, loteId : Int)
     }
 
     companion object {
@@ -116,7 +116,7 @@ class EntradaFragment : Fragment() {
 
         val mlistener = fun(view : View, position: Int) {
             Toast.makeText(context, "Entrada position:  $position", Toast.LENGTH_SHORT).show()
-            onEntradaSelected(lotePam!!.lot_ent[position])
+            onEntradaSelected(lotePam!!.lot_ent[position], userid!!, areaId!!, lotePam!!.lot_id)
         }
 
         var recyclerView = view.findViewById<RecyclerView>(R.id.recView_Entrada)
