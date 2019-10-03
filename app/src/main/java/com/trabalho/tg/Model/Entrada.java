@@ -1,5 +1,6 @@
 package com.trabalho.tg.Model;
 
+import com.trabalho.tg.Helper.Utils_TG;
 import com.trabalho.tg.R;
 
 import java.io.Serializable;
@@ -36,44 +37,7 @@ public class Entrada implements Serializable {
 
     public void setEnt_data(Integer dia, Integer mes, Integer ano) {
 
-        switch (mes){
-            case 1:
-              mes = Calendar.JANUARY;
-              break;
-            case 2:
-                mes =Calendar.FEBRUARY;
-                break;
-            case 3:
-                mes =Calendar.MARCH;
-                break;
-            case 4:
-                mes =Calendar.APRIL;
-                break;
-            case 5:
-                mes =Calendar.MAY;
-                break;
-            case 6:
-                mes =Calendar.JUNE;
-                break;
-            case 7:
-                mes =Calendar.JULY;
-                break;
-            case 8:
-                mes =Calendar.AUGUST;
-                break;
-            case 9:
-                mes =Calendar.SEPTEMBER;
-                break;
-            case 10:
-                mes =Calendar.OCTOBER;
-                break;
-            case 11:
-                mes =Calendar.NOVEMBER;
-                break;
-            case 12:
-                mes =Calendar.DECEMBER;
-                break;
-        }
+        mes = new Utils_TG().getMonth(mes);
 
         Calendar c = Calendar.getInstance();
         c.clear();

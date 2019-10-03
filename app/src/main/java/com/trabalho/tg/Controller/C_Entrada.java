@@ -30,7 +30,7 @@ public class C_Entrada {
             if (c.moveToFirst()) {
                 do{
                     e.add(new Entrada(c.getInt(c.getColumnIndex(Contrato.Entrada.COLUMN_NUMERO))));
-                    //e.get(i).setEnt_data(c.getString(c.getColumnIndex(Contrato.Entrada.COLUMN_DATA)));
+                    e.get(i).setEnt_data(new Utils_TG().getStringToDate(c.getString(c.getColumnIndex(Contrato.Entrada.COLUMN_DATA))));
                     e.get(i).setEnt_desc(c.getString(c.getColumnIndex(Contrato.Tipo_Entrada.COLUMN_DESCRICAO)));
                     e.get(i).setEnt_tipo(c.getInt(c.getColumnIndex(Contrato.Entrada.COLUMN_TIPO)));
                     e.get(i).setEnt_tempo(c.getDouble(c.getColumnIndex(Contrato.Tipo_Entrada.COLUMN_TEMPO)));
