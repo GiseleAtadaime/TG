@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/txtMudas_EntradaDetalhe" app:layout_constraintStart_toEndOf="@+id/imgColor_EntradaDetalhe"
             android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/txtTipoValor2_EntradaDetalhe" android:layout_marginTop="40dp"
+            app:layout_constraintTop_toBottomOf="@+id/txtTipoValor1_EntradaDetalhe" android:layout_marginTop="40dp"
             app:layout_constraintHorizontal_bias="0.0"/>
     <TextView
             android:text="TextView"

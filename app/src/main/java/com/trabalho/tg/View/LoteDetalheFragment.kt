@@ -113,6 +113,7 @@ class LoteDetalheFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         txtNome_LoteDetFrag.text = lotePam!!.lot_nome
+        txtPlanta_LoteDetFrag.text = lotePam!!.lot_planta
 
         fBtnAdd_LoteDetFrag.setOnClickListener{
             if (menu_LoteDetFrag.visibility == View.VISIBLE){

@@ -75,6 +75,7 @@ public final class Contrato {
         public static final String TABLENAME = "LOTE";
         public static final String COLUMN_ID = "lote_id";
         public static final String COLUMN_NOME = "lote_nome";
+        public static final String COLUMN_PLANTA = "lote_planta";
         public static final String COLUMN_IMAGEM = "lote_imagem";
         public static final String COLUMN_AREA_ID = "lote_area_id";
         public static final String COLUMN_USR_ID = "lote_usr_id";
@@ -111,15 +112,15 @@ public final class Contrato {
         public static final String MAO_DE_OBRA = "mao de obra";
         public static final String COLHEITA = "colheita";
 
-        public static final String TEMPO_TIPO_AGROTOX = "A";
-        public static final String TEMPO_TIPO_IRRIG = "I";
-        public static final String TEMPO_TIPO_MAO_DE_OBRA = "M";
-        public static final String QTDE_TIPO_AGROTOX = "D";
-        public static final String QTDE_TIPO_PLANTIO = "M";
-        public static final String QTDE_TIPO_ADUBACAO = "A";
-        public static final String QTDE_TIPO_PREJUIZO = "P";
-        public static final String QTDE_TIPO_MAO_DE_OBRA = "R";
-        public static final String QTDE_TIPO_COLHEITA = "C";
+        public static final String TEMPO_TIPO_AGROTOX = "Tempo de carência";
+        public static final String TEMPO_TIPO_IRRIG = "Tempo";
+        public static final String TEMPO_TIPO_MAO_DE_OBRA = "Tempo";
+        public static final String QTDE_TIPO_AGROTOX = "Dose";
+        public static final String QTDE_TIPO_PLANTIO = "Mudas";
+        public static final String QTDE_TIPO_ADUBACAO = "Kg";
+        public static final String QTDE_TIPO_PREJUIZO = "Prejuízo";
+        public static final String QTDE_TIPO_MAO_DE_OBRA = "Recursos";
+        public static final String QTDE_TIPO_COLHEITA = "Unidades";
 
 
     }
@@ -128,6 +129,7 @@ public final class Contrato {
         public static final String TABLENAME = "LOTE_HIST";
         public static final String COLUMN_ID = "lote_id";
         public static final String COLUMN_NOME = "lote_nome";
+        public static final String COLUMN_PLANTA = "lote_planta";
         public static final String COLUMN_IMAGEM = "lote_imagem";
         public static final String COLUMN_PDF_LINK = "lote_pdf_link";
         public static final String COLUMN_LOT_USERPDF_LINK = "lote_lote_userpdf_link";
@@ -172,15 +174,15 @@ public final class Contrato {
         public static final String MAO_DE_OBRA = "mao de obra";
         public static final String COLHEITA = "colheita";
 
-        public static final String TEMPO_TIPO_AGROTOX = "A";
-        public static final String TEMPO_TIPO_IRRIG = "I";
-        public static final String TEMPO_TIPO_MAO_DE_OBRA = "M";
-        public static final String QTDE_TIPO_AGROTOX = "D";
-        public static final String QTDE_TIPO_PLANTIO = "M";
-        public static final String QTDE_TIPO_ADUBACAO = "A";
-        public static final String QTDE_TIPO_PREJUIZO = "P";
-        public static final String QTDE_TIPO_MAO_DE_OBRA = "R";
-        public static final String QTDE_TIPO_COLHEITA = "C";
+        public static final String TEMPO_TIPO_AGROTOX = "Tempo de carência";
+        public static final String TEMPO_TIPO_IRRIG = "Tempo";
+        public static final String TEMPO_TIPO_MAO_DE_OBRA = "Tempo";
+        public static final String QTDE_TIPO_AGROTOX = "Dose";
+        public static final String QTDE_TIPO_PLANTIO = "Bandejas";
+        public static final String QTDE_TIPO_ADUBACAO = "Kg";
+        public static final String QTDE_TIPO_PREJUIZO = "Prejuízo";
+        public static final String QTDE_TIPO_MAO_DE_OBRA = "Recursos";
+        public static final String QTDE_TIPO_COLHEITA = "Unidades";
     }
 
     //Table creations
@@ -234,6 +236,7 @@ public final class Contrato {
     public static final String CREATE_TABLE_LOTE = "CREATE TABLE " + Lote.TABLENAME +
             " ( " + Lote.COLUMN_ID + " INTEGER CONSTRAINT pk_lote PRIMARY KEY AUTOINCREMENT,  " +
                     Lote.COLUMN_NOME + " VARCHAR(60), " +
+                    Lote.COLUMN_PLANTA + " VARCHAR(60), " +
                     Lote.COLUMN_IMAGEM + " VARCHAR(60), " +
                     Lote.COLUMN_AREA_ID + " INTEGER, " +
                     Lote.COLUMN_USR_ID + " INTEGER, " +
@@ -253,9 +256,9 @@ public final class Contrato {
             " ( " + Tipo_Entrada.COLUMN_TIPO_NUMERO + " INTEGER CONSTRAINT pk_tp PRIMARY KEY AUTOINCREMENT,  " +
                     Tipo_Entrada.COLUMN_DESCRICAO + " VARCHAR(20), " +
                     Tipo_Entrada.COLUMN_TEMPO + " NUMERIC(10,2), " +
-                    Tipo_Entrada.COLUMN_TPUN + " VARCHAR(1), " +
+                    Tipo_Entrada.COLUMN_TPUN + " VARCHAR(20), " +
                     Tipo_Entrada.COLUMN_QTDE + " NUMERIC(10,2), " +
-                    Tipo_Entrada.COLUMN_QTUN + " VARCHAR(1), " +
+                    Tipo_Entrada.COLUMN_QTUN + " VARCHAR(20), " +
                     Tipo_Entrada.COLUMN_MUDAS_BANDEJA + " INTEGER, " +
                     Tipo_Entrada.COLUMN_VALOR + " NUMERIC(10,2), " +
                     Tipo_Entrada.COLUMN_REG_NUM + " INTEGER, " +
@@ -266,6 +269,7 @@ public final class Contrato {
     public static final String CREATE_TABLE_LOTE_FECHADO = "CREATE TABLE " + Fec_lote.TABLENAME +
             " ( " + Fec_lote.COLUMN_ID + " INTEGER CONSTRAINT pk_fec_lote PRIMARY KEY AUTOINCREMENT,  " +
                     Fec_lote.COLUMN_NOME + " VARCHAR(60), " +
+                    Fec_lote.COLUMN_PLANTA + " VARCHAR(60), " +
                     Fec_lote.COLUMN_IMAGEM + " VARCHAR(60), " +
                     Fec_lote.COLUMN_PDF_LINK + " VARCHAR(60), " +
                     Fec_lote.COLUMN_LOT_USERPDF_LINK + " VARCHAR(60), "  +
@@ -295,9 +299,9 @@ public final class Contrato {
             " ( " + Fec_Tipo_Entrada.COLUMN_TIPO_NUMERO + " INTEGER CONSTRAINT pk_tp PRIMARY KEY AUTOINCREMENT, " +
             Fec_Tipo_Entrada.COLUMN_DESCRICAO + " VARCHAR(20), " +
             Fec_Tipo_Entrada.COLUMN_TEMPO + " NUMERIC(10,2), " +
-            Fec_Tipo_Entrada.COLUMN_TPUN + " VARCHAR(1), " +
+            Fec_Tipo_Entrada.COLUMN_TPUN + " VARCHAR(20), " +
             Fec_Tipo_Entrada.COLUMN_QTDE + " NUMERIC(10,2), " +
-            Fec_Tipo_Entrada.COLUMN_QTUN + " VARCHAR(1), " +
+            Fec_Tipo_Entrada.COLUMN_QTUN + " VARCHAR(20), " +
             Fec_Tipo_Entrada.COLUMN_MUDAS_BANDEJA + " INTEGER, " +
             Fec_Tipo_Entrada.COLUMN_VALOR + " NUMERIC(10,2), " +
             Fec_Tipo_Entrada.COLUMN_REG_NUM + " INTEGER, " +

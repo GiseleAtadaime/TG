@@ -341,6 +341,7 @@ class MainActivity : AppCompatActivity(),
         var dbHelper : DBHelper = DBHelper(this)
         var lote = Lote(0)
         lote.lot_nome = "lote normal 1"
+        lote.lot_planta = "repolho"
         lote.lot_imagem = null
         if(C_Lote().insertLote(dbHelper,lote,usuario.usr_area[pos].ar_id,usuario.usr_id)){
             usuario.usr_area[pos].ar_lote = C_Lote().selectLote(dbHelper,usuario.usr_area[pos].ar_id)
@@ -354,10 +355,10 @@ class MainActivity : AppCompatActivity(),
         entrada.ent_tipo = 0
         entrada.ent_tempo = null
         entrada.ent_tpun = null
-        entrada.ent_qtde = 0.0
+        entrada.ent_qtde = 50.0
         entrada.ent_qtun = Contrato.Tipo_Entrada.QTDE_TIPO_PLANTIO
-        entrada.ent_mudas_bandeja = 0
-        entrada.ent_valor = 0.0
+        entrada.ent_mudas_bandeja = 40
+        entrada.ent_valor = 4500.00
         entrada.ent_reg = null
 
         if (C_Entrada().insertEntrada(dbHelper,entrada,loteID, usuario.usr_id)){

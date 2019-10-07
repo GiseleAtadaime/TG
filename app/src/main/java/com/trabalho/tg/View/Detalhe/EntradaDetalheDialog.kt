@@ -1,5 +1,6 @@
 package com.trabalho.tg.View.Detalhe
 
+import android.app.AlertDialog
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -7,6 +8,9 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import com.trabalho.tg.Controller.C_Entrada
+import com.trabalho.tg.Helper.DBHelper
 import com.trabalho.tg.Helper.Utils_TG
 import com.trabalho.tg.Model.Entrada
 
@@ -115,20 +119,102 @@ class EntradaDetalheDialog : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        txtIng_EntradaDetalhe.visibility = View.GONE
+        txtNomeCom_EntradaDetalhe.visibility = View.GONE
+        txtEmpresa_EntradaDetalhe.visibility = View.GONE
+        txtTipo1_EntradaDetalhe.visibility = View.GONE
+        txtTipoValor1_EntradaDetalhe.visibility = View.GONE
+        txtTipo2_EntradaDetalhe.visibility = View.GONE
+        txtTipoValor2_EntradaDetalhe.visibility = View.GONE
+
+
         txtTipo_EntradaDetalhe.text = entrada!!.ent_desc
         txtData_EntradaDetalhe.text = Utils_TG().formatDate(entrada!!.ent_data, true)
 
         if (entrada!!.ent_tpun != null){
 
+            txtTipo1_EntradaDetalhe.visibility = View.VISIBLE
+            txtTipoValor1_EntradaDetalhe.visibility = View.VISIBLE
+
+            txtTipo1_EntradaDetalhe.text = entrada!!.ent_tpun
+            txtTipoValor1_EntradaDetalhe.text = entrada!!.ent_tempo.toString()
+
             if(entrada!!.ent_qtde != null){
+
+                txtTipo2_EntradaDetalhe.visibility = View.VISIBLE
+                txtTipoValor2_EntradaDetalhe.visibility = View.VISIBLE
+
+                txtTipo2_EntradaDetalhe.text = entrada!!.ent_qtun
+                txtTipoValor2_EntradaDetalhe.text = entrada!!.ent_qtde.toString()
+
 
             }
         }
-        else{
-            txtTipo2_EntradaDetalhe.visibility = View.GONE
-            txtTipoValor2_EntradaDetalhe.visibility = View.GONE
+        else if(entrada!!.ent_qtde != null){
+
+            txtTipo1_EntradaDetalhe.visibility = View.VISIBLE
+            txtTipoValor1_EntradaDetalhe.visibility = View.VISIBLE
+            txtTipo1_EntradaDetalhe.text = entrada!!.ent_qtun
+            txtTipoValor1_EntradaDetalhe.text = entrada!!.ent_qtde.toString()
         }
 
+        if(entrada!!.ent_valor != null){
+            txtValor_EntradaDetalhe.text = "R$" + entrada!!.ent_valor.toString()
+        }
+        else{
+            txtValor_EntradaDetalhe.visibility = View.GONE
+        }
+
+        if(entrada!!.ent_mudas_bandeja != null){
+            txtMudas_EntradaDetalhe.text = "Mudas por bandeja: " + entrada!!.ent_mudas_bandeja.toString()
+        }
+        else{
+            txtMudas_EntradaDetalhe.visibility = View.GONE
+        }
+
+
+        if (entrada!!.ent_reg != null){
+            txtIng_EntradaDetalhe.visibility = View.VISIBLE
+            txtNomeCom_EntradaDetalhe.visibility = View.VISIBLE
+            txtEmpresa_EntradaDetalhe.visibility = View.VISIBLE
+
+            txtIng_EntradaDetalhe.text = entrada!!.ent_reg.reg_ing_ativo
+            txtNomeCom_EntradaDetalhe.text = entrada!!.ent_reg.reg_nomecom
+            txtEmpresa_EntradaDetalhe.text = entrada!!.ent_reg.reg_empresa
+
+        }
+
+
+        imgBtnDelete_EntradaDetalhe.setOnClickListener(){
+            val builder = AlertDialog.Builder(context)
+            builder.setTitle("Deletar registro")
+            builder.setMessage("Tem certeza que deseja o registro de  ${entrada!!.ent_desc}" +
+                    " do dia ${Utils_TG().formatDate(entrada!!.ent_data,true)}? Esta operação não pode ser desfeita!")
+
+            builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+                if(!entrada!!.ent_tipo.toString().contentEquals("plantio")){
+                    if (C_Entrada().deleteEntrada(DBHelper(context), entrada!!)){
+                        dialog.dismiss()
+                        //onCloseLoteDialog(areaId)
+                    }
+                    else {
+                        Toast.makeText(context, "Não foi possível apagar o registro selecionado!", Toast.LENGTH_SHORT).show()
+                        dialog.dismiss()
+                    }
+                }
+                else{
+                    Toast.makeText(context, "Não é possível apagar a primeira entrada referente a plantio!", Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
+                }
+
+            }
+            builder.setNegativeButton(android.R.string.no){dialog, which ->
+                dialog.dismiss()
+            }
+
+            builder.show()
+
+        }
 
     }
 }

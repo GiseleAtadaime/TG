@@ -25,6 +25,7 @@ public class C_Lote_Fechado {
                 do{
                     l.add(new Lote_Fechado(c.getInt(c.getColumnIndex(Contrato.Fec_lote.COLUMN_ID))));
                     l.get(i).setLot_nome(c.getString(c.getColumnIndex(Contrato.Fec_lote.COLUMN_NOME)));
+                    l.get(i).setLot_planta(c.getString(c.getColumnIndex(Contrato.Fec_lote.COLUMN_PLANTA)));
                     l.get(i).setLot_imagem(c.getString(c.getColumnIndex(Contrato.Fec_lote.COLUMN_IMAGEM)));
                     l.get(i).setLot_pdf_link(c.getString(c.getColumnIndex(Contrato.Fec_lote.COLUMN_PDF_LINK)));
                     l.get(i).setLot_userpdf_link(c.getString(c.getColumnIndex(Contrato.Fec_lote.COLUMN_LOT_USERPDF_LINK)));
@@ -48,6 +49,7 @@ public class C_Lote_Fechado {
         ContentValues values = new ContentValues();
         values.put(Contrato.Fec_lote.COLUMN_ID,l.getLot_id());
         values.put(Contrato.Fec_lote.COLUMN_NOME,l.getLot_nome());
+        values.put(Contrato.Fec_lote.COLUMN_PLANTA, l.getLot_planta());
         values.put(Contrato.Fec_lote.COLUMN_IMAGEM,l.getLot_imagem());
         values.put(Contrato.Fec_lote.COLUMN_PDF_LINK,l.getLot_pdf_link());
         values.put(Contrato.Fec_lote.COLUMN_LOT_USERPDF_LINK,l.getLot_userpdf_link());
@@ -72,6 +74,7 @@ public class C_Lote_Fechado {
         ContentValues values = new ContentValues();
 
         values.put(Contrato.Fec_lote.COLUMN_NOME, l.getLot_nome());
+        values.put(Contrato.Fec_lote.COLUMN_PLANTA, l.getLot_planta());
         values.put(Contrato.Fec_lote.COLUMN_IMAGEM,l.getLot_imagem());
         values.put(Contrato.Fec_lote.COLUMN_PDF_LINK,l.getLot_pdf_link());
         values.put(Contrato.Fec_lote.COLUMN_LOT_USERPDF_LINK,l.getLot_userpdf_link());

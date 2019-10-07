@@ -26,6 +26,7 @@ public class C_Lote {
                 do{
                     l.add(new Lote(c.getInt(c.getColumnIndex(Contrato.Lote.COLUMN_ID))));
                     l.get(i).setLot_nome(c.getString(c.getColumnIndex(Contrato.Lote.COLUMN_NOME)));
+                    l.get(i).setLot_planta(c.getString(c.getColumnIndex(Contrato.Lote.COLUMN_PLANTA)));
                     l.get(i).setLot_imagem(c.getString(c.getColumnIndex(Contrato.Lote.COLUMN_IMAGEM)));
                     i++;
                 }
@@ -45,6 +46,7 @@ public class C_Lote {
 
         ContentValues values = new ContentValues();
         values.put(Contrato.Lote.COLUMN_NOME,l.getLot_nome());
+        values.put(Contrato.Lote.COLUMN_PLANTA, l.getLot_planta());
         values.put(Contrato.Lote.COLUMN_IMAGEM,l.getLot_imagem());
         values.put(Contrato.Lote.COLUMN_AREA_ID, aID);
         values.put(Contrato.Lote.COLUMN_USR_ID, uID);
@@ -66,6 +68,7 @@ public class C_Lote {
         ContentValues values = new ContentValues();
 
         values.put(Contrato.Lote.COLUMN_NOME, l.getLot_nome());
+        values.put(Contrato.Lote.COLUMN_PLANTA, l.getLot_planta());
         values.put(Contrato.Lote.COLUMN_IMAGEM,l.getLot_imagem());
 
         try{

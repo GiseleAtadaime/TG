@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class Lote implements Serializable {
     private Integer lot_id;
     private String lot_nome;
+    private String lot_planta;
     private String lot_imagem;
     private ArrayList<Entrada> lot_ent = new ArrayList<>();
 
@@ -23,6 +24,14 @@ public class Lote implements Serializable {
 
     public void setLot_nome(String lot_nome) {
         this.lot_nome = lot_nome;
+    }
+
+    public String getLot_planta() {
+        return lot_planta;
+    }
+
+    public void setLot_planta(String lot_planta) {
+        this.lot_planta = lot_planta;
     }
 
     public String getLot_imagem() {
