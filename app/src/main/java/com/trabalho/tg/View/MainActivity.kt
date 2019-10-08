@@ -26,6 +26,7 @@ import com.trabalho.tg.Model.Lote
 import com.trabalho.tg.Model.Usuario
 import com.trabalho.tg.R
 import com.trabalho.tg.View.Detalhe.AreaCriaAlterDialog
+import com.trabalho.tg.View.Detalhe.EntradaCriaAlterDialog
 import com.trabalho.tg.View.Detalhe.EntradaDetalheDialog
 import com.trabalho.tg.View.Detalhe.LoteCriaAlterDialog
 import kotlin.collections.ArrayList
@@ -43,8 +44,30 @@ class MainActivity : AppCompatActivity(),
     EntradaFragment.OnFragmentInteractionListener,
     AreaCriaAlterDialog.OnFragmentInteractionListener,
     LoteCriaAlterDialog.OnFragmentInteractionListener,
-    EntradaDetalheDialog.OnFragmentInteractionListener
+    EntradaDetalheDialog.OnFragmentInteractionListener,
+    EntradaCriaAlterDialog.OnFragmentInteractionListener
 {
+    override fun onAlterDetalheClick(entrada: Entrada, userId: Int, areaId: Int, loteId: Int, fecha : Boolean) {
+
+        if (fecha){
+
+            var indexArea = usuario.usr_area.indexOfFirst { it.ar_id == areaId }
+            var indexLote = usuario.usr_area[indexArea].ar_lote.indexOfFirst { it.lot_id ==  loteId}
+
+            usuario.usr_area[indexArea].ar_lote[indexLote].lot_ent = C_Entrada().selectEntrada(DBHelper(this),loteId)
+
+            removeFragment("ENTRADA_DETALHE_DIALOG")
+
+            changeFragment(EntradaFragment.newInstance(
+                usuario.usr_area[indexArea].ar_lote[indexLote],
+                usuario.usr_id,areaId), true, "ENTRADA_FRAGMENT")
+        }
+        else{
+            changeFragment(EntradaCriaAlterDialog(),
+                true, "ENTRADA_CRIA_ALTER_DIALOG")
+        }
+
+    }
 
     override fun onCloseLoteDialog(areaID: Int) {
         var indexArea = usuario.usr_area.indexOfFirst { it.ar_id == areaID }

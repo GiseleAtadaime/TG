@@ -60,8 +60,8 @@ class EntradaDetalheDialog : Fragment() {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
+    fun onAlterDetalheClick(entrada : Entrada, userId : Int, areaId : Int, loteId : Int, fecha : Boolean) {
+        listener?.onAlterDetalheClick(entrada, userId, areaId, loteId,fecha)
     }
 
     override fun onAttach(context: Context) {
@@ -91,7 +91,7 @@ class EntradaDetalheDialog : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+        fun onAlterDetalheClick(entrada : Entrada, userId : Int, areaId : Int, loteId : Int, fecha : Boolean)
     }
 
     companion object {
@@ -184,6 +184,10 @@ class EntradaDetalheDialog : Fragment() {
 
         }
 
+        imgBtnAlter_EntradaDetalhe.setOnClickListener(){
+            onAlterDetalheClick(entrada!!,userid!!,areaId!!, loteId!!, false)
+        }
+
 
         imgBtnDelete_EntradaDetalhe.setOnClickListener(){
             val builder = AlertDialog.Builder(context)
@@ -192,10 +196,10 @@ class EntradaDetalheDialog : Fragment() {
                     " do dia ${Utils_TG().formatDate(entrada!!.ent_data,true)}? Esta operação não pode ser desfeita!")
 
             builder.setPositiveButton(android.R.string.yes) { dialog, which ->
-                if(!entrada!!.ent_tipo.toString().contentEquals("plantio")){
+                if(!entrada!!.ent_desc.toString().contentEquals("plantio")){
                     if (C_Entrada().deleteEntrada(DBHelper(context), entrada!!)){
                         dialog.dismiss()
-                        //onCloseLoteDialog(areaId)
+                        onAlterDetalheClick(entrada!!,userid!!,areaId!!, loteId!!, true)
                     }
                     else {
                         Toast.makeText(context, "Não foi possível apagar o registro selecionado!", Toast.LENGTH_SHORT).show()

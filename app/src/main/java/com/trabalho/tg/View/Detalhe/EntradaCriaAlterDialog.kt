@@ -42,9 +42,7 @@ class EntradaCriaAlterDialog : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return TextView(activity).apply {
-            setText(R.string.hello_blank_fragment)
-        }
+        return inflater.inflate(R.layout.fragment_entrada_new_dialog, container, false)
     }
 
     // TODO: Rename method, update argument and hook method into UI event

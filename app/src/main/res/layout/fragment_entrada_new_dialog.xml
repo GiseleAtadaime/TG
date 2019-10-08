@@ -87,23 +87,23 @@
             <TextView
                     android:text="TextView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/textView6"/>
+                    android:layout_height="wrap_content" android:id="@+id/txtMudasB_EntradaNewDialog"/>
             <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:ems="10"
-                    android:id="@+id/editText9"/>
+                    android:id="@+id/edtMudasB_EntradaNewDialog"/>
             <TextView
                     android:text="TextView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/textView7"/>
+                    android:layout_height="wrap_content" android:id="@+id/txtValor_EntradaNewDialog"/>
             <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:ems="10"
-                    android:id="@+id/editText10"/>
+                    android:id="@+id/edtValor_EntradaNewDialog"/>
         </LinearLayout>
         <LinearLayout
                 android:orientation="vertical"
@@ -112,18 +112,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="32dp" app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="32dp"
-                android:id="@+id/linearLayout2"
+                android:id="@+id/linAgr_EntradaNewDialog"
                 app:layout_constraintTop_toBottomOf="@+id/linDados_EntradaNewDialog">
             <SearchView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content" android:id="@+id/srcAgr_EntradaNewDialog">
             </SearchView>
             <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                 <android.support.v7.widget.RecyclerView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" android:id="@+id/recViewAgr_EntradaNewDialog"/>
             </ScrollView>
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>
