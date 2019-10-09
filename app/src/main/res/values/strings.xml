@@ -54,8 +54,19 @@
         <item>Data + Número</item>
     </string-array>
 
+    <string-array name="EntradaTipo">
+        <item>plantio</item>
+        <item>agrotóxico</item>
+        <item>irrigação</item>
+        <item>adubação</item>
+        <item>prejuízo</item>
+        <item>mão de obra</item>
+        <item>colheita</item>
+    </string-array>
+
     <string name="spi_data">Data + Letra</string>
     <string name="spi_num">Data + Numero</string>
+
 
 
 </resources>

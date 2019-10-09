@@ -7,13 +7,20 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.TextView
+import com.trabalho.tg.Helper.Utils_TG
+import com.trabalho.tg.Model.Entrada
 import com.trabalho.tg.R
+import kotlinx.android.synthetic.main.fragment_entrada_new_dialog.*
+import java.io.Serializable
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val ENTRADA = "param1"
+private const val USERID = "userid"
+private const val AREAID = "areaid"
+private const val LOTEID = "loteid"
 
 /**
  * A simple [Fragment] subclass.
@@ -26,15 +33,19 @@ private const val ARG_PARAM2 = "param2"
  */
 class EntradaCriaAlterDialog : Fragment() {
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var entrada: Entrada? = null
+    private var userid: Int? = null
+    private var areaId: Int? = null
+    private var loteId: Int? = null
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            entrada = it.getSerializable(ENTRADA) as Entrada
+            userid = it.getInt(USERID)
+            areaId = it.getInt(AREAID)
+            loteId = it.getInt(LOTEID)
         }
     }
 
@@ -91,12 +102,74 @@ class EntradaCriaAlterDialog : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(entrada: Entrada, user : Int, areaId : Int, loteId : Int) =
             EntradaCriaAlterDialog().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putSerializable(ENTRADA, entrada as Serializable)
+                    putInt(USERID, user)
+                    putInt(AREAID, areaId)
+                    putInt(LOTEID,loteId)
                 }
             }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        txtTipo_EntradaNewDialog.text = "Tipo"
+        var adapter = ArrayAdapter.createFromResource(context,R.array.EntradaTipo, android.R.layout.simple_spinner_dropdown_item)
+        spiTipo_EntradaNewDialog.adapter = adapter
+
+        spiTipo_EntradaNewDialog.setSelection(0)
+
+        if(entrada!!.ent_desc.contentEquals("plantio")){
+            spiTipo_EntradaNewDialog.isEnabled = false
+        }
+
+        txtData_EntradaNewDialog.text = "Data do registro"
+        edtData_EntradaNewDialog.setText(Utils_TG().formatDate(entrada!!.ent_data, true))
+
+        if(entrada!!.ent_tempo != null){
+            txtTempo_EntradaNewDialog.text = "Tempo gasto"
+            edtTempo_EntradaNewDialog.setText(entrada!!.ent_tempo.toString())
+        }
+        else{
+            txtTempo_EntradaNewDialog.visibility = View.GONE
+            edtTempo_EntradaNewDialog.visibility = View.GONE
+        }
+
+        if(entrada!!.ent_qtde != null){
+            txtQtde_EntradaNewDialog.text = "Quantidade"
+            edtQtde_EntradaNewDialog.setText(entrada!!.ent_qtde.toString())
+        }
+        else{
+            txtQtde_EntradaNewDialog.visibility = View.GONE
+            edtQtde_EntradaNewDialog.visibility = View.GONE
+        }
+        if(entrada!!.ent_mudas_bandeja != null){
+            txtMudasB_EntradaNewDialog.text = "Mudas por bandeja"
+            edtMudasB_EntradaNewDialog.setText(entrada!!.ent_mudas_bandeja.toString())
+        }
+        else{
+            txtMudasB_EntradaNewDialog.visibility = View.GONE
+            edtMudasB_EntradaNewDialog.visibility = View.GONE
+        }
+        if(entrada!!.ent_valor != null){
+            txtValor_EntradaNewDialog.text = "Valor total"
+            edtValor_EntradaNewDialog.setText(entrada!!.ent_valor.toString())
+        }
+        else{
+            txtValor_EntradaNewDialog.visibility = View.GONE
+            edtValor_EntradaNewDialog.visibility = View.GONE
+        }
+
+        if(entrada!!.ent_reg != null){
+
+        }
+        else{
+            linAgr_EntradaNewDialog.visibility = View.GONE
+        }
+
+
     }
 }

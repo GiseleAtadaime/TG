@@ -48,11 +48,12 @@ class MainActivity : AppCompatActivity(),
     EntradaCriaAlterDialog.OnFragmentInteractionListener
 {
     override fun onAlterDetalheClick(entrada: Entrada, userId: Int, areaId: Int, loteId: Int, fecha : Boolean) {
+        var indexArea = usuario.usr_area.indexOfFirst { it.ar_id == areaId }
+        var indexLote = usuario.usr_area[indexArea].ar_lote.indexOfFirst { it.lot_id ==  loteId}
 
         if (fecha){
 
-            var indexArea = usuario.usr_area.indexOfFirst { it.ar_id == areaId }
-            var indexLote = usuario.usr_area[indexArea].ar_lote.indexOfFirst { it.lot_id ==  loteId}
+
 
             usuario.usr_area[indexArea].ar_lote[indexLote].lot_ent = C_Entrada().selectEntrada(DBHelper(this),loteId)
 
@@ -63,7 +64,7 @@ class MainActivity : AppCompatActivity(),
                 usuario.usr_id,areaId), true, "ENTRADA_FRAGMENT")
         }
         else{
-            changeFragment(EntradaCriaAlterDialog(),
+            changeFragment(EntradaCriaAlterDialog.newInstance( entrada,usuario.usr_id,areaId,loteId),
                 true, "ENTRADA_CRIA_ALTER_DIALOG")
         }
 
