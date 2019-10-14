@@ -22,10 +22,11 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(Contrato.CREATE_TABLE_AREA);
         db.execSQL(Contrato.CREATE_TABLE_LOTE);
         db.execSQL(Contrato.CREATE_TABLE_ENTRADA);
-        db.execSQL(Contrato.CREATE_TABLE_TIPO_ENTRADA);
+        db.execSQL(Contrato.CREATE_TABLE_ENTRADA_DETALHE);
         db.execSQL(Contrato.CREATE_TABLE_LOTE_FECHADO);
         db.execSQL(Contrato.CREATE_TABLE_ENTRADA_FECHADA);
-        db.execSQL(Contrato.CREATE_TABLE_FEC_TIPO_ENTRADA);
+        db.execSQL(Contrato.CREATE_TABLE_FEC_ENTRADA_DETALHE);
+        db.execSQL(Contrato.CREATE_TABLE_TIPO_ENTRADA);
     }
 
     @Override

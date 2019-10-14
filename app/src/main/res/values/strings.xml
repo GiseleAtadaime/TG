@@ -55,13 +55,15 @@
     </string-array>
 
     <string-array name="EntradaTipo">
+        <item>Escolha um tipo</item>
         <item>plantio</item>
-        <item>agrotóxico</item>
-        <item>irrigação</item>
         <item>adubação</item>
-        <item>prejuízo</item>
-        <item>mão de obra</item>
+        <item>agrotóxico</item>
         <item>colheita</item>
+        <item>mão de obra</item>
+        <item>prejuízo</item>
+        <item>irrigação</item>
+
     </string-array>
 
     <string name="spi_data">Data + Letra</string>

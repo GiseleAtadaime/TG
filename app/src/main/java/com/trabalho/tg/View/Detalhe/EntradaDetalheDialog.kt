@@ -127,7 +127,7 @@ class EntradaDetalheDialog : Fragment() {
         txtTipo2_EntradaDetalhe.visibility = View.GONE
         txtTipoValor2_EntradaDetalhe.visibility = View.GONE
 
-
+        imgColor_EntradaDetalhe.setImageResource(entrada!!.entradaColor)
         txtTipo_EntradaDetalhe.text = entrada!!.ent_desc
         txtData_EntradaDetalhe.text = Utils_TG().formatDate(entrada!!.ent_data, true)
 

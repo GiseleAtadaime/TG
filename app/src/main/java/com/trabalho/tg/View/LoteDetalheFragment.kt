@@ -126,6 +126,9 @@ class LoteDetalheFragment : Fragment() {
             }
         }
 
+        if(lotePam!!.lot_ent.size == 0){
+            btnAlt_LoteDetFrag.visibility = View.GONE
+        }
 
         imgBtnAlt_LoteDetFrag.setOnClickListener{
             onAlterButtonClick(lotePam!!,1, areaId!!,userid!!,lotePam!!.lot_id)

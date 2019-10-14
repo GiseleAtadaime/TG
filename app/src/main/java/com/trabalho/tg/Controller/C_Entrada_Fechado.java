@@ -18,8 +18,8 @@ public class C_Entrada_Fechado {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String query = "SELECT * FROM " + Contrato.Fec_entrada.TABLENAME + " e, " + Contrato.Tipo_Entrada.TABLENAME + " t WHERE " +
-                " e." + Contrato.Fec_entrada.COLUMN_TIPO + " = " + "t." + Contrato.Tipo_Entrada.COLUMN_TIPO_NUMERO +
+        String query = "SELECT * FROM " + Contrato.Fec_entrada.TABLENAME + " e, " + Contrato.Fec_Entrada_Detalhe.TABLENAME + " t WHERE " +
+                " e." + Contrato.Fec_entrada.COLUMN_DETALHE + " = " + "t." + Contrato.Fec_Entrada_Detalhe.COLUMN_DETALHE_NUMERO +
                 " AND e." + Contrato.Fec_entrada.COLUMN_LOTE_ID + " = " + lID;
 
         try{
@@ -27,17 +27,17 @@ public class C_Entrada_Fechado {
             Integer i = 0;
             if (c.moveToFirst()) {
                 do{
-                    e.add(new Entrada(c.getInt(c.getColumnIndex(Contrato.Fec_entrada.COLUMN_ID))));
+                    e.add(new Entrada(c.getInt(c.getColumnIndex(Contrato.Fec_entrada.COLUMN_NUMERO))));
                     //e.get(i).setEnt_data(c.getString(c.getColumnIndex(Contrato.Fec_entrada.COLUMN_DATA)));
                     e.get(i).setEnt_desc(c.getString(c.getColumnIndex(Contrato.Tipo_Entrada.COLUMN_DESCRICAO)));
-                    e.get(i).setEnt_tipo(c.getInt(c.getColumnIndex(Contrato.Fec_entrada.COLUMN_TIPO)));
-                    e.get(i).setEnt_tempo(c.getDouble(c.getColumnIndex(Contrato.Tipo_Entrada.COLUMN_TEMPO)));
-                    e.get(i).setEnt_tpun(c.getString(c.getColumnIndex(Contrato.Tipo_Entrada.COLUMN_TPUN)));
-                    e.get(i).setEnt_qtde(c.getDouble(c.getColumnIndex(Contrato.Tipo_Entrada.COLUMN_QTDE)));
-                    e.get(i).setEnt_qtun(c.getString(c.getColumnIndex(Contrato.Tipo_Entrada.COLUMN_QTUN)));
-                    e.get(i).setEnt_mudas_bandeja(c.getInt(c.getColumnIndex(Contrato.Tipo_Entrada.COLUMN_MUDAS_BANDEJA)));
-                    e.get(i).setEnt_valor(c.getDouble(c.getColumnIndex(Contrato.Tipo_Entrada.COLUMN_VALOR)));
-                    e.get(i).setEnt_reg(new Reg_Agrotoxico(c.getInt(c.getColumnIndex(Contrato.Tipo_Entrada.COLUMN_REG_NUM))));
+                    e.get(i).setEnt_tipo(c.getInt(c.getColumnIndex(Contrato.Fec_Entrada_Detalhe.COLUMN_TIPO_NUM)));
+                    e.get(i).setEnt_tempo(c.getDouble(c.getColumnIndex(Contrato.Fec_Entrada_Detalhe.COLUMN_TEMPO)));
+                    e.get(i).setEnt_tpun(c.getString(c.getColumnIndex(Contrato.Fec_Entrada_Detalhe.COLUMN_TPUN)));
+                    e.get(i).setEnt_qtde(c.getDouble(c.getColumnIndex(Contrato.Fec_Entrada_Detalhe.COLUMN_QTDE)));
+                    e.get(i).setEnt_qtun(c.getString(c.getColumnIndex(Contrato.Fec_Entrada_Detalhe.COLUMN_QTUN)));
+                    e.get(i).setEnt_mudas_bandeja(c.getInt(c.getColumnIndex(Contrato.Fec_Entrada_Detalhe.COLUMN_MUDAS_BANDEJA)));
+                    e.get(i).setEnt_valor(c.getDouble(c.getColumnIndex(Contrato.Fec_Entrada_Detalhe.COLUMN_VALOR)));
+                    e.get(i).setEnt_reg(new Reg_Agrotoxico(c.getInt(c.getColumnIndex(Contrato.Fec_Entrada_Detalhe.COLUMN_REG_NUM))));
                     i++;
                 }
                 while(c.moveToNext());
@@ -55,27 +55,33 @@ public class C_Entrada_Fechado {
         Boolean ret = false;
 
         ContentValues values = new ContentValues();
-        values.put(Contrato.Fec_entrada.COLUMN_ID,e.getEnt_numero());
+        values.put(Contrato.Fec_entrada.COLUMN_NUMERO,e.getEnt_numero());
         //values.put(Contrato.Fec_entrada.COLUMN_DATA,e.getEnt_data());
         values.put(Contrato.Fec_entrada.COLUMN_LOTE_ID,lID);
-        values.put(Contrato.Fec_entrada.COLUMN_TIPO,e.getEnt_tipo());
+        values.put(Contrato.Fec_entrada.COLUMN_DETALHE,e.getEnt_detalhe_num());
         values.put(Contrato.Fec_entrada.COLUMN_USR_ID, uID);
 
-        ContentValues valuesTipo = new ContentValues();
-        values.put(Contrato.Tipo_Entrada.COLUMN_TIPO_NUMERO,e.getEnt_tipo());
-        values.put(Contrato.Tipo_Entrada.COLUMN_DESCRICAO,e.getEnt_desc());
-        values.put(Contrato.Tipo_Entrada.COLUMN_TEMPO,e.getEnt_tempo());
-        values.put(Contrato.Tipo_Entrada.COLUMN_TPUN,e.getEnt_tpun());
-        values.put(Contrato.Tipo_Entrada.COLUMN_QTDE,e.getEnt_qtde());
-        values.put(Contrato.Tipo_Entrada.COLUMN_QTUN,e.getEnt_qtun());
-        values.put(Contrato.Tipo_Entrada.COLUMN_MUDAS_BANDEJA,e.getEnt_mudas_bandeja());
-        values.put(Contrato.Tipo_Entrada.COLUMN_VALOR,e.getEnt_valor());
-        values.put(Contrato.Tipo_Entrada.COLUMN_REG_NUM,e.getEnt_reg().getReg_numero());
-        values.put(Contrato.Tipo_Entrada.COLUMN_USR_ID,uID);
+        ContentValues valuesDetalhe = new ContentValues();
+        valuesDetalhe.put(Contrato.Entrada_Detalhe.COLUMN_TIPO_NUM,e.getEnt_tipo());
+        valuesDetalhe.put(Contrato.Entrada_Detalhe.COLUMN_TEMPO,e.getEnt_tempo());
+        valuesDetalhe.put(Contrato.Entrada_Detalhe.COLUMN_TPUN,e.getEnt_tpun());
+        valuesDetalhe.put(Contrato.Entrada_Detalhe.COLUMN_QTDE,e.getEnt_qtde());
+        valuesDetalhe.put(Contrato.Entrada_Detalhe.COLUMN_QTUN,e.getEnt_qtun());
+        valuesDetalhe.put(Contrato.Entrada_Detalhe.COLUMN_MUDAS_BANDEJA,e.getEnt_mudas_bandeja());
+        valuesDetalhe.put(Contrato.Entrada_Detalhe.COLUMN_VALOR,e.getEnt_valor());
+
+        if (e.getEnt_reg() != null){
+            valuesDetalhe.put(Contrato.Entrada_Detalhe.COLUMN_REG_NUM,e.getEnt_reg().getReg_numero());
+        }
+        /*
+        else{
+            valuesDetalhe.put(Contrato.Entrada_Detalhe.COLUMN_REG_NUM, (byte[]) null);
+        }*/
+        valuesDetalhe.put(Contrato.Entrada_Detalhe.COLUMN_USR_ID,uID);
 
         try{
             db.insert(Contrato.Fec_entrada.TABLENAME, null,values);
-            db.insert(Contrato.Tipo_Entrada.TABLENAME, null, valuesTipo);
+            db.insert(Contrato.Fec_Entrada_Detalhe.TABLENAME, null, valuesDetalhe);
             ret = true;
             db.setTransactionSuccessful();
         }
@@ -97,19 +103,19 @@ public class C_Entrada_Fechado {
         ContentValues valuesTipo = new ContentValues();
 
         //values.put(Contrato.Fec_entrada.COLUMN_DATA, e.getEnt_data());
-        valuesTipo.put(Contrato.Tipo_Entrada.COLUMN_DESCRICAO, e.getEnt_desc());
-        valuesTipo.put(Contrato.Tipo_Entrada.COLUMN_TEMPO, e.getEnt_tempo());
-        valuesTipo.put(Contrato.Tipo_Entrada.COLUMN_TPUN, e.getEnt_tpun());
-        valuesTipo.put(Contrato.Tipo_Entrada.COLUMN_QTDE, e.getEnt_qtde());
-        valuesTipo.put(Contrato.Tipo_Entrada.COLUMN_QTUN, e.getEnt_qtun());
-        valuesTipo.put(Contrato.Tipo_Entrada.COLUMN_MUDAS_BANDEJA, e.getEnt_mudas_bandeja());
-        valuesTipo.put(Contrato.Tipo_Entrada.COLUMN_VALOR, e.getEnt_valor());
-        valuesTipo.put(Contrato.Tipo_Entrada.COLUMN_REG_NUM, e.getEnt_reg().getReg_numero());
+        valuesTipo.put(Contrato.Fec_Entrada_Detalhe.COLUMN_DETALHE_NUMERO, e.getEnt_detalhe_num());
+        valuesTipo.put(Contrato.Fec_Entrada_Detalhe.COLUMN_TEMPO, e.getEnt_tempo());
+        valuesTipo.put(Contrato.Fec_Entrada_Detalhe.COLUMN_TPUN, e.getEnt_tpun());
+        valuesTipo.put(Contrato.Fec_Entrada_Detalhe.COLUMN_QTDE, e.getEnt_qtde());
+        valuesTipo.put(Contrato.Fec_Entrada_Detalhe.COLUMN_QTUN, e.getEnt_qtun());
+        valuesTipo.put(Contrato.Fec_Entrada_Detalhe.COLUMN_MUDAS_BANDEJA, e.getEnt_mudas_bandeja());
+        valuesTipo.put(Contrato.Fec_Entrada_Detalhe.COLUMN_VALOR, e.getEnt_valor());
+        valuesTipo.put(Contrato.Fec_Entrada_Detalhe.COLUMN_REG_NUM, e.getEnt_reg().getReg_numero());
 
         try{
 
-            db.update(Contrato.Fec_entrada.TABLENAME,values,Contrato.Fec_entrada.COLUMN_ID + " = ?", new String[]{e.getEnt_numero().toString()});
-            db.update(Contrato.Tipo_Entrada.TABLENAME,valuesTipo,Contrato.Tipo_Entrada.COLUMN_TIPO_NUMERO + " = ?", new String[]{e.getEnt_tipo().toString()});
+            db.update(Contrato.Fec_entrada.TABLENAME,values,Contrato.Fec_entrada.COLUMN_NUMERO + " = ?", new String[]{e.getEnt_numero().toString()});
+            db.update(Contrato.Fec_Entrada_Detalhe.TABLENAME,valuesTipo,Contrato.Fec_Entrada_Detalhe.COLUMN_DETALHE_NUMERO + " = ?", new String[]{e.getEnt_tipo().toString()});
             db.setTransactionSuccessful();
             ret = true;
         }

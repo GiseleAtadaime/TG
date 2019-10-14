@@ -46,6 +46,7 @@ public class EntradaAdapter extends RecyclerView.Adapter{
         final EntradaViewHolder entradaViewHolder = (EntradaViewHolder) viewHolder;
         int pos = entradaViewHolder.getAdapterPosition();
 
+        entradaViewHolder.imgEntrada.setImageResource(entrada.get(pos).getEntradaColor());
         entradaViewHolder.nomeText.setText(entrada.get(pos).getEnt_desc());
         entradaViewHolder.dataText.setText(new Utils_TG().formatDate(entrada.get(pos).getEnt_data(),true));
     }

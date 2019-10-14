@@ -47,13 +47,24 @@ class MainActivity : AppCompatActivity(),
     EntradaDetalheDialog.OnFragmentInteractionListener,
     EntradaCriaAlterDialog.OnFragmentInteractionListener
 {
+    override fun onCriaAlterDialog(userId: Int, areaId: Int, loteId: Int) {
+        var indexArea = usuario.usr_area.indexOfFirst { it.ar_id == areaId }
+        var indexLote = usuario.usr_area[indexArea].ar_lote.indexOfFirst { it.lot_id ==  loteId}
+
+        usuario.usr_area[indexArea].ar_lote[indexLote].lot_ent = C_Entrada().selectEntrada(DBHelper(this),loteId)
+        removeFragment("ENTRADA_CRIA_ALTER_DIALOG")
+
+        changeFragment(EntradaFragment.newInstance(
+            usuario.usr_area[indexArea].ar_lote[indexLote],
+            usuario.usr_id,areaId), true, "ENTRADA_FRAGMENT")
+
+    }
+
     override fun onAlterDetalheClick(entrada: Entrada, userId: Int, areaId: Int, loteId: Int, fecha : Boolean) {
         var indexArea = usuario.usr_area.indexOfFirst { it.ar_id == areaId }
         var indexLote = usuario.usr_area[indexArea].ar_lote.indexOfFirst { it.lot_id ==  loteId}
 
         if (fecha){
-
-
 
             usuario.usr_area[indexArea].ar_lote[indexLote].lot_ent = C_Entrada().selectEntrada(DBHelper(this),loteId)
 
@@ -134,16 +145,11 @@ class MainActivity : AppCompatActivity(),
 
         }
         else if(tipo == 4){//Novo entrada
-
-
+            changeFragment(EntradaCriaAlterDialog.newInstance(null,usuario.usr_id,areaId,loteId),
+                true, "ENTRADA_CRIA_ALTER_DIALOG")
 
         }
         else if(tipo == 5){//Ver entradas
-            usuario.usr_area[indexArea].ar_lote[indexLote].lot_ent = C_Entrada().selectEntrada(DBHelper(this),loteId)
-
-            if (usuario.usr_area[indexArea].ar_lote[indexLote].lot_ent.size == 0){
-                createEntrada(areaId, loteId)
-            }
             usuario.usr_area[indexArea].ar_lote[indexLote].lot_ent = C_Entrada().selectEntrada(DBHelper(this),loteId)
 
             changeFragment(EntradaFragment.newInstance(
@@ -154,7 +160,11 @@ class MainActivity : AppCompatActivity(),
 
     override fun onLoteSelected(lote : List<Lote>, pos : Int, tipo : Int, areaId : Int){
         var indexArea = usuario.usr_area.indexOfFirst { it.ar_id == areaId }
+
         if (tipo == 0) { //lote
+
+            usuario.usr_area[indexArea].ar_lote[pos].lot_ent = C_Entrada().selectEntrada(DBHelper(this),lote[pos].lot_id)
+
             changeFragment(LoteDetalheFragment.newInstance(usuario.
                 usr_area[indexArea].ar_lote[pos]
                 ,usuario.usr_id, areaId), true, "LOTE_DETALHE_FRAGMENT")
@@ -270,10 +280,16 @@ class MainActivity : AppCompatActivity(),
         supportFragmentManager.inTransaction {
             add(R.id.frmMainContainer, MainFragment())
         }
+
+
         usuario = intent.extras.get("usuario") as Usuario
         usuario.usr_area = C_Area().selectArea(DBHelper(this), true)
         if (usuario.usr_area.size == 0){
             createArea()
+        }
+
+        if (!C_Entrada().tipoIsInserted(DBHelper(this))){
+            C_Entrada().insertTipoEntrada(DBHelper(this))
         }
     }
 
@@ -376,11 +392,12 @@ class MainActivity : AppCompatActivity(),
         var entrada = Entrada(0)
         entrada.ent_desc = Contrato.Tipo_Entrada.PLANTIO
         entrada.setEnt_data(10,10,2018)
-        entrada.ent_tipo = 0
+        entrada.ent_tipo = 1
+        entrada.ent_detalhe_num = 1
         entrada.ent_tempo = null
         entrada.ent_tpun = null
         entrada.ent_qtde = 50.0
-        entrada.ent_qtun = Contrato.Tipo_Entrada.QTDE_TIPO_PLANTIO
+        entrada.ent_qtun = Contrato.Entrada_Detalhe.QTDE_TIPO_PLANTIO
         entrada.ent_mudas_bandeja = 40
         entrada.ent_valor = 4500.00
         entrada.ent_reg = null

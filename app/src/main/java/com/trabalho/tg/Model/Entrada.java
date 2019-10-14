@@ -13,6 +13,7 @@ public class Entrada implements Serializable {
 
     private Integer ent_numero;
     private Date ent_data = new Date();
+    private Integer ent_detalhe_num;
     private Integer ent_tipo;
     private String ent_desc;
     private Double ent_tempo;
@@ -121,9 +122,43 @@ public class Entrada implements Serializable {
         this.ent_reg = ent_reg;
     }
 
+    public Integer getEnt_detalhe_num() {
+        return ent_detalhe_num;
+    }
+
+    public void setEnt_detalhe_num(Integer ent_detalhe_num) {
+        this.ent_detalhe_num = ent_detalhe_num;
+    }
+
     public Integer getEntradaColor(){
 
-        return R.color.agrotoxico;
+        Integer tipo = null;
+
+        switch(ent_tipo){
+            case 1:
+                tipo = R.color.plantio;
+                break;
+            case 2:
+                tipo = R.color.adubacao;
+                break;
+            case 3:
+                tipo = R.color.agrotoxico;
+                break;
+            case 4:
+                tipo = R.color.colheita;
+                break;
+            case 5:
+                tipo = R.color.mao_de_obra;
+                break;
+            case 6:
+                tipo = R.color.prejuizo;
+                break;
+            case 7:
+                tipo = R.color.irrigacao;
+                break;
+        }
+
+        return tipo;
     }
 
 }

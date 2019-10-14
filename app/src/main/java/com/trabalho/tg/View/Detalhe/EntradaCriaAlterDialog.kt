@@ -1,5 +1,6 @@
 package com.trabalho.tg.View.Detalhe
 
+import android.app.DatePickerDialog
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -7,13 +8,16 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.TextView
+import android.widget.*
+import com.trabalho.tg.Controller.C_Entrada
+import com.trabalho.tg.Helper.DBHelper
 import com.trabalho.tg.Helper.Utils_TG
 import com.trabalho.tg.Model.Entrada
 import com.trabalho.tg.R
+import kotlinx.android.synthetic.main.fragment_entrada_detalhe_dialog.*
 import kotlinx.android.synthetic.main.fragment_entrada_new_dialog.*
 import java.io.Serializable
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -42,12 +46,13 @@ class EntradaCriaAlterDialog : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            entrada = it.getSerializable(ENTRADA) as Entrada
+            entrada = it.getSerializable(ENTRADA) as Entrada?
             userid = it.getInt(USERID)
             areaId = it.getInt(AREAID)
             loteId = it.getInt(LOTEID)
         }
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,8 +62,8 @@ class EntradaCriaAlterDialog : Fragment() {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
+    fun onCriaAlterDialog(userId : Int, areaId : Int, loteId : Int) {
+        listener?.onCriaAlterDialog(userId,areaId,loteId)
     }
 
     override fun onAttach(context: Context) {
@@ -88,7 +93,7 @@ class EntradaCriaAlterDialog : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+        fun onCriaAlterDialog(userId : Int, areaId : Int, loteId : Int)
     }
 
     companion object {
@@ -102,73 +107,283 @@ class EntradaCriaAlterDialog : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(entrada: Entrada, user : Int, areaId : Int, loteId : Int) =
+        fun newInstance(entrada: Entrada?, user : Int, areaId : Int, loteId : Int) =
             EntradaCriaAlterDialog().apply {
                 arguments = Bundle().apply {
-                    putSerializable(ENTRADA, entrada as Serializable)
+                    putSerializable(ENTRADA, entrada as Serializable?)
                     putInt(USERID, user)
                     putInt(AREAID, areaId)
                     putInt(LOTEID,loteId)
                 }
             }
+
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        var cal = Calendar.getInstance()
 
-        txtTipo_EntradaNewDialog.text = "Tipo"
         var adapter = ArrayAdapter.createFromResource(context,R.array.EntradaTipo, android.R.layout.simple_spinner_dropdown_item)
         spiTipo_EntradaNewDialog.adapter = adapter
 
-        spiTipo_EntradaNewDialog.setSelection(0)
-
-        if(entrada!!.ent_desc.contentEquals("plantio")){
-            spiTipo_EntradaNewDialog.isEnabled = false
-        }
-
+        txtTipo_EntradaNewDialog.text = "Tipo"
         txtData_EntradaNewDialog.text = "Data do registro"
-        edtData_EntradaNewDialog.setText(Utils_TG().formatDate(entrada!!.ent_data, true))
 
-        if(entrada!!.ent_tempo != null){
-            txtTempo_EntradaNewDialog.text = "Tempo gasto"
-            edtTempo_EntradaNewDialog.setText(entrada!!.ent_tempo.toString())
+        if(entrada == null){
+            entrada = Entrada(0)
+            spiTipo_EntradaNewDialog.setSelection(0)
+            cal.time = Date()
+            txtDataEscolhida_EntradaNewDialog.setText(Utils_TG().formatDate(cal.time, true))
+
+
+
+            spiTipo_EntradaNewDialog.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    if (position == 0){
+                        imgTipoCor_EntradaNewDialog.setImageResource(R.color.white)
+                    }else{
+                        entrada?.ent_tipo = position
+                        imgTipoCor_EntradaNewDialog.setImageResource(entrada!!.entradaColor)
+                    }
+                    if(position != 2 &&
+                        position != 3 &&
+                        position != 7 ||
+                        position == 0){
+
+                        txtTempo_EntradaNewDialog.visibility = View.GONE
+                        edtTempo_EntradaNewDialog.visibility = View.GONE
+                    }
+                    else{
+
+                        txtTempo_EntradaNewDialog.visibility = View.VISIBLE
+                        edtTempo_EntradaNewDialog.visibility = View.VISIBLE
+
+                        txtTempo_EntradaNewDialog.text = "Tempo gasto"
+                        edtTempo_EntradaNewDialog.setText("00.0")
+                    }
+
+                    if(position == 7 ||
+                        position == 0){
+
+                        txtQtde_EntradaNewDialog.visibility = View.GONE
+                        edtQtde_EntradaNewDialog.visibility = View.GONE
+                        txtValor_EntradaNewDialog.visibility = View.GONE
+                        edtValor_EntradaNewDialog.visibility = View.GONE
+                    }
+                    else{
+
+                        txtQtde_EntradaNewDialog.visibility = View.VISIBLE
+                        edtQtde_EntradaNewDialog.visibility = View.VISIBLE
+                        txtValor_EntradaNewDialog.visibility = View.VISIBLE
+                        edtValor_EntradaNewDialog.visibility = View.VISIBLE
+
+                        txtQtde_EntradaNewDialog.text = "Quantidade"
+                        edtQtde_EntradaNewDialog.setText("00.0")
+                        txtValor_EntradaNewDialog.text = "Valor total"
+                        edtValor_EntradaNewDialog.setText("00.0")
+                    }
+                    if(position != 1 ||
+                        position == 0){
+
+                        txtMudasB_EntradaNewDialog.visibility = View.GONE
+                        edtMudasB_EntradaNewDialog.visibility = View.GONE
+
+                    }
+                    else{
+                        txtMudasB_EntradaNewDialog.visibility = View.VISIBLE
+                        edtMudasB_EntradaNewDialog.visibility = View.VISIBLE
+
+                        txtMudasB_EntradaNewDialog.text = "Mudas por bandeja"
+                        edtMudasB_EntradaNewDialog.setText("0")
+                    }
+
+                    if(position == 3){
+                        linAgr_EntradaNewDialog.visibility = View.VISIBLE
+                    }
+                    else{
+                        linAgr_EntradaNewDialog.visibility = View.GONE
+                    }
+                }
+            }
+
+
+            btnCriar_EntradaNewDialog.setOnClickListener(){
+
+                if(spiTipo_EntradaNewDialog.selectedItemPosition > 0){
+
+                    if(spiTipo_EntradaNewDialog.selectedItemPosition > 1){
+                        entrada!!.ent_tipo = spiTipo_EntradaNewDialog.selectedItemPosition
+                    }
+                    if(spiTipo_EntradaNewDialog.selectedItemPosition == 3){
+
+                    }
+
+
+                    entrada!!.ent_tpun
+                    entrada!!.ent_tempo
+                    entrada!!.ent_qtun
+                    entrada!!.ent_qtde
+                    entrada!!.ent_mudas_bandeja
+                    entrada!!.ent_valor
+
+                    if(C_Entrada().insertEntrada(DBHelper(context),entrada!!, loteId,userid)){
+                        onCriaAlterDialog(userid!!,areaId!!,loteId!!)
+                    }
+                    else{
+                        Toast.makeText(context, "Erro ao atualizar entrada!", Toast.LENGTH_SHORT).show()
+                    }
+
+                }
+                else{
+                    Toast.makeText(context, "Selecione um tipo de entrada!", Toast.LENGTH_SHORT).show()
+                }
+            }
+
         }
         else{
-            txtTempo_EntradaNewDialog.visibility = View.GONE
-            edtTempo_EntradaNewDialog.visibility = View.GONE
+            spiTipo_EntradaNewDialog.setSelection(entrada!!.ent_tipo)
+            imgTipoCor_EntradaNewDialog.setImageResource(entrada!!.entradaColor)
+            cal.time = entrada!!.ent_data
+
+            if(entrada!!.ent_tipo == 1){
+                spiTipo_EntradaNewDialog.isEnabled = false
+            }
+            txtDataEscolhida_EntradaNewDialog.setText(Utils_TG().formatDate(entrada!!.ent_data, true))
+
+
+
+
+
+            spiTipo_EntradaNewDialog.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    if(position != 1 &&
+                        position != 2 &&
+                        position != 6 &&
+                        position == 0    ){
+
+                        txtTempo_EntradaNewDialog.visibility = View.GONE
+                        edtTempo_EntradaNewDialog.visibility = View.GONE
+                    }
+                    else{
+                        txtTempo_EntradaNewDialog.text = "Tempo gasto"
+                        edtTempo_EntradaNewDialog.setText(entrada!!.ent_tempo.toString())
+                    }
+
+                    if(position == 2 &&
+                        position == 0){
+
+                        txtQtde_EntradaNewDialog.visibility = View.GONE
+                        edtQtde_EntradaNewDialog.visibility = View.GONE
+                        txtValor_EntradaNewDialog.visibility = View.GONE
+                        edtValor_EntradaNewDialog.visibility = View.GONE
+                    }
+                    else{
+                        txtQtde_EntradaNewDialog.text = "Quantidade"
+                        edtQtde_EntradaNewDialog.setText(entrada!!.ent_qtde.toString())
+                        txtValor_EntradaNewDialog.text = "Valor total"
+                        edtValor_EntradaNewDialog.setText(entrada!!.ent_valor.toString())
+                    }
+                    if(position != 1 &&
+                        position == 0){
+
+                        txtMudasB_EntradaNewDialog.visibility = View.GONE
+                        edtMudasB_EntradaNewDialog.visibility = View.GONE
+                        linAgr_EntradaNewDialog.visibility = View.GONE
+                    }
+                    else{
+                        txtMudasB_EntradaNewDialog.text = "Mudas por bandeja"
+                        edtMudasB_EntradaNewDialog.setText(entrada!!.ent_mudas_bandeja.toString())
+                        linAgr_EntradaNewDialog.visibility = View.VISIBLE
+
+                    }
+                }
+            }
+
+            btnCriar_EntradaNewDialog.setOnClickListener(){
+
+                if(spiTipo_EntradaNewDialog.selectedItemPosition > 0){
+
+                    if(spiTipo_EntradaNewDialog.selectedItemPosition > 1){
+                        entrada!!.ent_tipo = spiTipo_EntradaNewDialog.selectedItemPosition
+                    }
+                    if(spiTipo_EntradaNewDialog.selectedItemPosition == 3){
+
+                    }
+
+
+                    entrada!!.ent_tpun
+                    entrada!!.ent_tempo
+                    entrada!!.ent_qtun
+                    entrada!!.ent_qtde
+                    entrada!!.ent_mudas_bandeja
+                    entrada!!.ent_valor
+
+                    if(C_Entrada().updateEntrada(DBHelper(context),entrada!!)){
+                        onCriaAlterDialog(userid!!,areaId!!,loteId!!)
+                    }
+                    else{
+                        Toast.makeText(context, "Erro ao atualizar entrada!", Toast.LENGTH_SHORT).show()
+                    }
+
+                }
+                else{
+                    Toast.makeText(context, "Selecione um tipo de entrada!", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+
         }
 
-        if(entrada!!.ent_qtde != null){
-            txtQtde_EntradaNewDialog.text = "Quantidade"
-            edtQtde_EntradaNewDialog.setText(entrada!!.ent_qtde.toString())
-        }
-        else{
-            txtQtde_EntradaNewDialog.visibility = View.GONE
-            edtQtde_EntradaNewDialog.visibility = View.GONE
-        }
-        if(entrada!!.ent_mudas_bandeja != null){
-            txtMudasB_EntradaNewDialog.text = "Mudas por bandeja"
-            edtMudasB_EntradaNewDialog.setText(entrada!!.ent_mudas_bandeja.toString())
-        }
-        else{
-            txtMudasB_EntradaNewDialog.visibility = View.GONE
-            edtMudasB_EntradaNewDialog.visibility = View.GONE
-        }
-        if(entrada!!.ent_valor != null){
-            txtValor_EntradaNewDialog.text = "Valor total"
-            edtValor_EntradaNewDialog.setText(entrada!!.ent_valor.toString())
-        }
-        else{
-            txtValor_EntradaNewDialog.visibility = View.GONE
-            edtValor_EntradaNewDialog.visibility = View.GONE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        val dateSetListener = object : DatePickerDialog.OnDateSetListener {
+            override fun onDateSet(view: DatePicker, year: Int, monthOfYear: Int,
+                                   dayOfMonth: Int) {
+                cal.set(Calendar.YEAR, year)
+                cal.set(Calendar.MONTH, monthOfYear)
+                cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                entrada!!.setEnt_data(dayOfMonth, monthOfYear, year)
+                txtDataEscolhida_EntradaNewDialog.setText(Utils_TG().formatDate(entrada!!.ent_data, true))
+            }
         }
 
-        if(entrada!!.ent_reg != null){
+        txtDataEscolhida_EntradaNewDialog.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(view: View) {
+                Utils_TG().hideKeyboardFrom(context, view)
+                DatePickerDialog(context,
+                    dateSetListener,
+                    // set DatePickerDialog to point to today's date when it loads up
+                    cal.get(Calendar.YEAR),
+                    cal.get(Calendar.MONTH),
+                    cal.get(Calendar.DAY_OF_MONTH)).show()
+            }
 
-        }
-        else{
-            linAgr_EntradaNewDialog.visibility = View.GONE
-        }
+        })
+
+
+
 
 
     }
