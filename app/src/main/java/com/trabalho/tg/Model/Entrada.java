@@ -22,6 +22,7 @@ public class Entrada implements Serializable {
     private String ent_qtun;
     private Integer ent_mudas_bandeja;
     private Double ent_valor;
+    private String ent_reg_lote;
     private Reg_Agrotoxico ent_reg;
 
     public Entrada(Integer ent_numero) {
@@ -120,6 +121,14 @@ public class Entrada implements Serializable {
 
     public void setEnt_reg(Reg_Agrotoxico ent_reg) {
         this.ent_reg = ent_reg;
+    }
+
+    public String getEnt_reg_lote() {
+        return ent_reg_lote;
+    }
+
+    public void setEnt_reg_lote(String ent_reg_lote) {
+        this.ent_reg_lote = ent_reg_lote;
     }
 
     public Integer getEnt_detalhe_num() {

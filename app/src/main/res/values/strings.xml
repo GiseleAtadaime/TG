@@ -66,6 +66,24 @@
 
     </string-array>
 
+    <string-array name="EntradaTipoTempo">
+        <item>Horas</item>
+        <item>Minutos</item>
+    </string-array>
+
+    <string-array name="EntradaTipoQuantidade">
+        <item>Sacos</item>
+        <item>Caixas</item>
+        <item>KG</item>
+    </string-array>
+
+    <string-array name="EntradaTipoDose">
+        <item>ml</item>
+        <item>mg</item>
+        <item>g</item>
+    </string-array>
+
+
     <string name="spi_data">Data + Letra</string>
     <string name="spi_num">Data + Numero</string>
 

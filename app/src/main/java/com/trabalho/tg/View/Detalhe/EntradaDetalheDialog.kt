@@ -16,6 +16,7 @@ import com.trabalho.tg.Model.Entrada
 
 import com.trabalho.tg.R
 import kotlinx.android.synthetic.main.fragment_entrada_detalhe_dialog.*
+import kotlinx.android.synthetic.main.fragment_entrada_new_dialog.*
 import java.io.Serializable
 
 // TODO: Rename parameter arguments, choose names that match
@@ -118,71 +119,96 @@ class EntradaDetalheDialog : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        txtIng_EntradaDetalhe.visibility = View.GONE
-        txtNomeCom_EntradaDetalhe.visibility = View.GONE
-        txtEmpresa_EntradaDetalhe.visibility = View.GONE
-        txtTipo1_EntradaDetalhe.visibility = View.GONE
-        txtTipoValor1_EntradaDetalhe.visibility = View.GONE
-        txtTipo2_EntradaDetalhe.visibility = View.GONE
-        txtTipoValor2_EntradaDetalhe.visibility = View.GONE
+        val utils = Utils_TG()
 
         imgColor_EntradaDetalhe.setImageResource(entrada!!.entradaColor)
         txtTipo_EntradaDetalhe.text = entrada!!.ent_desc
         txtData_EntradaDetalhe.text = Utils_TG().formatDate(entrada!!.ent_data, true)
 
-        if (entrada!!.ent_tpun != null){
+        if(entrada!!.ent_tipo != 2 &&
+            entrada!!.ent_tipo != 3 &&
+            entrada!!.ent_tipo != 7){
 
-            txtTipo1_EntradaDetalhe.visibility = View.VISIBLE
-            txtTipoValor1_EntradaDetalhe.visibility = View.VISIBLE
-
-            txtTipo1_EntradaDetalhe.text = entrada!!.ent_tpun
-            txtTipoValor1_EntradaDetalhe.text = entrada!!.ent_tempo.toString()
-
-            if(entrada!!.ent_qtde != null){
-
-                txtTipo2_EntradaDetalhe.visibility = View.VISIBLE
-                txtTipoValor2_EntradaDetalhe.visibility = View.VISIBLE
-
-                txtTipo2_EntradaDetalhe.text = entrada!!.ent_qtun
-                txtTipoValor2_EntradaDetalhe.text = entrada!!.ent_qtde.toString()
-
-
-            }
-        }
-        else if(entrada!!.ent_qtde != null){
-
-            txtTipo1_EntradaDetalhe.visibility = View.VISIBLE
-            txtTipoValor1_EntradaDetalhe.visibility = View.VISIBLE
-            txtTipo1_EntradaDetalhe.text = entrada!!.ent_qtun
-            txtTipoValor1_EntradaDetalhe.text = entrada!!.ent_qtde.toString()
-        }
-
-        if(entrada!!.ent_valor != null){
-            txtValor_EntradaDetalhe.text = "R$" + entrada!!.ent_valor.toString()
+            txtTipo1_EntradaDetalhe.visibility = View.GONE
+            txtTipoValor1_EntradaDetalhe.visibility = View.GONE
         }
         else{
+
+            txtTipo1_EntradaDetalhe.visibility = View.VISIBLE
+            txtTipoValor1_EntradaDetalhe.visibility = View.VISIBLE
+
+            if(entrada!!.ent_tipo == 3){
+                txtTipo1_EntradaDetalhe.text = "Tempo de carência"
+                txtTipoValor1_EntradaDetalhe.text = entrada!!.ent_tempo.toString()
+            }
+            else{
+                txtTipoValor1_EntradaDetalhe.text = "Tempo gasto"
+            }
+
+        }
+        if(entrada!!.ent_tipo == 7){
+
+            txtTipo2_EntradaDetalhe.visibility = View.GONE
+            txtTipoValor2_EntradaDetalhe.visibility = View.GONE
             txtValor_EntradaDetalhe.visibility = View.GONE
         }
-
-        if(entrada!!.ent_mudas_bandeja != null){
-            txtMudas_EntradaDetalhe.text = "Mudas por bandeja: " + entrada!!.ent_mudas_bandeja.toString()
-        }
         else{
+
+            txtTipo2_EntradaDetalhe.visibility = View.VISIBLE
+            txtTipoValor2_EntradaDetalhe.visibility = View.VISIBLE
+            txtValor_EntradaDetalhe.visibility = View.VISIBLE
+
+
+            if(entrada!!.ent_tipo == 1){
+                txtTipo2_EntradaDetalhe.text = "Bandejas"
+            }
+            else if(entrada!!.ent_tipo == 5){
+                txtTipo2_EntradaDetalhe.text = "Pessoas"
+            }
+            else if(entrada!!.ent_tipo == 2 || entrada!!.ent_tipo == 6 || entrada!!.ent_tipo == 4){
+                txtTipo2_EntradaDetalhe.text = "Quantidade"
+            }
+            else if(entrada!!.ent_tipo == 3){
+                txtTipo2_EntradaDetalhe.text = "Dose"
+            }
+
+            txtTipoValor2_EntradaDetalhe.text = entrada!!.ent_qtde.toString()
+            txtValor_EntradaDetalhe.text = "Valor total: " + utils.formatMonetario(utils.doubleToString(entrada!!.ent_valor))
+        }
+        if(entrada!!.ent_tipo != 1){
+
             txtMudas_EntradaDetalhe.visibility = View.GONE
         }
+        else{
+            txtMudas_EntradaDetalhe.visibility = View.VISIBLE
 
+            txtMudas_EntradaDetalhe.text = "Mudas por bandeja: " + entrada!!.ent_mudas_bandeja.toString()
+        }
 
-        if (entrada!!.ent_reg != null){
-            txtIng_EntradaDetalhe.visibility = View.VISIBLE
+        if(entrada!!.ent_tipo == 3){
+            txtAgrot_EntradaNewDialog.visibility = View.VISIBLE
             txtNomeCom_EntradaDetalhe.visibility = View.VISIBLE
             txtEmpresa_EntradaDetalhe.visibility = View.VISIBLE
+            txtIng_EntradaDetalhe.visibility = View.VISIBLE
+            txtLoteAgr_EntradaDetalheDialog.visibility = View.VISIBLE
 
-            txtIng_EntradaDetalhe.text = entrada!!.ent_reg.reg_ing_ativo
-            txtNomeCom_EntradaDetalhe.text = entrada!!.ent_reg.reg_nomecom
-            txtEmpresa_EntradaDetalhe.text = entrada!!.ent_reg.reg_empresa
+            txtAgrot_EntradaNewDialog.text = "Agrotóxico utilizado:"
+            txtNomeCom_EntradaDetalhe.text = "Nome comercial: " + entrada!!.ent_reg.reg_nomecom
+            txtEmpresa_EntradaDetalhe.text = "Fabricante: " + entrada!!.ent_reg.reg_empresa
+            txtIng_EntradaDetalhe.text = "Ingrediente ativo: " + entrada!!.ent_reg.reg_ing_ativo
+            txtLoteAgr_EntradaDetalheDialog.text = "Lote: " + entrada!!.ent_reg_lote
 
         }
+        else{
+            txtAgrot_EntradaNewDialog.visibility = View.GONE
+            txtNomeCom_EntradaDetalhe.visibility = View.GONE
+            txtEmpresa_EntradaDetalhe.visibility = View.GONE
+            txtIng_EntradaDetalhe.visibility = View.GONE
+            txtLoteAgr_EntradaDetalheDialog.visibility = View.GONE
+        }
+
+
+
 
         imgBtnAlter_EntradaDetalhe.setOnClickListener(){
             onAlterDetalheClick(entrada!!,userid!!,areaId!!, loteId!!, false)

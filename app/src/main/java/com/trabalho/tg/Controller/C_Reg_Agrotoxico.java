@@ -1,5 +1,6 @@
 package com.trabalho.tg.Controller;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import com.trabalho.tg.Helper.Contrato;
@@ -29,6 +30,7 @@ public class C_Reg_Agrotoxico {
                     i++;
                 }
                 while(c.moveToNext());
+                db.setTransactionSuccessful();
                 c.close();
             }
         }
@@ -54,12 +56,55 @@ public class C_Reg_Agrotoxico {
                     r.setReg_ing_ativo(c.getString(c.getColumnIndex(Contrato.Reg_Agrotoxico.COLUMN_ING_ATIVO)));
                     r.setReg_empresa(c.getString(c.getColumnIndex(Contrato.Reg_Agrotoxico.COLUMN_EMPRESA)));
                     r.setReg_nomecom(c.getString(c.getColumnIndex(Contrato.Reg_Agrotoxico.COLUMN_NOMECOM)));
+                    db.setTransactionSuccessful();
                     c.close();
             }
         }
         finally {
 
             return r;
+        }
+    }
+    public Integer selectReg_Agrotoxico_LastID(DBHelper dbHelper){
+        Cursor c = null;
+        Integer i = null;
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String query = "SELECT MAX(" + Contrato.Reg_Agrotoxico.COLUMN_NUMERO + ") FROM " + Contrato.Reg_Agrotoxico.TABLENAME;
+
+        try{
+            c = db.rawQuery(query,null);
+            if (c.moveToFirst()){
+
+                i = c.getInt(c.getColumnIndex("MAX(" + Contrato.Reg_Agrotoxico.COLUMN_NUMERO + ")"));
+                db.setTransactionSuccessful();
+                c.close();
+            }
+        }
+        finally {
+
+            return i;
+        }
+    }
+
+
+    public Boolean insertReg_Agrotoxico(DBHelper dbHelper, Reg_Agrotoxico reg){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Boolean ret = false;
+
+        ContentValues values = new ContentValues();
+        values.put(Contrato.Reg_Agrotoxico.COLUMN_NOMECOM, reg.getReg_nomecom());
+        values.put(Contrato.Reg_Agrotoxico.COLUMN_EMPRESA, reg.getReg_empresa());
+        values.put(Contrato.Reg_Agrotoxico.COLUMN_ING_ATIVO, reg.getReg_ing_ativo());
+
+        try{
+            db.insert(Contrato.Reg_Agrotoxico.TABLENAME, null,values);
+            ret = true;
+            db.setTransactionSuccessful();
+        }
+        finally{
+            db.close();
+            return ret;
         }
     }
 }

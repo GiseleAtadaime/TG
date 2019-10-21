@@ -116,6 +116,7 @@ public final class Contrato {
         public static final String COLUMN_QTUN = "det_qtun";
         public static final String COLUMN_MUDAS_BANDEJA = "det_mudas_bandeja";
         public static final String COLUMN_VALOR = "det_valor";
+        public static final String COLUMN_REG_LOTE = "det_reg_lote";
         public static final String COLUMN_REG_NUM = "det_reg_num";
         public static final String COLUMN_USR_ID = "det_usr_id";
 
@@ -165,6 +166,7 @@ public final class Contrato {
         public static final String COLUMN_QTUN = "det_qtun";
         public static final String COLUMN_MUDAS_BANDEJA = "det_mudas_bandeja";
         public static final String COLUMN_VALOR = "det_valor";
+        public static final String COLUMN_REG_LOTE = "det_reg_lote";
         public static final String COLUMN_REG_NUM = "det_reg_num";
         public static final String COLUMN_USR_ID = "det_usr_id";
 
@@ -260,6 +262,7 @@ public final class Contrato {
                     Entrada_Detalhe.COLUMN_QTUN + " VARCHAR(20), " +
                     Entrada_Detalhe.COLUMN_MUDAS_BANDEJA + " INTEGER, " +
                     Entrada_Detalhe.COLUMN_VALOR + " NUMERIC(10,2), " +
+                    Entrada_Detalhe.COLUMN_REG_LOTE + " VARCHAR(60), " +
                     Entrada_Detalhe.COLUMN_REG_NUM + " INTEGER, " +
                     Entrada_Detalhe.COLUMN_USR_ID + " INTEGER, " +
             " CONSTRAINT fk_det_reg FOREIGN KEY ( " + Entrada_Detalhe.COLUMN_REG_NUM + " ) REFERENCES  " + Reg_Agrotoxico.TABLENAME + "( " + Reg_Agrotoxico.COLUMN_NUMERO + " ), " +
@@ -300,6 +303,7 @@ public final class Contrato {
                     Fec_Entrada_Detalhe.COLUMN_QTUN + " VARCHAR(20), " +
                     Fec_Entrada_Detalhe.COLUMN_MUDAS_BANDEJA + " INTEGER, " +
                     Fec_Entrada_Detalhe.COLUMN_VALOR + " NUMERIC(10,2), " +
+                    Fec_Entrada_Detalhe.COLUMN_REG_LOTE + " VARCHAR(60), " +
                     Fec_Entrada_Detalhe.COLUMN_REG_NUM + " INTEGER, " +
                     Fec_Entrada_Detalhe.COLUMN_USR_ID + " INTEGER, " +
             " CONSTRAINT fk_fec_det_reg FOREIGN KEY ( " + Fec_Entrada_Detalhe.COLUMN_REG_NUM + " ) REFERENCES  " + Reg_Agrotoxico.TABLENAME + "( " + Reg_Agrotoxico.COLUMN_NUMERO + " ), " +

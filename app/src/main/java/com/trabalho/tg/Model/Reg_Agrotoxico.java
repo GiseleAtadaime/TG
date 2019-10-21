@@ -11,6 +11,10 @@ public class Reg_Agrotoxico {
         this.reg_numero = reg_numero;
     }
 
+    public void setReg_numero(Integer reg_numero) {
+        this.reg_numero = reg_numero;
+    }
+
     public Integer getReg_numero() {
         return reg_numero;
     }

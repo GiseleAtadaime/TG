@@ -61,6 +61,7 @@ public class C_Area {
         try{
             db.insert(Contrato.Area.TABLENAME, null,values);
             ret = true;
+            db.setTransactionSuccessful();
         }
         finally{
             db.close();

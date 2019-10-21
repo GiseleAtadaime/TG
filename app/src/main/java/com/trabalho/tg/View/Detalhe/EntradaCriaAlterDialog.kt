@@ -10,9 +10,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.trabalho.tg.Controller.C_Entrada
+import com.trabalho.tg.Controller.C_Reg_Agrotoxico
 import com.trabalho.tg.Helper.DBHelper
 import com.trabalho.tg.Helper.Utils_TG
 import com.trabalho.tg.Model.Entrada
+import com.trabalho.tg.Model.Reg_Agrotoxico
 import com.trabalho.tg.R
 import kotlinx.android.synthetic.main.fragment_entrada_detalhe_dialog.*
 import kotlinx.android.synthetic.main.fragment_entrada_new_dialog.*
@@ -121,6 +123,7 @@ class EntradaCriaAlterDialog : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val utils = Utils_TG()
         super.onViewCreated(view, savedInstanceState)
         var cal = Calendar.getInstance()
 
@@ -130,11 +133,11 @@ class EntradaCriaAlterDialog : Fragment() {
         txtTipo_EntradaNewDialog.text = "Tipo"
         txtData_EntradaNewDialog.text = "Data do registro"
 
-        if(entrada == null){
+        if(entrada == null){//Cria
             entrada = Entrada(0)
             spiTipo_EntradaNewDialog.setSelection(0)
             cal.time = Date()
-            txtDataEscolhida_EntradaNewDialog.setText(Utils_TG().formatDate(cal.time, true))
+            txtDataEscolhida_EntradaNewDialog.text = utils.formatDate(cal.time, true)
 
 
 
@@ -163,8 +166,13 @@ class EntradaCriaAlterDialog : Fragment() {
                         txtTempo_EntradaNewDialog.visibility = View.VISIBLE
                         edtTempo_EntradaNewDialog.visibility = View.VISIBLE
 
-                        txtTempo_EntradaNewDialog.text = "Tempo gasto"
-                        edtTempo_EntradaNewDialog.setText("00.0")
+                        if(entrada!!.ent_tipo == 3){
+                            txtTempo_EntradaNewDialog.text = "Tempo de carência"
+                        }
+                        else{
+                            txtTempo_EntradaNewDialog.text = "Tempo gasto"
+                        }
+
                     }
 
                     if(position == 7 ||
@@ -182,10 +190,21 @@ class EntradaCriaAlterDialog : Fragment() {
                         txtValor_EntradaNewDialog.visibility = View.VISIBLE
                         edtValor_EntradaNewDialog.visibility = View.VISIBLE
 
-                        txtQtde_EntradaNewDialog.text = "Quantidade"
-                        edtQtde_EntradaNewDialog.setText("00.0")
+                        if(position == 1){
+                            txtQtde_EntradaNewDialog.text = "Bandejas"
+                        }
+                        else if(position == 5){
+                            txtQtde_EntradaNewDialog.text = "Pessoas"
+                        }
+                        else if(position == 2 || position == 6 || position == 4){
+                            txtQtde_EntradaNewDialog.text = "Quantidade"
+                        }
+                        else if(position == 3){
+                            txtQtde_EntradaNewDialog.text = "Dose"
+                        }
+
                         txtValor_EntradaNewDialog.text = "Valor total"
-                        edtValor_EntradaNewDialog.setText("00.0")
+                        edtValor_EntradaNewDialog.addTextChangedListener(utils.MascaraMonetaria(edtValor_EntradaNewDialog))
                     }
                     if(position != 1 ||
                         position == 0){
@@ -199,7 +218,6 @@ class EntradaCriaAlterDialog : Fragment() {
                         edtMudasB_EntradaNewDialog.visibility = View.VISIBLE
 
                         txtMudasB_EntradaNewDialog.text = "Mudas por bandeja"
-                        edtMudasB_EntradaNewDialog.setText("0")
                     }
 
                     if(position == 3){
@@ -220,22 +238,34 @@ class EntradaCriaAlterDialog : Fragment() {
                         entrada!!.ent_tipo = spiTipo_EntradaNewDialog.selectedItemPosition
                     }
                     if(spiTipo_EntradaNewDialog.selectedItemPosition == 3){
+                        entrada!!.ent_reg = Reg_Agrotoxico(0)
+                        entrada!!.ent_reg.reg_nomecom = auTxtNome_EntradaNewDialog.text.toString()
+                        entrada!!.ent_reg.reg_empresa = edtEmpresa_EntradaNewDialog.text.toString()
+                        entrada!!.ent_reg.reg_ing_ativo = edtIng_EntradaNewDialog.text.toString()
+                        entrada!!.ent_reg_lote = edtLoteDef_EntradaNewDialog.text.toString()
 
+                        if(C_Reg_Agrotoxico().insertReg_Agrotoxico(DBHelper(context),entrada!!.ent_reg)){
+                            entrada!!.ent_reg.reg_numero = C_Reg_Agrotoxico().selectReg_Agrotoxico_LastID(DBHelper(context))
+                        }
+                        else{
+                            Toast.makeText(context, "Erro ao salvar registro do agrotóxico!", Toast.LENGTH_SHORT).show()
+                        }
                     }
 
 
                     entrada!!.ent_tpun
-                    entrada!!.ent_tempo
+                    entrada!!.ent_tempo = utils.stringToDouble(edtTempo_EntradaNewDialog.text.toString())
                     entrada!!.ent_qtun
-                    entrada!!.ent_qtde
-                    entrada!!.ent_mudas_bandeja
-                    entrada!!.ent_valor
+                    entrada!!.ent_qtde = utils.stringToDouble(edtQtde_EntradaNewDialog.text.toString())
+                    entrada!!.ent_mudas_bandeja =  utils.stringToInteger(edtMudasB_EntradaNewDialog.text.toString())
+                    entrada!!.ent_valor = utils.stringToDouble(utils.removerMascaraMonetaria(edtValor_EntradaNewDialog.text.toString()))
+
 
                     if(C_Entrada().insertEntrada(DBHelper(context),entrada!!, loteId,userid)){
                         onCriaAlterDialog(userid!!,areaId!!,loteId!!)
                     }
                     else{
-                        Toast.makeText(context, "Erro ao atualizar entrada!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Erro ao salvar entrada!", Toast.LENGTH_SHORT).show()
                     }
 
                 }
@@ -245,7 +275,7 @@ class EntradaCriaAlterDialog : Fragment() {
             }
 
         }
-        else{
+        else{//Update
             spiTipo_EntradaNewDialog.setSelection(entrada!!.ent_tipo)
             imgTipoCor_EntradaNewDialog.setImageResource(entrada!!.entradaColor)
             cal.time = entrada!!.ent_data
@@ -253,7 +283,7 @@ class EntradaCriaAlterDialog : Fragment() {
             if(entrada!!.ent_tipo == 1){
                 spiTipo_EntradaNewDialog.isEnabled = false
             }
-            txtDataEscolhida_EntradaNewDialog.setText(Utils_TG().formatDate(entrada!!.ent_data, true))
+            txtDataEscolhida_EntradaNewDialog.text = utils.formatDate(entrada!!.ent_data, true)
 
 
 
@@ -265,20 +295,30 @@ class EntradaCriaAlterDialog : Fragment() {
                 }
 
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    if(position != 1 &&
-                        position != 2 &&
-                        position != 6 &&
-                        position == 0    ){
+                    if(position != 2 &&
+                        position != 3 &&
+                        position != 7 ||
+                        position == 0){
 
                         txtTempo_EntradaNewDialog.visibility = View.GONE
                         edtTempo_EntradaNewDialog.visibility = View.GONE
                     }
                     else{
-                        txtTempo_EntradaNewDialog.text = "Tempo gasto"
+
+                        txtTempo_EntradaNewDialog.visibility = View.VISIBLE
+                        edtTempo_EntradaNewDialog.visibility = View.VISIBLE
+
+                        if(entrada!!.ent_tipo == 3){
+                            txtTempo_EntradaNewDialog.text = "Tempo de carência"
+                        }
+                        else{
+                            txtTempo_EntradaNewDialog.text = "Tempo gasto"
+                        }
                         edtTempo_EntradaNewDialog.setText(entrada!!.ent_tempo.toString())
+
                     }
 
-                    if(position == 2 &&
+                    if(position == 7 ||
                         position == 0){
 
                         txtQtde_EntradaNewDialog.visibility = View.GONE
@@ -287,23 +327,54 @@ class EntradaCriaAlterDialog : Fragment() {
                         edtValor_EntradaNewDialog.visibility = View.GONE
                     }
                     else{
-                        txtQtde_EntradaNewDialog.text = "Quantidade"
+
+                        txtQtde_EntradaNewDialog.visibility = View.VISIBLE
+                        edtQtde_EntradaNewDialog.visibility = View.VISIBLE
+                        txtValor_EntradaNewDialog.visibility = View.VISIBLE
+                        edtValor_EntradaNewDialog.visibility = View.VISIBLE
+
+                        if(position == 1){
+                            txtQtde_EntradaNewDialog.text = "Bandejas"
+                        }
+                        else if(position == 5){
+                            txtQtde_EntradaNewDialog.text = "Pessoas"
+                        }
+                        else if(position == 2 || position == 6 || position == 4){
+                            txtQtde_EntradaNewDialog.text = "Quantidade"
+                        }
+                        else if(position == 3){
+                            txtQtde_EntradaNewDialog.text = "Dose"
+                        }
+
                         edtQtde_EntradaNewDialog.setText(entrada!!.ent_qtde.toString())
                         txtValor_EntradaNewDialog.text = "Valor total"
-                        edtValor_EntradaNewDialog.setText(entrada!!.ent_valor.toString())
+                        edtValor_EntradaNewDialog.setText(utils.formatMonetario(utils.doubleToString(entrada!!.ent_valor)))
+                        edtValor_EntradaNewDialog.addTextChangedListener(utils.MascaraMonetaria(edtValor_EntradaNewDialog))
                     }
-                    if(position != 1 &&
+                    if(position != 1 ||
                         position == 0){
 
                         txtMudasB_EntradaNewDialog.visibility = View.GONE
                         edtMudasB_EntradaNewDialog.visibility = View.GONE
-                        linAgr_EntradaNewDialog.visibility = View.GONE
+
                     }
                     else{
+                        txtMudasB_EntradaNewDialog.visibility = View.VISIBLE
+                        edtMudasB_EntradaNewDialog.visibility = View.VISIBLE
+
                         txtMudasB_EntradaNewDialog.text = "Mudas por bandeja"
                         edtMudasB_EntradaNewDialog.setText(entrada!!.ent_mudas_bandeja.toString())
-                        linAgr_EntradaNewDialog.visibility = View.VISIBLE
+                    }
 
+                    if(position == 3){
+                        linAgr_EntradaNewDialog.visibility = View.VISIBLE
+                        auTxtNome_EntradaNewDialog.setText(entrada!!.ent_reg.reg_nomecom)
+                        edtEmpresa_EntradaNewDialog.setText(entrada!!.ent_reg.reg_empresa)
+                        edtIng_EntradaNewDialog.setText(entrada!!.ent_reg.reg_ing_ativo)
+                        edtLoteDef_EntradaNewDialog.setText(entrada!!.ent_reg_lote)
+                    }
+                    else{
+                        linAgr_EntradaNewDialog.visibility = View.GONE
                     }
                 }
             }
@@ -316,16 +387,23 @@ class EntradaCriaAlterDialog : Fragment() {
                         entrada!!.ent_tipo = spiTipo_EntradaNewDialog.selectedItemPosition
                     }
                     if(spiTipo_EntradaNewDialog.selectedItemPosition == 3){
+                        entrada!!.ent_reg.reg_nomecom = auTxtNome_EntradaNewDialog.text.toString()
+                        entrada!!.ent_reg.reg_empresa = edtEmpresa_EntradaNewDialog.text.toString()
+                        entrada!!.ent_reg.reg_ing_ativo = edtIng_EntradaNewDialog.text.toString()
 
+                        if(!C_Reg_Agrotoxico().insertReg_Agrotoxico(DBHelper(context),entrada!!.ent_reg)){
+                            Toast.makeText(context, "Erro ao atualizar registro do agrotóxico!", Toast.LENGTH_SHORT).show()
+                        }
                     }
 
 
                     entrada!!.ent_tpun
-                    entrada!!.ent_tempo
+                    entrada!!.ent_tempo = utils.stringToDouble(edtTempo_EntradaNewDialog.text.toString())
                     entrada!!.ent_qtun
-                    entrada!!.ent_qtde
-                    entrada!!.ent_mudas_bandeja
-                    entrada!!.ent_valor
+                    entrada!!.ent_qtde = utils.stringToDouble(edtQtde_EntradaNewDialog.text.toString())
+                    entrada!!.ent_mudas_bandeja =  utils.stringToInteger(edtMudasB_EntradaNewDialog.text.toString())
+                    entrada!!.ent_valor = utils.stringToDouble(utils.removerMascaraMonetaria(edtValor_EntradaNewDialog.text.toString()))
+
 
                     if(C_Entrada().updateEntrada(DBHelper(context),entrada!!)){
                         onCriaAlterDialog(userid!!,areaId!!,loteId!!)

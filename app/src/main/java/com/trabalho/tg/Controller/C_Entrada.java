@@ -43,12 +43,29 @@ public class C_Entrada {
                     e.get(i).setEnt_qtun(c.getString(c.getColumnIndex(Contrato.Entrada_Detalhe.COLUMN_QTUN)));
                     e.get(i).setEnt_mudas_bandeja(c.getInt(c.getColumnIndex(Contrato.Entrada_Detalhe.COLUMN_MUDAS_BANDEJA)));
                     e.get(i).setEnt_valor(c.getDouble(c.getColumnIndex(Contrato.Entrada_Detalhe.COLUMN_VALOR)));
+                    e.get(i).setEnt_reg_lote(c.getString(c.getColumnIndex(Contrato.Entrada_Detalhe.COLUMN_REG_LOTE)));
                     if(!c.isNull(c.getColumnIndex(Contrato.Entrada_Detalhe.COLUMN_REG_NUM))){
-                        e.get(i).setEnt_reg(new Reg_Agrotoxico(c.getInt(c.getColumnIndex(Contrato.Entrada_Detalhe.COLUMN_REG_NUM))));
+                        e.get(i).setEnt_reg(new C_Reg_Agrotoxico().selectReg_Agrotoxico_Especifico(dbHelper,c.getInt(c.getColumnIndex(Contrato.Entrada_Detalhe.COLUMN_REG_NUM))));
                     }
                     else{
                         e.get(i).setEnt_reg(null);
                     }
+
+                    if(e.get(i).getEnt_tempo() == 0){
+                        e.get(i).setEnt_tempo(null);
+                    }
+                    if(e.get(i).getEnt_qtde() == 0){
+                        e.get(i).setEnt_qtde(null);
+                    }
+                    if(e.get(i).getEnt_mudas_bandeja() == 0){
+                        e.get(i).setEnt_mudas_bandeja(null);
+                    }
+                    if(e.get(i).getEnt_valor() == 0){
+                        e.get(i).setEnt_valor(null);
+                    }
+
+
+
                     i++;
                 }
                 while(c.moveToNext());
@@ -95,6 +112,7 @@ public class C_Entrada {
         valuesDetalhe.put(Contrato.Entrada_Detalhe.COLUMN_QTDE,e.getEnt_qtde());
         valuesDetalhe.put(Contrato.Entrada_Detalhe.COLUMN_QTUN,e.getEnt_qtun());
         valuesDetalhe.put(Contrato.Entrada_Detalhe.COLUMN_MUDAS_BANDEJA,e.getEnt_mudas_bandeja());
+        valuesDetalhe.put(Contrato.Entrada_Detalhe.COLUMN_REG_LOTE, e.getEnt_reg_lote());
         valuesDetalhe.put(Contrato.Entrada_Detalhe.COLUMN_VALOR,e.getEnt_valor());
 
         if (e.getEnt_reg() != null){
@@ -142,6 +160,7 @@ public class C_Entrada {
         valuesDetalhe.put(Contrato.Entrada_Detalhe.COLUMN_QTUN, e.getEnt_qtun());
         valuesDetalhe.put(Contrato.Entrada_Detalhe.COLUMN_MUDAS_BANDEJA, e.getEnt_mudas_bandeja());
         valuesDetalhe.put(Contrato.Entrada_Detalhe.COLUMN_VALOR, e.getEnt_valor());
+        valuesDetalhe.put(Contrato.Entrada_Detalhe.COLUMN_REG_LOTE, e.getEnt_reg_lote());
 
         if (e.getEnt_reg() != null){
             valuesDetalhe.put(Contrato.Entrada_Detalhe.COLUMN_REG_NUM,e.getEnt_reg().getReg_numero());

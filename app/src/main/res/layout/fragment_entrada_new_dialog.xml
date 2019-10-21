@@ -1,123 +1,176 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.constraint.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".View.Detalhe.EntradaCriaAlterDialog"
-        android:id="@+id/frameLayout4" android:scrollbars="vertical">
-    <ImageView
-            android:src="@color/adubacao"
-            android:layout_width="64dp"
-            android:layout_height="0dp" android:id="@+id/imgTipoCor_EntradaNewDialog"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp" app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintVertical_bias="0.0"/>
-    <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" android:layout_marginTop="50dp"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="32dp" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="32dp"
-            android:id="@+id/linTipo_EntradaNewDialog">
-        <TextView
-                android:text="TextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/txtTipo_EntradaNewDialog"/>
-        <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="57dp"
-                android:id="@+id/spiTipo_EntradaNewDialog"/>
-    </LinearLayout>
-    <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginEnd="32dp"
-            android:layout_marginStart="32dp" android:id="@+id/linDados_EntradaNewDialog"
-            app:layout_constraintTop_toBottomOf="@+id/linTipo_EntradaNewDialog">
-        <TextView
-                android:text="TextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/txtData_EntradaNewDialog"/>
-        <TextView
-                android:text="TextView"
-                android:layout_width="match_parent"
-                android:layout_height="45dp" android:id="@+id/txtDataEscolhida_EntradaNewDialog"
-                android:gravity="center|left"/>
-        <TextView
-                android:text="TextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/txtTempo_EntradaNewDialog"/>
-        <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:ems="10"
-                android:id="@+id/edtTempo_EntradaNewDialog"/>
-        <TextView
-                android:text="TextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/txtQtde_EntradaNewDialog"/>
-        <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:ems="10"
-                android:id="@+id/edtQtde_EntradaNewDialog"/>
-        <TextView
-                android:text="TextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/txtMudasB_EntradaNewDialog"/>
-        <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:ems="10"
-                android:id="@+id/edtMudasB_EntradaNewDialog"/>
-        <TextView
-                android:text="TextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/txtValor_EntradaNewDialog"/>
-        <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:ems="10"
-                android:id="@+id/edtValor_EntradaNewDialog"/>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/scrollView2">
+
+
+    <android.support.constraint.ConstraintLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".View.Detalhe.EntradaCriaAlterDialog"
+            android:id="@+id/frameLayout4">
+
+        <ImageView
+                android:src="@color/adubacao"
+                android:layout_width="64dp"
+                android:layout_height="0dp" android:id="@+id/imgTipoCor_EntradaNewDialog"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="8dp" app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintVertical_bias="0.0"/>
         <LinearLayout
                 android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" android:layout_marginTop="50dp"
+                app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="32dp" app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="32dp"
-                android:id="@+id/linAgr_EntradaNewDialog"
-                android:visibility="gone">
-            <SearchView
+                android:id="@+id/linTipo_EntradaNewDialog">
+            <TextView
+                    android:text="TextView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/srcAgr_EntradaNewDialog">
-            </SearchView>
-            <ScrollView
+                    android:layout_height="wrap_content" android:id="@+id/txtTipo_EntradaNewDialog"/>
+            <Spinner
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                <android.support.v7.widget.RecyclerView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" android:id="@+id/recViewAgr_EntradaNewDialog"/>
-            </ScrollView>
+                    android:layout_height="57dp"
+                    android:id="@+id/spiTipo_EntradaNewDialog"/>
         </LinearLayout>
-        <Button
-                android:text="Button"
-                android:layout_width="match_parent"
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/btnCriar_EntradaNewDialog"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"/>
-    </LinearLayout>
-</android.support.constraint.ConstraintLayout>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp" android:id="@+id/linDados_EntradaNewDialog"
+                app:layout_constraintTop_toBottomOf="@+id/linTipo_EntradaNewDialog" android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="parent">
+            <TextView
+                    android:text="TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/txtData_EntradaNewDialog"/>
+            <TextView
+                    android:text="TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp" android:id="@+id/txtDataEscolhida_EntradaNewDialog"
+                    android:gravity="center|left"/>
+            <TextView
+                    android:text="TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/txtTempo_EntradaNewDialog"/>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:id="@+id/linTempo_EntradaNewDialog">
+                <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:ems="10"
+                        android:id="@+id/edtTempo_EntradaNewDialog"/>
+                <Spinner
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" android:id="@+id/spiTempo_EntradaNewDialog" android:layout_weight="1"/>
+            </LinearLayout>
+            <TextView
+                    android:text="TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/txtQtde_EntradaNewDialog"/>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:id="@+id/linQtde_EntradaNewDialog">
+                <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:ems="10"
+                        android:id="@+id/edtQtde_EntradaNewDialog"/>
+                <Spinner
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" android:id="@+id/spiQtde_EntradaNewDialog" android:layout_weight="1"/>
+            </LinearLayout>
+            <TextView
+                    android:text="TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/txtMudasB_EntradaNewDialog"/>
+            <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:ems="10"
+                    android:id="@+id/edtMudasB_EntradaNewDialog"/>
+            <TextView
+                    android:text="TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/txtValor_EntradaNewDialog"/>
+            <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberSigned|numberDecimal"
+                    android:ems="10"
+                    android:id="@+id/edtValor_EntradaNewDialog"/>
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:id="@+id/linAgr_EntradaNewDialog"
+                    android:visibility="visible">
+                <TextView
+                        android:text="Nome do defensivo agrícola"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:id="@+id/txtNomeProd_EntradaNewDialog"/>
+                <AutoCompleteTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:id="@+id/auTxtNome_EntradaNewDialog"
+                        android:hint="digite o nome comercial"/>
+                <TextView
+                        android:text="Fabricante"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:id="@+id/txtEmpresa_DialogNewDialog"/>
+                <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:ems="10"
+                        android:id="@+id/edtEmpresa_EntradaNewDialog"/>
+                <TextView
+                        android:text="Ingrediente ativo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:id="@+id/txtIngAtivo_EntradaNewDialog"/>
+                <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:ems="10"
+                        android:id="@+id/edtIng_EntradaNewDialog"/>
+                <TextView
+                        android:text="Lote do defensivo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:id="@+id/txtLoteDef_EntradaNewDialog"/>
+                <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:ems="10"
+                        android:id="@+id/edtLoteDef_EntradaNewDialog"/>
+            </LinearLayout>
+            <Button
+                    android:text="Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnCriar_EntradaNewDialog"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp" android:layout_marginBottom="16dp"/>
+        </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
+
+</ScrollView>

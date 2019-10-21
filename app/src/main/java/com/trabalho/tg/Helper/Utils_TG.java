@@ -2,9 +2,13 @@ package com.trabalho.tg.Helper;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -101,6 +105,126 @@ public class Utils_TG {
     public void hideKeyboardFrom(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public Integer stringToInteger(String string){
+        Integer ret;
+        try{
+            ret = Integer.parseInt(string);
+        }
+        catch(Exception e){
+            if (string.compareTo("") == 0){
+                ret = null;
+            }
+            else{
+                ret = 0;
+            }
+        }
+
+        return ret;
+    }
+
+    public Double stringToDouble(String string){
+        Double ret = null;
+        try{
+            ret = Double.parseDouble(string);
+        }
+        catch(Exception e){
+            if (string.compareTo("") == 0){
+               ret = null;
+            }
+            else{
+                ret = 0.0;
+            }
+
+        }
+
+        return ret;
+    }
+
+    public String removerMascaraMonetaria(String str){
+        str = str.replaceAll("[R$]", "")
+                .replaceAll("[.]", "").replaceAll("\\s+","");
+
+        str = str.replaceAll("[,]", ".");
+
+
+        return str;
+    }
+
+    public String doubleToString(Double d){
+        String str = d.toString();
+
+        int i = str.indexOf(".");
+
+        if (str.substring(i+2).compareTo("") == 0){
+            str = str.concat("0");
+        }
+        return str;
+    }
+
+
+    public String formatMonetario(String string){
+        NumberFormat nf = NumberFormat.getCurrencyInstance();
+
+        try {
+            string = string.replaceAll("[^\\d]", "");
+            string = nf.format(Double.parseDouble(string) / 100);
+
+        } catch (NumberFormatException e) {
+            string = "";
+        }
+        return string;
+    }
+
+    public class MascaraMonetaria implements TextWatcher {
+
+        final EditText campo;
+
+        public MascaraMonetaria(EditText campo) {
+            super();
+            this.campo = campo;
+        }
+
+        private boolean isUpdating = false;
+        // Pega a formatacao do sistema, se for brasil R$ se EUA US$
+        private NumberFormat nf = NumberFormat.getCurrencyInstance();
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before,
+                                  int after) {
+            // Evita que o método seja executado varias vezes.
+            // Se tirar ele entre em loop
+            if (isUpdating) {
+                isUpdating = false;
+                return;
+            }
+
+            isUpdating = true;
+            String str = s.toString();
+            str = str.replaceAll("[^\\d]", "");
+
+            try {
+                // Transformamos o número que está escrito no EditText em
+                // monetário.
+                str = nf.format(Double.parseDouble(str) / 100);
+                campo.setText(str);
+                campo.setSelection(campo.getText().length());
+            } catch (NumberFormatException e) {
+                s = "";
+            }
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count,
+                                      int after) {
+            // Não utilizado
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            // Não utilizado
+        }
     }
 
 }
