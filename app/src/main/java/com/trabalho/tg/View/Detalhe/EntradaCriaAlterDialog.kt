@@ -199,9 +199,11 @@ class EntradaCriaAlterDialog : Fragment() {
 
                         if(position == 1){
                             txtQtde_EntradaNewDialog.text = "Bandejas"
+                            spiQtde_EntradaNewDialog.visibility = View.GONE
                         }
                         else if(position == 5){
                             txtQtde_EntradaNewDialog.text = "Pessoas"
+                            spiQtde_EntradaNewDialog.visibility = View.GONE
                         }
                         else if(position == 2 || position == 6 || position == 4){
                             txtQtde_EntradaNewDialog.text = "Quantidade"
@@ -244,6 +246,7 @@ class EntradaCriaAlterDialog : Fragment() {
 
                     if(spiTipo_EntradaNewDialog.selectedItemPosition > 1){
                         entrada!!.ent_tipo = spiTipo_EntradaNewDialog.selectedItemPosition
+
                     }
                     if(spiTipo_EntradaNewDialog.selectedItemPosition == 3){
                         entrada!!.ent_reg = Reg_Agrotoxico(0)
@@ -260,10 +263,20 @@ class EntradaCriaAlterDialog : Fragment() {
                         }
                     }
 
+                    if(linTempo_EntradaNewDialog.visibility == View.VISIBLE){
+                        entrada!!.ent_tpun = spiTempo_EntradaNewDialog.selectedItem.toString()
+                    }
+                    else{
+                        entrada!!.ent_tpun = null
+                    }
+                    if(linQtde_EntradaNewDialog.visibility == View.VISIBLE){
+                        entrada!!.ent_qtun = spiQtde_EntradaNewDialog.selectedItem.toString()
+                    }
+                    else{
+                        entrada!!.ent_qtun = null
+                    }
 
-                    entrada!!.ent_tpun = spiTempo_EntradaNewDialog.selectedItem.toString()
                     entrada!!.ent_tempo = utils.stringToDouble(edtTempo_EntradaNewDialog.text.toString())
-                    entrada!!.ent_qtun = spiQtde_EntradaNewDialog.selectedItem.toString()
                     entrada!!.ent_qtde = utils.stringToDouble(edtQtde_EntradaNewDialog.text.toString())
                     entrada!!.ent_mudas_bandeja =  utils.stringToInteger(edtMudasB_EntradaNewDialog.text.toString())
                     entrada!!.ent_valor = utils.stringToDouble(utils.removerMascaraMonetaria(edtValor_EntradaNewDialog.text.toString()))

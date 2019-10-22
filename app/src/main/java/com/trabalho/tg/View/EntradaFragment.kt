@@ -13,6 +13,7 @@ import com.trabalho.tg.Adapters.EntradaAdapter
 import com.trabalho.tg.Model.Entrada
 import com.trabalho.tg.Model.Lote
 import com.trabalho.tg.R
+import kotlinx.android.synthetic.main.fragment_entrada.*
 import java.io.Serializable
 
 
@@ -123,6 +124,16 @@ class EntradaFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(activity)
 
         recyclerView.adapter = EntradaAdapter(lotePam!!.lot_ent, context, mlistener)
+
+
+
+        if (lotePam!!.lot_ent[lotePam!!.lot_ent.lastIndex].ent_tipo == 4){
+            btnFechar_EntradaFragment.visibility = View.VISIBLE
+
+        }
+        else{
+            btnFechar_EntradaFragment.visibility = View.INVISIBLE
+        }
 
     }
 }
