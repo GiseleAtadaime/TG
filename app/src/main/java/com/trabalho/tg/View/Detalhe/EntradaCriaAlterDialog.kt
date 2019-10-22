@@ -128,6 +128,13 @@ class EntradaCriaAlterDialog : Fragment() {
         var cal = Calendar.getInstance()
 
         var adapter = ArrayAdapter.createFromResource(context,R.array.EntradaTipo, android.R.layout.simple_spinner_dropdown_item)
+        var adapterTempo = ArrayAdapter.createFromResource(context,R.array.EntradaTipoTempo, android.R.layout.simple_spinner_dropdown_item)
+        var adapterQtde = ArrayAdapter.createFromResource(context,R.array.EntradaTipoQuantidade, android.R.layout.simple_spinner_dropdown_item)
+        var adapterDose = ArrayAdapter.createFromResource(context,R.array.EntradaTipoDose, android.R.layout.simple_spinner_dropdown_item)
+
+
+
+
         spiTipo_EntradaNewDialog.adapter = adapter
 
         txtTipo_EntradaNewDialog.text = "Tipo"
@@ -159,12 +166,12 @@ class EntradaCriaAlterDialog : Fragment() {
                         position == 0){
 
                         txtTempo_EntradaNewDialog.visibility = View.GONE
-                        edtTempo_EntradaNewDialog.visibility = View.GONE
+                        linTempo_EntradaNewDialog.visibility = View.GONE
                     }
                     else{
-
+                        spiTempo_EntradaNewDialog.adapter = adapterTempo
                         txtTempo_EntradaNewDialog.visibility = View.VISIBLE
-                        edtTempo_EntradaNewDialog.visibility = View.VISIBLE
+                        linTempo_EntradaNewDialog.visibility = View.VISIBLE
 
                         if(entrada!!.ent_tipo == 3){
                             txtTempo_EntradaNewDialog.text = "Tempo de carência"
@@ -179,14 +186,14 @@ class EntradaCriaAlterDialog : Fragment() {
                         position == 0){
 
                         txtQtde_EntradaNewDialog.visibility = View.GONE
-                        edtQtde_EntradaNewDialog.visibility = View.GONE
+                        linQtde_EntradaNewDialog.visibility = View.GONE
                         txtValor_EntradaNewDialog.visibility = View.GONE
                         edtValor_EntradaNewDialog.visibility = View.GONE
                     }
                     else{
-
+                        spiQtde_EntradaNewDialog.adapter = adapterQtde
                         txtQtde_EntradaNewDialog.visibility = View.VISIBLE
-                        edtQtde_EntradaNewDialog.visibility = View.VISIBLE
+                        linQtde_EntradaNewDialog.visibility = View.VISIBLE
                         txtValor_EntradaNewDialog.visibility = View.VISIBLE
                         edtValor_EntradaNewDialog.visibility = View.VISIBLE
 
@@ -201,6 +208,7 @@ class EntradaCriaAlterDialog : Fragment() {
                         }
                         else if(position == 3){
                             txtQtde_EntradaNewDialog.text = "Dose"
+                            spiQtde_EntradaNewDialog.adapter = adapterDose
                         }
 
                         txtValor_EntradaNewDialog.text = "Valor total"
@@ -253,9 +261,9 @@ class EntradaCriaAlterDialog : Fragment() {
                     }
 
 
-                    entrada!!.ent_tpun
+                    entrada!!.ent_tpun = spiTempo_EntradaNewDialog.selectedItem.toString()
                     entrada!!.ent_tempo = utils.stringToDouble(edtTempo_EntradaNewDialog.text.toString())
-                    entrada!!.ent_qtun
+                    entrada!!.ent_qtun = spiQtde_EntradaNewDialog.selectedItem.toString()
                     entrada!!.ent_qtde = utils.stringToDouble(edtQtde_EntradaNewDialog.text.toString())
                     entrada!!.ent_mudas_bandeja =  utils.stringToInteger(edtMudasB_EntradaNewDialog.text.toString())
                     entrada!!.ent_valor = utils.stringToDouble(utils.removerMascaraMonetaria(edtValor_EntradaNewDialog.text.toString()))
