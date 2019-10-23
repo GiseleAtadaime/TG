@@ -139,11 +139,12 @@ class EntradaDetalheDialog : Fragment() {
 
             if(entrada!!.ent_tipo == 3){
                 txtTipo1_EntradaDetalhe.text = "Tempo de carência"
-                txtTipoValor1_EntradaDetalhe.text = entrada!!.ent_tempo.toString()
+
             }
             else{
-                txtTipoValor1_EntradaDetalhe.text = "Tempo gasto"
+                txtTipo1_EntradaDetalhe.text = "Tempo gasto"
             }
+            txtTipoValor1_EntradaDetalhe.text = entrada!!.ent_tempo.toString() + " " + entrada!!.ent_tpun
 
         }
         if(entrada!!.ent_tipo == 7){
@@ -158,9 +159,11 @@ class EntradaDetalheDialog : Fragment() {
             txtTipoValor2_EntradaDetalhe.visibility = View.VISIBLE
             txtValor_EntradaDetalhe.visibility = View.VISIBLE
 
+            txtTipoValor2_EntradaDetalhe.text = entrada!!.ent_qtde.toString() + " " +  entrada!!.ent_qtun
 
             if(entrada!!.ent_tipo == 1){
                 txtTipo2_EntradaDetalhe.text = "Bandejas"
+                txtTipoValor2_EntradaDetalhe.text = entrada!!.ent_qtde.toString()
             }
             else if(entrada!!.ent_tipo == 5){
                 txtTipo2_EntradaDetalhe.text = "Pessoas"
@@ -172,7 +175,7 @@ class EntradaDetalheDialog : Fragment() {
                 txtTipo2_EntradaDetalhe.text = "Dose"
             }
 
-            txtTipoValor2_EntradaDetalhe.text = entrada!!.ent_qtde.toString()
+
             txtValor_EntradaDetalhe.text = "Valor total: " + utils.formatMonetario(utils.doubleToString(entrada!!.ent_valor))
         }
         if(entrada!!.ent_tipo != 1){

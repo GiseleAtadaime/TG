@@ -53,7 +53,7 @@
                 android:layout_marginTop="20dp"
                 android:textSize="18sp" android:textStyle="bold"/>
         <TextView
-                android:text="TextView"
+                android:text="Data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/txtData_EntradaDetalhe"
@@ -62,7 +62,7 @@
                 android:layout_marginTop="12dp"
                 android:textSize="18sp"/>
         <TextView
-                android:text="TextView"
+                android:text="tipo"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
                 android:id="@+id/txtTipo1_EntradaDetalhe"
@@ -70,14 +70,14 @@
                 android:layout_marginTop="20dp"
                 android:textSize="18sp"/>
         <TextView
-                android:text="TextView"
+                android:text="tipo valor1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/txtTipoValor1_EntradaDetalhe"
                 android:layout_marginStart="8dp" android:layout_marginTop="20dp"
                 android:textSize="18sp"/>
         <TextView
-                android:text="TextView"
+                android:text="tipo 2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/txtTipo2_EntradaDetalhe"
@@ -85,14 +85,14 @@
                 android:layout_marginStart="8dp" android:layout_marginTop="20dp"
                 android:textSize="18sp"/>
         <TextView
-                android:text="TextView"
+                android:text="tipo valor 2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/txtTipoValor2_EntradaDetalhe" android:layout_marginTop="20dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp" android:textSize="18sp"/>
         <TextView
-                android:text="TextView"
+                android:text="mudas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/txtMudas_EntradaDetalhe"
@@ -100,7 +100,7 @@
                 android:layout_marginTop="40dp"
                 android:textSize="18sp"/>
         <TextView
-                android:text="TextView"
+                android:text="valor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/txtValor_EntradaDetalhe"

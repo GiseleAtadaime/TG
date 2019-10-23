@@ -14,6 +14,32 @@ import java.util.List;
 
 public class C_Entrada {
 
+    public Boolean plantioExists(DBHelper dbHelper, Integer lID){
+        Cursor c = null;
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Boolean ret = false;
+        String query = "SELECT 1 FROM " + Contrato.Entrada.TABLENAME + " e, " + Contrato.Entrada_Detalhe.TABLENAME + " d, " +
+                Contrato.Tipo_Entrada.TABLENAME + " t " +
+                " WHERE " +
+                "e." + Contrato.Entrada.COLUMN_DETALHE + " = " + "d." + Contrato.Entrada_Detalhe.COLUMN_DETALHE_NUMERO +
+                " AND t." + Contrato.Tipo_Entrada.COLUMN_TIPO_NUMERO + " = " + "d." + Contrato.Entrada_Detalhe.COLUMN_TIPO_NUM +
+                " AND e." + Contrato.Entrada.COLUMN_LOTE_ID + " = " + lID +
+                " AND d." + Contrato.Entrada_Detalhe.COLUMN_TIPO_NUM + " = 1";
+
+        try{
+            c = db.rawQuery(query,null);
+            if(c.moveToFirst()){
+                    ret = true;
+            }
+            c.close();
+            db.endTransaction();
+        }
+        finally {
+            db.close();
+            return ret;
+        }
+    }
+
     public ArrayList<Entrada> selectEntrada(DBHelper dbHelper, Integer lID){
         Cursor c = null;
         ArrayList<Entrada> e = new ArrayList<>();
@@ -70,10 +96,13 @@ public class C_Entrada {
                 }
                 while(c.moveToNext());
                 c.close();
+                db.endTransaction();
+
             }
         }
         finally {
 
+            db.close();
             return e;
         }
     }
@@ -91,8 +120,11 @@ public class C_Entrada {
                 id = c.getInt(c.getColumnIndex("MAX(" + Contrato.Entrada_Detalhe.COLUMN_DETALHE_NUMERO + ")"));
             }
             c.close();
+
         }
         finally {
+            db.endTransaction();
+            db.close();
             return id;
         }
     }
@@ -175,6 +207,7 @@ public class C_Entrada {
         }
         finally {
             db.endTransaction();
+            db.close();
             return ret;
         }
 
@@ -212,6 +245,8 @@ public class C_Entrada {
             ret = true;
         }
         finally {
+            db.setTransactionSuccessful();
+            db.close();
             return ret;
         }
         
@@ -283,7 +318,7 @@ public class C_Entrada {
             }
         }
         finally {
-
+            db.close();
             return tipo;
         }
     }
@@ -302,10 +337,10 @@ public class C_Entrada {
                     ret = true;
                 }
             }
-            c.close();
+
         }
         finally {
-
+            c.close();
             return ret;
         }
     }

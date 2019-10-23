@@ -160,6 +160,7 @@ class EntradaCriaAlterDialog : Fragment() {
                         entrada?.ent_tipo = position
                         imgTipoCor_EntradaNewDialog.setImageResource(entrada!!.entradaColor)
                     }
+
                     if(position != 2 &&
                         position != 3 &&
                         position != 7 ||
@@ -198,10 +199,24 @@ class EntradaCriaAlterDialog : Fragment() {
                         edtValor_EntradaNewDialog.visibility = View.VISIBLE
 
                         if(position == 1){
-                            txtQtde_EntradaNewDialog.text = "Bandejas"
-                            spiQtde_EntradaNewDialog.visibility = View.GONE
+                            if(C_Entrada().plantioExists(DBHelper(context),loteId)){
+                                Toast.makeText(context, "Já existe um registro de plantio!", Toast.LENGTH_SHORT).show()
+                                linDados_EntradaNewDialog.isEnabled = false
+                                btnCriar_EntradaNewDialog.isEnabled = false
+
+                            }
+                            else{
+                                linDados_EntradaNewDialog.isEnabled = true
+                                btnCriar_EntradaNewDialog.isEnabled = true
+                                txtQtde_EntradaNewDialog.text = "Bandejas"
+                                spiQtde_EntradaNewDialog.visibility = View.GONE
+                            }
+
+                        }else{
+                            linDados_EntradaNewDialog.isEnabled = true
+                            btnCriar_EntradaNewDialog.isEnabled = true
                         }
-                        else if(position == 5){
+                        if(position == 5){
                             txtQtde_EntradaNewDialog.text = "Pessoas"
                             spiQtde_EntradaNewDialog.visibility = View.GONE
                         }
