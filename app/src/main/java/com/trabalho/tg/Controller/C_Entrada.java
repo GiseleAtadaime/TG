@@ -120,10 +120,9 @@ public class C_Entrada {
                 id = c.getInt(c.getColumnIndex("MAX(" + Contrato.Entrada_Detalhe.COLUMN_DETALHE_NUMERO + ")"));
             }
             c.close();
-
         }
         finally {
-            db.endTransaction();
+
             db.close();
             return id;
         }
@@ -156,7 +155,7 @@ public class C_Entrada {
         }*/
         valuesDetalhe.put(Contrato.Entrada_Detalhe.COLUMN_USR_ID,uID);
 
-        try{
+    //    try{
             db.insert(Contrato.Entrada_Detalhe.TABLENAME, null, valuesDetalhe);
 
             values.put(Contrato.Entrada.COLUMN_DATA, new Utils_TG().formatDate(e.getEnt_data(), false));
@@ -164,15 +163,17 @@ public class C_Entrada {
             values.put(Contrato.Entrada.COLUMN_DETALHE,selectLastEntradaDetalheID(dbHelper));
             values.put(Contrato.Entrada.COLUMN_USR_ID, uID);
 
+            if(!db.isOpen()){
+                db = dbHelper.getWritableDatabase();
+            }
             db.insert(Contrato.Entrada.TABLENAME, null,values);
 
             ret = true;
-            db.setTransactionSuccessful();
-        }
-        finally{
+      //  }
+     //   finally{
             db.close();
             return ret;
-        }
+      //  }
     }
     //TODO update
     //update should update all fields regardless of modification or keep it as is?
@@ -206,7 +207,6 @@ public class C_Entrada {
             ret = true;
         }
         finally {
-            db.endTransaction();
             db.close();
             return ret;
         }
