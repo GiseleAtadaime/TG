@@ -59,7 +59,7 @@ public class C_Entrada {
             if (c.moveToFirst()) {
                 do{
                     e.add(new Entrada(c.getInt(c.getColumnIndex(Contrato.Entrada.COLUMN_NUMERO))));
-                    e.get(i).setEnt_detalhe_num(c.getColumnIndex(Contrato.Entrada_Detalhe.COLUMN_DETALHE_NUMERO));
+                    e.get(i).setEnt_detalhe_num(c.getInt(c.getColumnIndex(Contrato.Entrada_Detalhe.COLUMN_DETALHE_NUMERO)));
                     e.get(i).setEnt_data(new Utils_TG().getStringToDate(c.getString(c.getColumnIndex(Contrato.Entrada.COLUMN_DATA))));
                     e.get(i).setEnt_tipo(c.getInt(c.getColumnIndex(Contrato.Entrada_Detalhe.COLUMN_TIPO_NUM)));
                     e.get(i).setEnt_desc(c.getString(c.getColumnIndex(Contrato.Tipo_Entrada.COLUMN_DESCRICAO)));
@@ -155,7 +155,7 @@ public class C_Entrada {
         }*/
         valuesDetalhe.put(Contrato.Entrada_Detalhe.COLUMN_USR_ID,uID);
 
-    //    try{
+        try{
             db.insert(Contrato.Entrada_Detalhe.TABLENAME, null, valuesDetalhe);
 
             values.put(Contrato.Entrada.COLUMN_DATA, new Utils_TG().formatDate(e.getEnt_data(), false));
@@ -169,11 +169,11 @@ public class C_Entrada {
             db.insert(Contrato.Entrada.TABLENAME, null,values);
 
             ret = true;
-      //  }
-     //   finally{
+        }
+       finally{
             db.close();
             return ret;
-      //  }
+        }
     }
     //TODO update
     //update should update all fields regardless of modification or keep it as is?
@@ -187,6 +187,7 @@ public class C_Entrada {
         ContentValues valuesDetalhe = new ContentValues();
 
         values.put(Contrato.Entrada.COLUMN_DATA, new Utils_TG().formatDate(e.getEnt_data(), false));
+
         valuesDetalhe.put(Contrato.Entrada_Detalhe.COLUMN_TEMPO, e.getEnt_tempo());
         valuesDetalhe.put(Contrato.Entrada_Detalhe.COLUMN_TPUN, e.getEnt_tpun());
         valuesDetalhe.put(Contrato.Entrada_Detalhe.COLUMN_QTDE, e.getEnt_qtde());
@@ -199,17 +200,16 @@ public class C_Entrada {
             valuesDetalhe.put(Contrato.Entrada_Detalhe.COLUMN_REG_NUM,e.getEnt_reg().getReg_numero());
         }
 
-        try{
+       try{
 
             db.update(Contrato.Entrada.TABLENAME,values,Contrato.Entrada.COLUMN_NUMERO + " = ?", new String[]{e.getEnt_numero().toString()});
-            db.update(Contrato.Entrada_Detalhe.TABLENAME,valuesDetalhe,Contrato.Entrada_Detalhe.COLUMN_DETALHE_NUMERO + " = ?", new String[]{e.getEnt_tipo().toString()});
-            db.setTransactionSuccessful();
+            db.update(Contrato.Entrada_Detalhe.TABLENAME,valuesDetalhe,Contrato.Entrada_Detalhe.COLUMN_DETALHE_NUMERO + " = ?", new String[]{e.getEnt_detalhe_num().toString()});
             ret = true;
         }
-        finally {
+       finally {
             db.close();
             return ret;
-        }
+       }
 
     }
 

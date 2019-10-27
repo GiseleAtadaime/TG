@@ -45,7 +45,8 @@ public class C_Reg_Agrotoxico {
         Reg_Agrotoxico r = null;
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String query = "SELECT * FROM " + Contrato.Reg_Agrotoxico.TABLENAME;
+        String query = "SELECT * FROM " + Contrato.Reg_Agrotoxico.TABLENAME +
+                " WHERE " + Contrato.Reg_Agrotoxico.COLUMN_NUMERO + " = " + regNum;
 
         try{
             c = db.rawQuery(query,null);
