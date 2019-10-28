@@ -61,40 +61,40 @@ public class Utils_TG {
 
     public Integer getMonth(Integer mes){
         switch (mes){
-            case 1:
+            case 0:
                 mes = Calendar.JANUARY;
                 break;
-            case 2:
+            case 1:
                 mes =Calendar.FEBRUARY;
                 break;
-            case 3:
+            case 2:
                 mes =Calendar.MARCH;
                 break;
-            case 4:
+            case 3:
                 mes =Calendar.APRIL;
                 break;
-            case 5:
+            case 4:
                 mes =Calendar.MAY;
                 break;
-            case 6:
+            case 5:
                 mes =Calendar.JUNE;
                 break;
-            case 7:
+            case 6:
                 mes =Calendar.JULY;
                 break;
-            case 8:
+            case 7:
                 mes =Calendar.AUGUST;
                 break;
-            case 9:
+            case 8:
                 mes =Calendar.SEPTEMBER;
                 break;
-            case 10:
+            case 9:
                 mes =Calendar.OCTOBER;
                 break;
-            case 11:
+            case 10:
                 mes =Calendar.NOVEMBER;
                 break;
-            case 12:
+            case 11:
                 mes =Calendar.DECEMBER;
                 break;
         }

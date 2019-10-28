@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             tools:context=".View.Usuario.UsuarioInfoGeral" android:id="@+id/frameLayout6">
+    <ImageButton
+            android:src="@drawable/baseline_create_black_24"
+            android:layout_width="66dp"
+            android:layout_height="62dp" android:id="@+id/imgbtnAlterarInfo_UsuarioGeral"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.976"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+            app:layout_constraintVertical_bias="0.436"/>
+    <android.support.constraint.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" android:background="@color/colorPrimary"
+            android:id="@+id/constraintLayout">
+
+        <ImageView
+                android:layout_width="152dp"
+                android:layout_height="149dp" tools:src="@tools:sample/avatars" android:id="@+id/imgFoto_UsuarioGeral"
+                android:layout_weight="1" app:srcCompat="@mipmap/ic_launcher_round"
+                android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
+                android:cropToPadding="false"/>
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintEnd_toStartOf="@+id/imgFoto_UsuarioGeral" android:layout_marginEnd="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/imgFoto_UsuarioGeral" app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="8dp" android:layout_marginTop="8dp"
+                app:layout_constraintTop_toTopOf="parent">
+            <TextView
+                    android:text="TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/txtNome_UsuarioGeral" android:textSize="18sp"
+                    android:layout_marginTop="20dp" android:layout_marginBottom="20dp" android:textColor="#FFFFFF"/>
+            <TextView
+                    android:text="TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/txtEmail_UsuarioGeral" android:textSize="18sp"
+                    android:layout_marginTop="12dp" android:layout_marginBottom="5dp" android:textColor="#FFFFFF"/>
+        </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="16dp" android:layout_marginEnd="16dp"
+            android:id="@+id/linearLayout" android:layout_marginTop="24dp">
+        <TextView
+                android:text="TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/txtNF_UsuarioGeral" android:textSize="18sp"
+                android:layout_marginTop="20dp"/>
+        <TextView
+                android:text="TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/txtRS_UsuarioGeral" android:textSize="18sp"
+                android:layout_marginTop="20dp"/>
+        <TextView
+                android:text="TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/txtCNPJ_UsuarioGeral" android:textSize="18sp"
+                android:layout_marginTop="20dp"/>
+        <TextView
+                android:text="TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/txtTelefone_UsuarioGeral" android:textSize="18sp"
+                android:layout_marginTop="20dp"/>
+        <TextView
+                android:text="TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/txtSite_UsuarioGeral" android:textSize="18sp"
+                android:layout_marginTop="20dp" android:layout_marginBottom="20dp"/>
+    </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+            android:layout_width="0dp"
+            android:layout_height="234dp" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="16dp" android:id="@+id/recViewEndereco_UsuarioGeral"/>
+    <Button
+            android:text="Adicionar endereço"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/btnAddEnd_UsuarioGeral"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            android:layout_marginTop="28dp" app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_constraintHorizontal_bias="0.498"/>
+</android.support.constraint.ConstraintLayout>

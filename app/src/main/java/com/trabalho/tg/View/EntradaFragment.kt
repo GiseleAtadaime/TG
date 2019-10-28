@@ -12,6 +12,7 @@ import android.widget.Toast
 import com.trabalho.tg.Adapters.EntradaAdapter
 import com.trabalho.tg.Model.Entrada
 import com.trabalho.tg.Model.Lote
+import com.trabalho.tg.Model.Reg_Agrotoxico
 import com.trabalho.tg.R
 import kotlinx.android.synthetic.main.fragment_entrada.*
 import java.io.Serializable
@@ -57,8 +58,8 @@ class EntradaFragment : Fragment() {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onEntradaSelected(entrada : Entrada, userId : Int, areaId : Int, loteId : Int) {
-        listener?.onEntradaSelected(entrada, userId, areaId, loteId)
+    fun onEntradaSelected(entrada : Entrada, userId : Int, areaId : Int, loteId : Int, new : Boolean) {
+        listener?.onEntradaSelected(entrada, userId, areaId, loteId, new)
     }
 
     override fun onAttach(context: Context) {
@@ -88,7 +89,7 @@ class EntradaFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onEntradaSelected(entrada : Entrada,userId : Int, areaId : Int, loteId : Int)
+        fun onEntradaSelected(entrada : Entrada,userId : Int, areaId : Int, loteId : Int, new : Boolean)
     }
 
     companion object {
@@ -117,22 +118,29 @@ class EntradaFragment : Fragment() {
 
         val mlistener = fun(view : View, position: Int) {
             Toast.makeText(context, "Entrada position:  $position", Toast.LENGTH_SHORT).show()
-            onEntradaSelected(lotePam!!.lot_ent[position], userid!!, areaId!!, lotePam!!.lot_id)
+            onEntradaSelected(lotePam!!.lot_ent[position], userid!!, areaId!!, lotePam!!.lot_id, false)
         }
 
         var recyclerView = view.findViewById<RecyclerView>(R.id.recView_Entrada)
-        recyclerView.layoutManager = LinearLayoutManager(activity)
+        recyclerView.layoutManager = LinearLayoutManager(activity) as RecyclerView.LayoutManager?
 
         recyclerView.adapter = EntradaAdapter(lotePam!!.lot_ent, context, mlistener)
 
+        var i : Int? = lotePam!!.lot_ent.find { it.ent_tipo == 4 }?.ent_numero
 
-
-        if (lotePam!!.lot_ent[lotePam!!.lot_ent.lastIndex].ent_tipo == 4){
+        if ( i != null ){
             btnFechar_EntradaFragment.visibility = View.VISIBLE
+            btnFechar_EntradaFragment.text = "Fechar lote"
 
         }
         else{
             btnFechar_EntradaFragment.visibility = View.INVISIBLE
+        }
+
+
+        fBtnAdd_EntradaFragment.setOnClickListener {
+                onEntradaSelected(Entrada(0), userid!!, areaId!!, lotePam!!.lot_id, true)
+
         }
 
     }

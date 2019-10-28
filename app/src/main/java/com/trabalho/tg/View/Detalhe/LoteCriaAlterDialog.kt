@@ -131,12 +131,13 @@ class LoteCriaAlterDialog : Fragment() {
 
 
             btnCriaAlter_LoteDialog.setOnClickListener{
-                if (edtTxtNome_LoteDialog.text.isNullOrBlank()){
-                    Toast.makeText(context, "Informe o nome para o lote!", Toast.LENGTH_SHORT).show()
+                if (edtPlanta_LoteDialog.text.isNullOrBlank()){
+                    Toast.makeText(context, "Informe o produto cultivado!", Toast.LENGTH_SHORT).show()
                 }
                 else{
                     var lote = Lote(lotePam!!.lot_id)
                     lote.lot_nome = edtTxtNome_LoteDialog.text.toString()
+                    lote.lot_planta = edtPlanta_LoteDialog.text.toString()
                     lote.lot_imagem = null
 
                     if (C_Lote().updateLote(DBHelper(context), lote)){
@@ -159,14 +160,22 @@ class LoteCriaAlterDialog : Fragment() {
             btnCriaAlter_LoteDialog.text = getString(R.string.cria_area)
 
             btnCriaAlter_LoteDialog.setOnClickListener{
-                if (edtTxtNome_LoteDialog.text.isNullOrBlank()){
-                    Toast.makeText(context, "Informe o nome para o lote!", Toast.LENGTH_SHORT).show()
+                if (edtPlanta_LoteDialog.text.isNullOrBlank()){
+                    Toast.makeText(context, "Informe o produto cultivado!", Toast.LENGTH_SHORT).show()
                 }
                 else{
 
                     var lote = Lote(0)
                     lote.lot_imagem = null
-                    lote.lot_nome = edtTxtNome_LoteDialog.text.toString()
+                    lote.lot_planta = edtPlanta_LoteDialog.text.toString()
+
+
+                    if(edtTxtNome_LoteDialog.text.isNullOrBlank()){
+                        lote.lot_nome = "20191026A"//TODO mudar essa lógica
+                    }
+                    else{
+                        lote.lot_nome = edtTxtNome_LoteDialog.text.toString()
+                    }
 
                     if (C_Lote().insertLote(DBHelper(context), lote ,areaId, userid)){
                         val builder = AlertDialog.Builder(context)

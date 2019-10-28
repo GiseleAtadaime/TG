@@ -121,9 +121,31 @@ class EntradaDetalheDialog : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val utils = Utils_TG()
 
-        imgColor_EntradaDetalhe.setImageResource(entrada!!.entradaColor)
-        txtTipo_EntradaDetalhe.text = entrada!!.ent_desc
-        txtData_EntradaDetalhe.text = Utils_TG().formatDate(entrada!!.ent_data, true)
+        var ent = entrada!!
+
+        if(ent.ent_tempo == null){
+            ent.ent_tempo = 0.0
+        }
+        if(ent.ent_tpun == null){
+            ent.ent_tpun = ""
+        }
+        if(ent.ent_qtde == null){
+            ent.ent_qtde = 0.0
+        }
+        if(ent.ent_qtun == null){
+            ent.ent_qtun = ""
+        }
+        if(ent.ent_mudas_bandeja == null){
+            ent.ent_mudas_bandeja = 0
+        }
+        if(ent.ent_valor == null){
+            ent.ent_valor = 0.0
+        }
+
+
+        imgColor_EntradaDetalhe.setImageResource(ent.entradaColor)
+        txtTipo_EntradaDetalhe.text = ent.ent_desc
+        txtData_EntradaDetalhe.text = Utils_TG().formatDate(ent.ent_data, true)
 
         if(entrada!!.ent_tipo != 2 &&
             entrada!!.ent_tipo != 3 &&
@@ -144,7 +166,7 @@ class EntradaDetalheDialog : Fragment() {
             else{
                 txtTipo1_EntradaDetalhe.text = "Tempo gasto"
             }
-            txtTipoValor1_EntradaDetalhe.text = entrada!!.ent_tempo.toString() + " " + entrada!!.ent_tpun
+            txtTipoValor1_EntradaDetalhe.text = ent.ent_tempo.toString() + " " + entrada!!.ent_tpun
 
         }
         if(entrada!!.ent_tipo == 7){
@@ -159,7 +181,7 @@ class EntradaDetalheDialog : Fragment() {
             txtTipoValor2_EntradaDetalhe.visibility = View.VISIBLE
             txtValor_EntradaDetalhe.visibility = View.VISIBLE
 
-            txtTipoValor2_EntradaDetalhe.text = entrada!!.ent_qtde.toString() + " " +  entrada!!.ent_qtun
+            txtTipoValor2_EntradaDetalhe.text = ent.ent_qtde.toString() + " " +  entrada!!.ent_qtun
 
             if(entrada!!.ent_tipo == 1){
                 txtTipo2_EntradaDetalhe.text = "Bandejas"
@@ -185,7 +207,7 @@ class EntradaDetalheDialog : Fragment() {
         else{
             txtMudas_EntradaDetalhe.visibility = View.VISIBLE
 
-            txtMudas_EntradaDetalhe.text = "Mudas por bandeja: " + entrada!!.ent_mudas_bandeja.toString()
+            txtMudas_EntradaDetalhe.text = "Mudas por bandeja: " + ent.ent_mudas_bandeja.toString()
         }
 
         if(entrada!!.ent_tipo == 3){
@@ -196,10 +218,10 @@ class EntradaDetalheDialog : Fragment() {
             txtLoteAgr_EntradaDetalheDialog.visibility = View.VISIBLE
 
             txtAgrot_EntradaNewDialog.text = "Agrotóxico utilizado:"
-            txtNomeCom_EntradaDetalhe.text = "Nome comercial: " + entrada!!.ent_reg.reg_nomecom
-            txtEmpresa_EntradaDetalhe.text = "Fabricante: " + entrada!!.ent_reg.reg_empresa
-            txtIng_EntradaDetalhe.text = "Ingrediente ativo: " + entrada!!.ent_reg.reg_ing_ativo
-            txtLoteAgr_EntradaDetalheDialog.text = "Lote: " + entrada!!.ent_reg_lote
+            txtNomeCom_EntradaDetalhe.text = "Nome comercial: " + ent.ent_reg.reg_nomecom
+            txtEmpresa_EntradaDetalhe.text = "Fabricante: " + ent.ent_reg.reg_empresa
+            txtIng_EntradaDetalhe.text = "Ingrediente ativo: " + ent.ent_reg.reg_ing_ativo
+            txtLoteAgr_EntradaDetalheDialog.text = "Lote: " + ent.ent_reg_lote
 
         }
         else{

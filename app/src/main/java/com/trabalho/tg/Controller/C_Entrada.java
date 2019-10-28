@@ -14,11 +14,11 @@ import java.util.List;
 
 public class C_Entrada {
 
-    public Boolean plantioExists(DBHelper dbHelper, Integer lID){
+    public Integer plantioExists(DBHelper dbHelper, Integer lID){
         Cursor c = null;
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Boolean ret = false;
-        String query = "SELECT 1 FROM " + Contrato.Entrada.TABLENAME + " e, " + Contrato.Entrada_Detalhe.TABLENAME + " d, " +
+        Integer ret = 0;
+        String query = "SELECT " + Contrato.Entrada.COLUMN_NUMERO + " FROM " + Contrato.Entrada.TABLENAME + " e, " + Contrato.Entrada_Detalhe.TABLENAME + " d, " +
                 Contrato.Tipo_Entrada.TABLENAME + " t " +
                 " WHERE " +
                 "e." + Contrato.Entrada.COLUMN_DETALHE + " = " + "d." + Contrato.Entrada_Detalhe.COLUMN_DETALHE_NUMERO +
@@ -29,7 +29,7 @@ public class C_Entrada {
         try{
             c = db.rawQuery(query,null);
             if(c.moveToFirst()){
-                    ret = true;
+                    ret = c.getInt(c.getColumnIndex(Contrato.Entrada.COLUMN_NUMERO));
             }
             c.close();
             db.endTransaction();
@@ -51,7 +51,8 @@ public class C_Entrada {
                 " WHERE " +
                 "e." + Contrato.Entrada.COLUMN_DETALHE + " = " + "d." + Contrato.Entrada_Detalhe.COLUMN_DETALHE_NUMERO +
                 " AND t." + Contrato.Tipo_Entrada.COLUMN_TIPO_NUMERO + " = " + "d." + Contrato.Entrada_Detalhe.COLUMN_TIPO_NUM +
-                " AND e." + Contrato.Entrada.COLUMN_LOTE_ID + " = " + lID;
+                " AND e." + Contrato.Entrada.COLUMN_LOTE_ID + " = " + lID +
+                " order by " + Contrato.Entrada.COLUMN_DATA + " desc ";
 
         try{
             c = db.rawQuery(query,null);

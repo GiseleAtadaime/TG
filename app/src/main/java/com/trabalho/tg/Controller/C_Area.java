@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 public class C_Area {
 
+
     public ArrayList<Area> selectArea(DBHelper dbHelper, Boolean aberto){
         Cursor c = null;
         ArrayList<Area> a = new ArrayList<>();

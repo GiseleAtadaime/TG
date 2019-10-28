@@ -1,6 +1,7 @@
 package com.trabalho.tg.View
 
 import android.app.AlertDialog
+import android.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.view.GravityCompat
@@ -14,12 +15,9 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.widget.Toast
-import com.trabalho.tg.Controller.C_Area
-import com.trabalho.tg.Controller.C_Entrada
-import com.trabalho.tg.Controller.C_Lote
+import com.trabalho.tg.Controller.*
 import com.trabalho.tg.Helper.Contrato
 import com.trabalho.tg.Helper.DBHelper
-import com.trabalho.tg.Helper.Utils_TG
 import com.trabalho.tg.Model.Area
 import com.trabalho.tg.Model.Entrada
 import com.trabalho.tg.Model.Lote
@@ -29,8 +27,8 @@ import com.trabalho.tg.View.Detalhe.AreaCriaAlterDialog
 import com.trabalho.tg.View.Detalhe.EntradaCriaAlterDialog
 import com.trabalho.tg.View.Detalhe.EntradaDetalheDialog
 import com.trabalho.tg.View.Detalhe.LoteCriaAlterDialog
-import kotlin.collections.ArrayList
-
+import com.trabalho.tg.View.Usuario.UsuarioInfoGeral
+import java.util.*
 
 
 class MainActivity : AppCompatActivity(),
@@ -45,7 +43,8 @@ class MainActivity : AppCompatActivity(),
     AreaCriaAlterDialog.OnFragmentInteractionListener,
     LoteCriaAlterDialog.OnFragmentInteractionListener,
     EntradaDetalheDialog.OnFragmentInteractionListener,
-    EntradaCriaAlterDialog.OnFragmentInteractionListener
+    EntradaCriaAlterDialog.OnFragmentInteractionListener,
+    UsuarioInfoGeral.OnFragmentInteractionListener
 {
     override fun onCriaAlterDialog(userId: Int, areaId: Int, loteId: Int) {
         var indexArea = usuario.usr_area.indexOfFirst { it.ar_id == areaId }
@@ -75,7 +74,8 @@ class MainActivity : AppCompatActivity(),
                 usuario.usr_id,areaId), true, "ENTRADA_FRAGMENT")
         }
         else{
-            changeFragment(EntradaCriaAlterDialog.newInstance( entrada,usuario.usr_id,areaId,loteId),
+            var datamin : Date? = usuario.usr_area[indexArea].ar_lote[indexLote].lot_ent[0].ent_data
+            changeFragment(EntradaCriaAlterDialog.newInstance(entrada,usuario.usr_id,areaId,loteId, datamin),
                 true, "ENTRADA_CRIA_ALTER_DIALOG")
         }
 
@@ -97,10 +97,27 @@ class MainActivity : AppCompatActivity(),
         removeFragment("AREA_ALTER_FRAGMENT")
         changeFragment(AreaFragment.newInstance(usuario.usr_area), true, "AREA_FRAGMENT")
     }
-    override fun onEntradaSelected(entrada: Entrada, userId : Int, areaId : Int, loteId : Int) {
-        changeFragment(EntradaDetalheDialog.newInstance(entrada, userId,areaId,loteId), true, "ENTRADA_DETALHE_DIALOG")
-    }
 
+    override fun onEntradaSelected(entrada: Entrada, userId : Int, areaId : Int, loteId : Int, new : Boolean) {
+        var indexArea = usuario.usr_area.indexOfFirst { it.ar_id == areaId }
+        var indexLote = usuario.usr_area[indexArea].ar_lote.indexOfFirst { it.lot_id ==  loteId}
+        if (new){
+            var datamin : Date? = null
+            usuario.usr_area[indexArea].ar_lote[indexLote].lot_ent = C_Entrada().selectEntrada(DBHelper(this),loteId)
+            if(usuario.usr_area[indexArea].ar_lote[indexLote].lot_ent.size == 0){
+                datamin = null
+            }
+            else{
+                datamin = usuario.usr_area[indexArea].ar_lote[indexLote].lot_ent[0].ent_data
+            }
+            changeFragment(EntradaCriaAlterDialog.newInstance(null,usuario.usr_id,areaId,loteId, datamin),
+                true, "ENTRADA_CRIA_ALTER_DIALOG")
+        }
+        else{
+            changeFragment(EntradaDetalheDialog.newInstance(entrada, userId,areaId,loteId), true, "ENTRADA_DETALHE_DIALOG")
+        }
+
+    }
 
     //Alter button for lote fragment
     override fun onAlterButtonClick(lote : Lote,  tipo : Int, areaId :Int, userId : Int, loteId : Int) {
@@ -145,7 +162,15 @@ class MainActivity : AppCompatActivity(),
 
         }
         else if(tipo == 4){//Novo entrada
-            changeFragment(EntradaCriaAlterDialog.newInstance(null,usuario.usr_id,areaId,loteId),
+            var datamin : Date? = null
+            usuario.usr_area[indexArea].ar_lote[indexLote].lot_ent = C_Entrada().selectEntrada(DBHelper(this),loteId)
+            if(usuario.usr_area[indexArea].ar_lote[indexLote].lot_ent.size == 0){
+                datamin = null
+            }
+            else{
+                datamin = usuario.usr_area[indexArea].ar_lote[indexLote].lot_ent[0].ent_data
+            }
+            changeFragment(EntradaCriaAlterDialog.newInstance(null,usuario.usr_id,areaId,loteId, datamin),
                 true, "ENTRADA_CRIA_ALTER_DIALOG")
 
         }
@@ -328,24 +353,40 @@ class MainActivity : AppCompatActivity(),
 
             }
             R.id.nav_area -> {
+                clearBackStack()
                 changeFragment(AreaFragment.newInstance(usuario.usr_area), true, "AREA_FRAGMENT")
             }
             R.id.nav_fechado -> {
+                clearBackStack()
                 changeFragment(FechadoFragment(), true, "FECHADO_FRAGMENT")
             }
             R.id.nav_qrcode -> {
+                clearBackStack()
                 changeFragment(QRFragment(), true, "QRCODE_FRAGMENT")
             }
             R.id.nav_opt -> {
+                clearBackStack()
 
+                usuario.usr_user_info = C_User_Info().selectUser_Info(DBHelper(this))
+                if(usuario.usr_user_info != null){
+                    usuario.usr_user_info.info_endereco = C_Endereco().selectEndereco(DBHelper(this), usuario.usr_user_info.info_id)
+                }
+
+                changeFragment(UsuarioInfoGeral.newInstance(usuario), true, "USUARIOGERAL_FRAGMENT")
             }
             R.id.nav_sair -> {
+                clearBackStack()
 
             }
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    fun clearBackStack(){
+        val fragment = supportFragmentManager
+        fragment.popBackStack(null,POP_BACK_STACK_INCLUSIVE)
     }
 
     fun changeFragment(fragmentName: Fragment, change : Boolean, tag : String){

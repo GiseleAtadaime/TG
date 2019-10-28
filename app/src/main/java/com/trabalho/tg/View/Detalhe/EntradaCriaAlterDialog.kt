@@ -33,6 +33,7 @@ private const val ENTRADA = "param1"
 private const val USERID = "userid"
 private const val AREAID = "areaid"
 private const val LOTEID = "loteid"
+private const val DATAPLANT = "dataplantio"
 
 /**
  * A simple [Fragment] subclass.
@@ -49,6 +50,7 @@ class EntradaCriaAlterDialog : Fragment() {
     private var userid: Int? = null
     private var areaId: Int? = null
     private var loteId: Int? = null
+    private var dataplant: Date? = null
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +60,7 @@ class EntradaCriaAlterDialog : Fragment() {
             userid = it.getInt(USERID)
             areaId = it.getInt(AREAID)
             loteId = it.getInt(LOTEID)
+            dataplant = it.getSerializable(DATAPLANT) as Date?
         }
     }
 
@@ -115,13 +118,15 @@ class EntradaCriaAlterDialog : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(entrada: Entrada?, user : Int, areaId : Int, loteId : Int) =
+        fun newInstance(entrada: Entrada?, user : Int, areaId : Int, loteId : Int, dataplant : Date?) =
             EntradaCriaAlterDialog().apply {
                 arguments = Bundle().apply {
                     putSerializable(ENTRADA, entrada as Serializable?)
                     putInt(USERID, user)
                     putInt(AREAID, areaId)
                     putInt(LOTEID,loteId)
+                    putSerializable(DATAPLANT, dataplant as Serializable?)
+
                 }
             }
 
@@ -129,6 +134,8 @@ class EntradaCriaAlterDialog : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+
         val utils = Utils_TG()
         super.onViewCreated(view, savedInstanceState)
         var cal = Calendar.getInstance()
@@ -147,7 +154,9 @@ class EntradaCriaAlterDialog : Fragment() {
         txtTipo_EntradaNewDialog.text = "Tipo"
         txtData_EntradaNewDialog.text = "Data do registro"
 
-
+        if(dataplant == null){
+            dataplant = Date()
+        }
 
         if (tipo){
             entrada = Entrada(0)
@@ -199,6 +208,7 @@ class EntradaCriaAlterDialog : Fragment() {
                     }
                     if(!tipo){
                         edtTempo_EntradaNewDialog.setText(entrada!!.ent_tempo.toString())
+                        spiTempo_EntradaNewDialog.setSelection(adapterTempo.getPosition(entrada!!.ent_tpun))
                     }
 
                 }
@@ -210,6 +220,8 @@ class EntradaCriaAlterDialog : Fragment() {
                     linQtde_EntradaNewDialog.visibility = View.GONE
                     txtValor_EntradaNewDialog.visibility = View.GONE
                     edtValor_EntradaNewDialog.visibility = View.GONE
+                    linDados_EntradaNewDialog.isEnabled = true
+                    btnCriar_EntradaNewDialog.isEnabled = true
                 }
                 else{
                     spiQtde_EntradaNewDialog.adapter = adapterQtde
@@ -218,23 +230,13 @@ class EntradaCriaAlterDialog : Fragment() {
                     txtValor_EntradaNewDialog.visibility = View.VISIBLE
                     edtValor_EntradaNewDialog.visibility = View.VISIBLE
 
-                    if(position == 1){
-                        if(C_Entrada().plantioExists(DBHelper(context),loteId)){
-                            Toast.makeText(context, "Já existe um registro de plantio!", Toast.LENGTH_SHORT).show()
-                            linDados_EntradaNewDialog.isEnabled = false
-                            btnCriar_EntradaNewDialog.isEnabled = false
+                    linDados_EntradaNewDialog.isEnabled = true
+                    btnCriar_EntradaNewDialog.isEnabled = true
 
-                        }
-                        else{
-                            linDados_EntradaNewDialog.isEnabled = true
-                            btnCriar_EntradaNewDialog.isEnabled = true
+                    if(position == 1){
                             txtQtde_EntradaNewDialog.text = "Bandejas"
                             spiQtde_EntradaNewDialog.visibility = View.GONE
-                        }
 
-                    }else{
-                        linDados_EntradaNewDialog.isEnabled = true
-                        btnCriar_EntradaNewDialog.isEnabled = true
                     }
                     if(position == 5){
                         txtQtde_EntradaNewDialog.text = "Pessoas"
@@ -253,6 +255,7 @@ class EntradaCriaAlterDialog : Fragment() {
                     if(!tipo){
                         edtQtde_EntradaNewDialog.setText(entrada!!.ent_qtde.toString())
                         edtValor_EntradaNewDialog.setText(utils.formatMonetario(utils.doubleToString(entrada!!.ent_valor)))
+                        spiQtde_EntradaNewDialog.setSelection((spiQtde_EntradaNewDialog.adapter as ArrayAdapter<CharSequence>).getPosition(entrada!!.ent_qtun))
                     }
 
                     edtValor_EntradaNewDialog.addTextChangedListener(utils.MascaraMonetaria(edtValor_EntradaNewDialog))
@@ -360,29 +363,37 @@ class EntradaCriaAlterDialog : Fragment() {
                 entrada!!.ent_mudas_bandeja =  utils.stringToInteger(edtMudasB_EntradaNewDialog.text.toString())
                 entrada!!.ent_valor = utils.stringToDouble(utils.removerMascaraMonetaria(edtValor_EntradaNewDialog.text.toString()))
 
-
-                if(tipo){
-                    if(C_Entrada().insertEntrada(DBHelper(context),entrada!!, loteId,userid)){
-                        onCriaAlterDialog(userid!!,areaId!!,loteId!!)
+                System.out.println("Data escolhida: " + utils.formatDate(entrada!!.ent_data,true)
+                +  " data do primeiro plantio " + utils.formatDate(dataplant, true))
+                if(entrada!!.ent_data >= dataplant){
+                    if(tipo){
+                        if(C_Entrada().insertEntrada(DBHelper(context),entrada!!, loteId,userid)){
+                            onCriaAlterDialog(userid!!,areaId!!,loteId!!)
+                        }
+                        else{
+                            Toast.makeText(context, "Erro ao salvar entrada!", Toast.LENGTH_SHORT).show()
+                        }
                     }
                     else{
-                        Toast.makeText(context, "Erro ao salvar entrada!", Toast.LENGTH_SHORT).show()
+                        if(C_Entrada().updateEntrada(DBHelper(context),entrada!!)){
+                            onCriaAlterDialog(userid!!,areaId!!,loteId!!)
+                        }
+                        else{
+                            Toast.makeText(context, "Erro ao atualizar entrada!", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
                 else{
-                    if(C_Entrada().updateEntrada(DBHelper(context),entrada!!)){
-                        onCriaAlterDialog(userid!!,areaId!!,loteId!!)
-                    }
-                    else{
-                        Toast.makeText(context, "Erro ao atualizar entrada!", Toast.LENGTH_SHORT).show()
-                    }
-                }
+                    Toast.makeText(context, "A data não deve ser anterior à do plantio!", Toast.LENGTH_SHORT).show()
 
+
+                }
 
             }
             else{
                 Toast.makeText(context, "Selecione um tipo de entrada!", Toast.LENGTH_SHORT).show()
             }
+
         }
 
         val dateSetListener = object : DatePickerDialog.OnDateSetListener {
