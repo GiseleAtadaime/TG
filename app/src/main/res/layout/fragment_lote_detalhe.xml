@@ -28,23 +28,24 @@
             android:textColor="@color/common_google_signin_btn_text_dark_default"/>
     <ImageButton
             android:src="@drawable/baseline_create_black_24"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:id="@+id/imgBtnAlt_LoteDetFrag" android:layout_marginTop="152dp"
             app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/imgLoteDet"
             app:layout_constraintEnd_toStartOf="@+id/imgBtnExc_LoteDetFrag" android:layout_marginEnd="20dp"
-            app:layout_constraintVertical_bias="0.0"/>
+            app:layout_constraintVertical_bias="0.0"
+            android:background="@drawable/btn_round_edges_brown_border"/>
     <ImageButton
             android:src="@drawable/baseline_delete_outline_black_24"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:id="@+id/imgBtnExc_LoteDetFrag" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="16dp"
             android:layout_marginTop="152dp"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="@+id/imgLoteDet"
-            app:layout_constraintVertical_bias="0.0"/>
+            app:layout_constraintVertical_bias="0.0" android:background="@drawable/btn_round_edges_brown_border"/>
     <android.support.design.widget.FloatingActionButton
             android:src="@android:drawable/ic_input_add"
             android:layout_width="wrap_content"
@@ -54,7 +55,7 @@
             android:layout_marginEnd="28dp" android:layout_marginBottom="32dp"
             app:layout_constraintBottom_toBottomOf="parent" android:layout_marginStart="8dp"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.996"
-    />
+            app:backgroundTint="@color/ok_btn" android:tint="@color/white"/>
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
@@ -66,15 +67,21 @@
         <Button
                 android:text="fechar lote"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/btnFech_LoteDetFrag"/>
+                android:layout_height="wrap_content" android:id="@+id/btnFech_LoteDetFrag"
+                android:background="@drawable/faded_btn_round" android:textColor="@color/white"
+                android:layout_marginBottom="10dp" android:paddingLeft="10dp" android:paddingRight="10dp"/>
         <Button
                 android:text="nova entrada"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/btnAdd_LoteDetFrag"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/btnAdd_LoteDetFrag"
+                android:background="@drawable/faded_btn_round" android:textColor="@color/white"
+                android:layout_marginBottom="10dp" android:paddingLeft="10dp" android:paddingRight="10dp"/>
         <Button
                 android:text="ver entradas"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/btnAlt_LoteDetFrag"/>
+                android:layout_height="wrap_content" android:id="@+id/btnAlt_LoteDetFrag"
+                android:background="@drawable/faded_btn_round" android:textColor="@color/white"
+                android:paddingLeft="10dp" android:paddingRight="10dp"/>
     </LinearLayout>
     <TextView
             android:text="TextView"

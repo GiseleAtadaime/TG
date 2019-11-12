@@ -2,15 +2,17 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                              xmlns:app="http://schemas.android.com/apk/res-auto"
                                              xmlns:tools="http://schemas.android.com/tools"
-                                             android:layout_width="match_parent"
-                                             android:layout_height="wrap_content">
+                                             android:layout_width="wrap_content"
+                                             android:layout_height="wrap_content" android:layout_marginLeft="10dp"
+                                             android:layout_marginRight="10dp" android:layout_marginTop="20dp">
 
     <android.support.constraint.ConstraintLayout
             android:layout_width="361dp"
             android:layout_height="wrap_content" android:layout_marginTop="8dp"
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp" android:background="#4CAF50" android:id="@+id/conLayEnd_EnderecoViewAdapter">
+            android:layout_marginStart="8dp" android:background="@color/ok_btn"
+            android:id="@+id/conLayEnd_EnderecoViewAdapter">
 
         <ImageButton
                 android:layout_width="71dp"
@@ -18,17 +20,20 @@
                 android:id="@+id/imgbtnAlterar_EnderecoViewAdapter" app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="48dp" app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="24dp" android:layout_marginBottom="24dp"
-                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintVertical_bias="0.222"/>
+                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintVertical_bias="0.222"
+                android:background="@drawable/btn_round_edges_brown_border"/>
         <TextView
-                android:text="TextView"
+                android:text="Endereço 1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/txtEnderecoNome_EnderecoViewAdapter" app:layout_constraintEnd_toStartOf="@+id/imgbtnAlterar_EnderecoViewAdapter"
+                android:id="@+id/txtEnderecoNome_EnderecoViewAdapter"
+                app:layout_constraintEnd_toStartOf="@+id/imgbtnAlterar_EnderecoViewAdapter"
                 android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="8dp"
-                app:layout_constraintTop_toTopOf="@+id/imgbtnAlterar_EnderecoViewAdapter" app:layout_constraintHorizontal_bias="0.356"
+                app:layout_constraintTop_toTopOf="@+id/imgbtnAlterar_EnderecoViewAdapter"
+                app:layout_constraintHorizontal_bias="0.356"
                 app:layout_constraintBottom_toBottomOf="@+id/imgbtnAlterar_EnderecoViewAdapter"
-                android:textSize="18sp" android:textStyle="bold"/>
+                android:textSize="18sp" android:textStyle="bold" android:textColor="@color/white"/>
     </android.support.constraint.ConstraintLayout>
     <LinearLayout
             android:orientation="vertical"
@@ -39,46 +44,53 @@
             android:layout_marginEnd="32dp" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="32dp" android:id="@+id/linEndereco_EnderecoViewAdapter">
         <TextView
-                android:text="TextView"
+                android:text="Logradouro: Rua imaginária"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/txtLog_EnderecoViewAdapter" android:layout_marginTop="20dp"
-                android:layout_marginBottom="5dp"/>
+                android:layout_height="wrap_content" android:id="@+id/txtLog_EnderecoViewAdapter"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp" android:textSize="18sp"/>
         <TextView
-                android:text="TextView"
+                android:text="Bairro: Bairro dos Ortizes"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/txtBairro_EnderecoViewAdapter" android:layout_marginTop="20dp"
-                android:layout_marginBottom="5dp"/>
+                android:layout_height="wrap_content" android:id="@+id/txtBairro_EnderecoViewAdapter"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp" android:textSize="18sp"/>
         <TextView
-                android:text="TextView"
+                android:text="Cidade: Piedade"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/txtCidade_EnderecoViewAdapter" android:layout_marginTop="20dp"
-                android:layout_marginBottom="5dp"/>
+                android:layout_height="wrap_content" android:id="@+id/txtCidade_EnderecoViewAdapter"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp" android:textSize="18sp"/>
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:layout_marginTop="20dp" android:layout_marginBottom="5dp">
             <TextView
-                    android:text="TextView"
+                    android:text="UF: SP"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:id="@+id/txtUF_EnderecoViewAdapter" android:gravity="left"/>
+                    android:layout_height="wrap_content" android:id="@+id/txtUF_EnderecoViewAdapter"
+                    android:gravity="left" android:paddingRight="30dp" android:textSize="18sp"/>
             <TextView
-                    android:text="TextView"
+                    android:text="CEP: 18170000"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/txtCep_EnderecoViewAdapter"
-                    android:gravity="right"/>
+                    android:gravity="right" android:textSize="18sp"/>
         </LinearLayout>
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:layout_marginTop="20dp" android:layout_marginBottom="5dp">
+                android:layout_height="wrap_content" android:layout_marginTop="20dp" android:layout_marginBottom="5dp"
+                android:paddingBottom="20dp">
             <TextView
-                    android:text="TextView"
+                    android:text="Latitude: 00,0"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:id="@+id/txtLong_EnderecoViewAdapter"/>
+                    android:layout_height="wrap_content" android:id="@+id/txtLong_EnderecoViewAdapter"
+                    android:paddingRight="20dp" android:textSize="18sp"/>
             <TextView
-                    android:text="TextView"
+                    android:text="Longitude: 00,0"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:id="@+id/txtLat_EnderecoViewAdapter"/>
+                    android:layout_height="wrap_content" android:id="@+id/txtLat_EnderecoViewAdapter"
+                    android:textSize="18sp"/>
         </LinearLayout>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

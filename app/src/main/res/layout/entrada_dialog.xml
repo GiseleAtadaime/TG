@@ -13,19 +13,20 @@
             app:layout_constraintBottom_toBottomOf="parent"
     />
     <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" app:srcCompat="@drawable/baseline_create_black_24"
+            android:layout_width="50dp"
+            android:layout_height="50dp" app:srcCompat="@drawable/baseline_create_black_24"
             android:id="@+id/imgBtnAlter_EntradaDialog" android:layout_weight="1"
             app:layout_constraintStart_toEndOf="@+id/imgLabel_EntradaDialog" android:layout_marginStart="8dp"
             app:layout_constraintEnd_toStartOf="@+id/imgBtnDelete_EntradaDialog" android:layout_marginEnd="8dp"
             app:layout_constraintHorizontal_bias="0.876" android:layout_marginTop="36dp"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" android:background="@drawable/btn_round_edges_brown_border"/>
     <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" app:srcCompat="@drawable/baseline_delete_outline_black_24"
+            android:layout_width="50dp"
+            android:layout_height="50dp" app:srcCompat="@drawable/baseline_delete_outline_black_24"
             android:id="@+id/imgBtnDelete_EntradaDialog"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="32dp"
-            app:layout_constraintTop_toTopOf="@+id/imgBtnAlter_EntradaDialog"/>
+            app:layout_constraintTop_toTopOf="@+id/imgBtnAlter_EntradaDialog"
+            android:background="@drawable/btn_round_edges_brown_border"/>
     <TextView
             android:text="TextView"
             android:layout_width="0dp"

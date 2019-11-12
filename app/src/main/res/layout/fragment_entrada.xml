@@ -17,15 +17,17 @@
             android:layout_marginEnd="28dp" android:layout_marginBottom="32dp"
             app:layout_constraintBottom_toBottomOf="parent" android:layout_marginStart="8dp"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.996"
-    />
+            app:backgroundTint="@color/ok_btn" android:tint="@color/white"/>
     <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content" android:id="@+id/btnFechar_EntradaFragment"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="100dp"
+            app:layout_constraintStart_toStartOf="parent"
             android:layout_marginBottom="40dp"
             app:layout_constraintBottom_toBottomOf="parent"
-    />
+            android:background="@drawable/faded_btn_round" tools:text="Fechar lote" android:layout_marginStart="100dp"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="@+id/fBtnAdd_EntradaFragment"
+            android:textColor="@color/white"/>
     <android.support.v7.widget.RecyclerView
             android:layout_width="0dp"
             android:layout_height="0dp" android:id="@+id/recView_Entrada"

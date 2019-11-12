@@ -61,40 +61,40 @@ public class Utils_TG {
 
     public Integer getMonth(Integer mes){
         switch (mes){
-            case 0:
+            case 1:
                 mes = Calendar.JANUARY;
                 break;
-            case 1:
+            case 2:
                 mes =Calendar.FEBRUARY;
                 break;
-            case 2:
+            case 3:
                 mes =Calendar.MARCH;
                 break;
-            case 3:
+            case 4:
                 mes =Calendar.APRIL;
                 break;
-            case 4:
+            case 5:
                 mes =Calendar.MAY;
                 break;
-            case 5:
+            case 6:
                 mes =Calendar.JUNE;
                 break;
-            case 6:
+            case 7:
                 mes =Calendar.JULY;
                 break;
-            case 7:
+            case 8:
                 mes =Calendar.AUGUST;
                 break;
-            case 8:
+            case 9:
                 mes =Calendar.SEPTEMBER;
                 break;
-            case 9:
+            case 10:
                 mes =Calendar.OCTOBER;
                 break;
-            case 10:
+            case 11:
                 mes =Calendar.NOVEMBER;
                 break;
-            case 11:
+            case 12:
                 mes =Calendar.DECEMBER;
                 break;
         }
@@ -165,7 +165,8 @@ public class Utils_TG {
 
 
     public String formatMonetario(String string){
-        NumberFormat nf = NumberFormat.getCurrencyInstance();
+        Locale ptBr = new Locale("pt","BR");
+        NumberFormat nf = NumberFormat.getCurrencyInstance(ptBr);
 
         try {
             string = string.replaceAll("[^\\d]", "");
@@ -178,7 +179,7 @@ public class Utils_TG {
     }
 
     public class MascaraMonetaria implements TextWatcher {
-
+        Locale ptBr = new Locale("pt","BR");
         final EditText campo;
 
         public MascaraMonetaria(EditText campo) {
@@ -188,7 +189,7 @@ public class Utils_TG {
 
         private boolean isUpdating = false;
         // Pega a formatacao do sistema, se for brasil R$ se EUA US$
-        private NumberFormat nf = NumberFormat.getCurrencyInstance();
+        private NumberFormat nf = NumberFormat.getCurrencyInstance(ptBr);
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before,

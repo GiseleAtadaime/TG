@@ -141,6 +141,7 @@ class EntradaCriaAlterDialog : Fragment() {
         var cal = Calendar.getInstance()
         var reg_agro_selected : Reg_Agrotoxico? = null
         var reg_agro_adapter : AgrotoxicoAdapter? = null
+        var data_ant : Date? = null
 
         var adapter = ArrayAdapter.createFromResource(context,R.array.EntradaTipo, android.R.layout.simple_spinner_dropdown_item)
         var adapterTempo = ArrayAdapter.createFromResource(context,R.array.EntradaTipoTempo, android.R.layout.simple_spinner_dropdown_item)
@@ -154,9 +155,7 @@ class EntradaCriaAlterDialog : Fragment() {
         txtTipo_EntradaNewDialog.text = "Tipo"
         txtData_EntradaNewDialog.text = "Data do registro"
 
-        if(dataplant == null){
-            dataplant = Date()
-        }
+
 
         if (tipo){
             entrada = Entrada(0)
@@ -170,7 +169,7 @@ class EntradaCriaAlterDialog : Fragment() {
             spiTipo_EntradaNewDialog.setSelection(entrada!!.ent_tipo)
             imgTipoCor_EntradaNewDialog.setImageResource(entrada!!.entradaColor)
             cal.time = entrada!!.ent_data
-
+            data_ant = entrada!!.ent_data
             txtDataEscolhida_EntradaNewDialog.text = utils.formatDate(entrada!!.ent_data, true)
         }
 
@@ -363,31 +362,24 @@ class EntradaCriaAlterDialog : Fragment() {
                 entrada!!.ent_mudas_bandeja =  utils.stringToInteger(edtMudasB_EntradaNewDialog.text.toString())
                 entrada!!.ent_valor = utils.stringToDouble(utils.removerMascaraMonetaria(edtValor_EntradaNewDialog.text.toString()))
 
-                System.out.println("Data escolhida: " + utils.formatDate(entrada!!.ent_data,true)
-                +  " data do primeiro plantio " + utils.formatDate(dataplant, true))
-                if(entrada!!.ent_data >= dataplant){
-                    if(tipo){
-                        if(C_Entrada().insertEntrada(DBHelper(context),entrada!!, loteId,userid)){
-                            onCriaAlterDialog(userid!!,areaId!!,loteId!!)
-                        }
-                        else{
-                            Toast.makeText(context, "Erro ao salvar entrada!", Toast.LENGTH_SHORT).show()
-                        }
+
+                if(tipo){
+                    if(C_Entrada().insertEntrada(DBHelper(context),entrada!!, loteId,userid)){
+                        onCriaAlterDialog(userid!!,areaId!!,loteId!!)
                     }
                     else{
-                        if(C_Entrada().updateEntrada(DBHelper(context),entrada!!)){
-                            onCriaAlterDialog(userid!!,areaId!!,loteId!!)
-                        }
-                        else{
-                            Toast.makeText(context, "Erro ao atualizar entrada!", Toast.LENGTH_SHORT).show()
-                        }
+                        Toast.makeText(context, "Erro ao salvar entrada!", Toast.LENGTH_SHORT).show()
                     }
                 }
                 else{
-                    Toast.makeText(context, "A data não deve ser anterior à do plantio!", Toast.LENGTH_SHORT).show()
-
-
+                    if(C_Entrada().updateEntrada(DBHelper(context),entrada!!)){
+                        onCriaAlterDialog(userid!!,areaId!!,loteId!!)
+                    }
+                    else{
+                        Toast.makeText(context, "Erro ao atualizar entrada!", Toast.LENGTH_SHORT).show()
+                    }
                 }
+
 
             }
             else{
@@ -403,6 +395,11 @@ class EntradaCriaAlterDialog : Fragment() {
                 cal.set(Calendar.MONTH, monthOfYear)
                 cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
                 entrada!!.setEnt_data(dayOfMonth, monthOfYear, year)
+
+                if(Utils_TG().formatDate(data_ant, true).compareTo(Utils_TG().formatDate(entrada!!.ent_data,true)) == 0){
+                    entrada!!.ent_data = data_ant
+                }
+
                 txtDataEscolhida_EntradaNewDialog.setText(Utils_TG().formatDate(entrada!!.ent_data, true))
             }
         }

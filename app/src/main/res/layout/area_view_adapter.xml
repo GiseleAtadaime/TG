@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content" android:orientation="vertical">
+              android:layout_height="wrap_content" android:orientation="vertical"
+              android:background="@drawable/btn_round_edges_brown_border"
+              android:layout_marginTop="10dp" android:layout_marginRight="5dp" android:layout_marginLeft="5dp">
     <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -27,29 +29,32 @@
                 android:layout_marginEnd="8dp"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="8dp" app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imgAreaAdapter">
+                app:layout_constraintTop_toBottomOf="@+id/imgAreaAdapter"
+                android:background="@color/white">
             <TextView
                     android:text="@string/varea_nome"
                     android:layout_width="232dp"
                     android:layout_height="match_parent" android:id="@+id/txtNome_AreaAdapter"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1" android:textAlignment="center" android:textSize="18sp"
+                    android:gravity="center"/>
             <ImageButton
                     android:layout_width="50dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="50dp"
                     android:id="@+id/imgbtnDelete_AreaAdapter" android:layout_weight="1"
                     android:contentDescription="@string/btn_excluir"
-                    tools:srcCompat="@drawable/baseline_delete_outline_black_24" android:background="#00FFFFFF"
+                    tools:srcCompat="@drawable/baseline_delete_outline_black_24"
+                    android:background="@color/white"
                     tools:src="@drawable/baseline_delete_outline_black_24"
                     android:src="@drawable/baseline_delete_outline_black_24"/>
             <ImageButton
                     android:layout_width="50dp"
-                    android:layout_height="match_parent" app:srcCompat="@drawable/baseline_create_black_24"
+                    android:layout_height="50dp" app:srcCompat="@drawable/baseline_create_black_24"
                     android:id="@+id/imgbtnAlterar_AreaAdapter" android:layout_weight="1"
                     android:contentDescription="@string/btn_alterar"
                     tools:srcCompat="@drawable/baseline_create_black_24" android:background="#00FFFFFF"/>
             <ImageButton
                     android:layout_width="50dp"
-                    android:layout_height="wrap_content" app:srcCompat="@drawable/baseline_add_box_black_24"
+                    android:layout_height="50dp" app:srcCompat="@drawable/baseline_add_box_black_24"
                     android:id="@+id/imgbtnNovo_AreaAdapter" android:layout_weight="1"
                     android:contentDescription="@string/btn_novo"
                     tools:srcCompat="@drawable/baseline_add_box_black_24" android:background="#00FFFFFF"/>

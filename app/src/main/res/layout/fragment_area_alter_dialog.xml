@@ -11,9 +11,10 @@
     <ImageView
             android:src="@drawable/ic_menu_camera"
             android:layout_width="170dp"
-            android:layout_height="182dp"
+            android:layout_height="170dp"
             android:id="@+id/imgArea_DialogFragment" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"/>
+            android:layout_marginStart="16dp" android:layout_marginTop="16dp"
+            app:layout_constraintTop_toTopOf="parent"/>
     <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -34,7 +35,8 @@
             app:layout_constraintHorizontal_bias="0.0" android:layout_marginTop="12dp"
             app:layout_constraintTop_toBottomOf="@+id/lblCont_AreaAlterDialog"
             app:layout_constraintBottom_toBottomOf="@+id/imgArea_DialogFragment"
-            app:layout_constraintVertical_bias="0.333"/>
+            app:layout_constraintVertical_bias="0.333"
+    />
     <Button
             android:text="@string/alter_area"
             android:layout_width="0dp"
@@ -43,7 +45,8 @@
             android:layout_marginStart="16dp"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp" android:layout_marginTop="40dp"
             app:layout_constraintTop_toBottomOf="@+id/imgArea_DialogFragment"
-            app:layout_constraintHorizontal_bias="0.498"/>
+            app:layout_constraintHorizontal_bias="0.498" android:background="@drawable/btn_round"
+            android:textColor="@color/white"/>
     <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -53,7 +56,8 @@
             android:layout_marginStart="16dp" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="16dp" android:layout_marginBottom="32dp"
             app:layout_constraintBottom_toBottomOf="parent" android:text="@string/cancelar"
-            app:layout_constraintHorizontal_bias="0.0" app:layout_constraintVertical_bias="0.016"/>
+            app:layout_constraintHorizontal_bias="0.0" app:layout_constraintVertical_bias="0.016"
+            android:background="@drawable/btn_round_margin"/>
     <TextView
             android:text="Contador Lote"
             android:layout_width="0dp"
@@ -69,6 +73,7 @@
             android:id="@+id/txtExemplo_AlterAreaFragment" android:layout_marginTop="12dp"
             app:layout_constraintTop_toBottomOf="@+id/spiContagem_AreaDialog"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            app:layout_constraintStart_toEndOf="@+id/imgArea_DialogFragment" android:layout_marginStart="8dp"/>
+            app:layout_constraintStart_toEndOf="@+id/imgArea_DialogFragment" android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imgArea_DialogFragment"/>
 
 </android.support.constraint.ConstraintLayout>
