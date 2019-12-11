@@ -12,10 +12,7 @@ import kotlin.coroutines.coroutineContext
 
 class CognitoHelper(context: Context){
     /*
-    val userPoolId = "us-east-2_lCVIkfltG"
-    val clientID = "69iban3fv6ccqm7n9mqsvoa9ba"
-    val clientSecret = "1fnqd6hhnu8iuphi1r0j4amqsvgffls0flrufbc1l97o5gffh89k"
-    val cognitoRegion = Regions.US_EAST_2
+
 
     var userPool = CognitoUserPool(context,userPoolId,clientID,clientSecret,cognitoRegion)
 
