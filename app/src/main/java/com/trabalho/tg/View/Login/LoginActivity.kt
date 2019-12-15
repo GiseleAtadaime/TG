@@ -2,10 +2,10 @@ package com.trabalho.tg.View.Login
 
 import android.content.Intent
 import android.net.Uri
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentTransaction
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import android.view.View
 import com.trabalho.tg.Controller.C_Usuario
 import com.trabalho.tg.Helper.DBHelper
@@ -19,10 +19,12 @@ class LoginActivity : AppCompatActivity() , LoginFragment.OnFragmentInteractionL
     override fun onLoginButtonPressed(tipo: Int) {
         if(tipo == 0){
             var usuario = C_Usuario().selectUsuario(DBHelper(this))
+            if(usuario != null){
+                val intent = Intent (this, MainActivity::class.java)
+                intent.putExtra("usuario", usuario as Serializable)
+                startActivity(intent)
+            }
 
-            val intent = Intent (this, MainActivity::class.java)
-            intent.putExtra("usuario", usuario as Serializable)
-            startActivity(intent)
         }
         else if(tipo == 1){
             changeFragment(LoginNewFragment(), true)

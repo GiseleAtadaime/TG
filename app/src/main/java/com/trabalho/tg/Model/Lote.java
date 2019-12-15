@@ -2,6 +2,7 @@ package com.trabalho.tg.Model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Lote implements Serializable {
     private Integer lot_id;
@@ -52,5 +53,27 @@ public class Lote implements Serializable {
 
     public void addEntrada(Entrada ent){
         lot_ent.add(ent);
+    }
+
+    public int totalTipoEntrada(int tipo){
+        int total = 0;
+        for (Entrada e : lot_ent
+             ) {
+            if(e.getEnt_tipo() == tipo){
+                total ++;
+            }
+        }
+        return total;
+    }
+
+    public Double valorTotal(int tipo){
+        Double total = 0.00;
+        for (Entrada e : lot_ent
+        ) {
+            if(e.getEnt_tipo() == tipo){
+                total += e.getEnt_valor();
+            }
+        }
+        return total;
     }
 }

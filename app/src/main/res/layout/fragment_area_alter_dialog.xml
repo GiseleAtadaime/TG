@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                             xmlns:app="http://schemas.android.com/apk/res-auto"
-                                             xmlns:tools="http://schemas.android.com/tools"
-                                             android:layout_width="match_parent"
-                                             android:layout_height="match_parent"
-                                             tools:context=".View.Detalhe.AreaAlterDialogFragment"
-                                             android:id="@+id/frameLayout">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   tools:context=".View.Detalhe.AreaAlterDialogFragment"
+                                                   android:id="@+id/frameLayout">
 
     <!-- TODO: Update blank fragment layout -->
     <ImageView
-            android:src="@drawable/ic_menu_camera"
+            app:srcCompat="@drawable/ic_menu_camera"
             android:layout_width="170dp"
             android:layout_height="170dp"
             android:id="@+id/imgArea_DialogFragment" app:layout_constraintStart_toStartOf="parent"
@@ -76,4 +76,4 @@
             app:layout_constraintStart_toEndOf="@+id/imgArea_DialogFragment" android:layout_marginStart="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/imgArea_DialogFragment"/>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

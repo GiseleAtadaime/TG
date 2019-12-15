@@ -226,6 +226,7 @@ public class C_Entrada {
             ret = true;
         }
         finally {
+            db.close();
             return ret;
         }
     }
@@ -342,6 +343,7 @@ public class C_Entrada {
         }
         finally {
             c.close();
+            db.close();
             return ret;
         }
     }

@@ -1,10 +1,9 @@
 package com.trabalho.tg.View.Detalhe
 
-import android.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,6 @@ import com.trabalho.tg.Model.Entrada
 
 import com.trabalho.tg.R
 import kotlinx.android.synthetic.main.fragment_entrada_detalhe_dialog.*
-import kotlinx.android.synthetic.main.fragment_entrada_new_dialog.*
 import java.io.Serializable
 
 // TODO: Rename parameter arguments, choose names that match
@@ -241,7 +239,7 @@ class EntradaDetalheDialog : Fragment() {
 
 
         imgBtnDelete_EntradaDetalhe.setOnClickListener(){
-            val builder = AlertDialog.Builder(context)
+            val builder = AlertDialog.Builder(this!!.context!!)
             builder.setTitle("Deletar registro")
             builder.setMessage("Tem certeza que deseja o registro de  ${entrada!!.ent_desc}" +
                     " do dia ${Utils_TG().formatDate(entrada!!.ent_data,true)}? Esta operação não pode ser desfeita!")

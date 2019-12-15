@@ -1,18 +1,19 @@
 package com.trabalho.tg.View
 
-import android.app.AlertDialog
-import android.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
+import android.content.Context
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.view.GravityCompat
-import android.support.v7.app.ActionBarDrawerToggle
+import androidx.core.view.GravityCompat
+import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.MenuItem
-import android.support.v4.widget.DrawerLayout
-import android.support.design.widget.NavigationView
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentTransaction
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.navigation.NavigationView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.widget.Toast
 import com.trabalho.tg.Controller.*
@@ -302,19 +303,32 @@ class MainActivity : AppCompatActivity(),
 
         navView.setNavigationItemSelectedListener(this)
 
-        supportFragmentManager.inTransaction {
-            add(R.id.frmMainContainer, MainFragment())
-        }
+
 
 
         usuario = intent.extras.get("usuario") as Usuario
         usuario.usr_area = C_Area().selectArea(DBHelper(this), true)
+
+        for (area in usuario.usr_area){
+            area.ar_lote = C_Lote().selectLote(DBHelper(this), area.ar_id)
+            for(lote in area.ar_lote){
+                lote.lot_ent = C_Entrada().selectEntrada(DBHelper(this), lote.lot_id)
+            }
+        }
+
         if (usuario.usr_area.size == 0){
             createArea()
+            createLote(0)
+            createEntrada(usuario.usr_area[0].ar_id,usuario.usr_area[0].ar_lote[0].lot_id)
         }
+
 
         if (!C_Entrada().tipoIsInserted(DBHelper(this))){
             C_Entrada().insertTipoEntrada(DBHelper(this))
+        }
+
+        supportFragmentManager.inTransaction {
+            add(R.id.frmMainContainer, MainFragment.newInstance(usuario))
         }
     }
 
@@ -338,7 +352,13 @@ class MainActivity : AppCompatActivity(),
         when (item.itemId) {
             R.id.nav_main -> {
                 if (!MainFragment().isVisible){
-                    changeFragment(MainFragment(), true, "MAIN_FRAGMENT")
+                    for (area in usuario.usr_area){
+                        area.ar_lote = C_Lote().selectLote(DBHelper(this), area.ar_id)
+                        for(lote in area.ar_lote){
+                            lote.lot_ent = C_Entrada().selectEntrada(DBHelper(this), lote.lot_id)
+                        }
+                    }
+                    changeFragment(MainFragment.newInstance(usuario), true, "MAIN_FRAGMENT")
                 }
 
             }

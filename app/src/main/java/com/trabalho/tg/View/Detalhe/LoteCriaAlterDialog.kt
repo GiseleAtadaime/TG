@@ -1,14 +1,12 @@
 package com.trabalho.tg.View.Detalhe
 
-import android.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import com.trabalho.tg.Controller.C_Lote
 import com.trabalho.tg.Helper.DBHelper
@@ -126,7 +124,7 @@ class LoteCriaAlterDialog : Fragment() {
 
         if (tipoPam == 1){//Alterar
             edtTxtNome_LoteDialog.setText(lotePam!!.lot_nome)
-
+            edtPlanta_LoteDialog.setText(lotePam!!.lot_planta)
             btnCriaAlter_LoteDialog.text = getString(R.string.alter_area)
 
 
@@ -141,7 +139,7 @@ class LoteCriaAlterDialog : Fragment() {
                     lote.lot_imagem = null
 
                     if (C_Lote().updateLote(DBHelper(context), lote)){
-                        val builder = AlertDialog.Builder(context)
+                        val builder = AlertDialog.Builder(this!!.context!!)
                         builder.setTitle("Alterar lote")
                         builder.setMessage("O ${lote.lot_nome} foi alterado com successo!")
 
@@ -178,7 +176,7 @@ class LoteCriaAlterDialog : Fragment() {
                     }
 
                     if (C_Lote().insertLote(DBHelper(context), lote ,areaId, userid)){
-                        val builder = AlertDialog.Builder(context)
+                        val builder = AlertDialog.Builder(this!!.context!!)
                         builder.setTitle("Criação de lote")
                         builder.setMessage("O lote foi criado com successo!")
 

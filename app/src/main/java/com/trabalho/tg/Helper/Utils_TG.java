@@ -1,12 +1,14 @@
 package com.trabalho.tg.Helper;
 
-import android.app.Activity;
 import android.content.Context;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import androidx.core.content.ContextCompat;
+import com.trabalho.tg.R;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -14,7 +16,77 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+
 public class Utils_TG {
+
+    public int getColorFromNameForGraph(String nome){
+        int ret = 0;
+
+
+        switch(nome){
+            case Contrato.Tipo_Entrada.PLANTIO:
+                ret = R.color.plantio;
+                break;
+            case Contrato.Tipo_Entrada.COLHEITA:
+                ret = R.color.colheita;
+                break;
+            case Contrato.Tipo_Entrada.ADUBACAO:
+                ret = R.color.adubacao;
+                break;
+            case Contrato.Tipo_Entrada.AGROTOXICO:
+                ret = R.color.agrotoxico;
+                break;
+            case Contrato.Tipo_Entrada.MAO_DE_OBRA:
+                ret = R.color.mao_de_obra;
+                break;
+            case Contrato.Tipo_Entrada.IRRIGACAO:
+                ret = R.color.irrigacao;
+                break;
+            case Contrato.Tipo_Entrada.PREJUIZO:
+                ret = R.color.prejuizo;
+                break;
+
+        }
+
+        return ret;
+    }
+
+    public String getColorName(String nome, Context context){
+        String ret = "";
+        switch(nome){
+            case Contrato.Tipo_Entrada.PLANTIO:
+                ret = "#" + Integer.
+                    toHexString(ContextCompat.getColor(context, R.color.plantio) & 0x00ffffff);
+                break;
+            case Contrato.Tipo_Entrada.COLHEITA:
+                ret = "#" + Integer.
+                        toHexString(ContextCompat.getColor(context, R.color.colheita) & 0x00ffffff);
+                break;
+            case Contrato.Tipo_Entrada.ADUBACAO:
+                ret = "#" + Integer.
+                        toHexString(ContextCompat.getColor(context, R.color.adubacao) & 0x00ffffff);
+                break;
+            case Contrato.Tipo_Entrada.AGROTOXICO:
+                ret = "#" + Integer.
+                        toHexString(ContextCompat.getColor(context, R.color.agrotoxico) & 0x00ffffff);
+                break;
+            case Contrato.Tipo_Entrada.MAO_DE_OBRA:
+                ret = "#" + Integer.
+                        toHexString(ContextCompat.getColor(context, R.color.mao_de_obra) & 0x00ffffff);
+                break;
+            case Contrato.Tipo_Entrada.IRRIGACAO:
+                ret = "#" + Integer.
+                        toHexString(ContextCompat.getColor(context, R.color.irrigacao) & 0x00ffffff);
+                break;
+            case Contrato.Tipo_Entrada.PREJUIZO:
+                ret = "#" + Integer.
+                        toHexString(ContextCompat.getColor(context, R.color.prejuizo) & 0x00ffffff);
+                break;
+
+        }
+        return ret;
+    }
+
 
     public Boolean checkDouble(String num){
         try{
@@ -103,7 +175,7 @@ public class Utils_TG {
     }
 
     public void hideKeyboardFrom(Context context, View view) {
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 

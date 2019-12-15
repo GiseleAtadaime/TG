@@ -1,12 +1,9 @@
 package com.trabalho.tg.View.Detalhe
 
-import android.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
-import android.content.res.Resources
-import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -161,7 +158,7 @@ class AreaCriaAlterDialog : Fragment() {
                     area.ar_del = "A"
 
                     if (C_Area().updateArea(DBHelper(context), area)){
-                        val builder = AlertDialog.Builder(context)
+                        val builder = AlertDialog.Builder(this!!.context!!)
                         builder.setTitle("Alterar área")
                         builder.setMessage("A ${area.ar_nome} foi alterada com successo!")
 
@@ -191,7 +188,7 @@ class AreaCriaAlterDialog : Fragment() {
                     area.ar_del = "A"
 
                     if (C_Area().insertArea(DBHelper(context), area , userid)){
-                        val builder = AlertDialog.Builder(context)
+                        val builder = AlertDialog.Builder(this!!.context!!)
                         builder.setTitle("Criação de área")
                         builder.setMessage("A área foi criada com successo!")
 

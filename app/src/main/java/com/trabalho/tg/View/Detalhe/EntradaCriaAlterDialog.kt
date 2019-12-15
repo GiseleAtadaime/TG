@@ -4,7 +4,7 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -143,7 +143,19 @@ class EntradaCriaAlterDialog : Fragment() {
         var reg_agro_adapter : AgrotoxicoAdapter? = null
         var data_ant : Date? = null
 
-        var adapter = ArrayAdapter.createFromResource(context,R.array.EntradaTipo, android.R.layout.simple_spinner_dropdown_item)
+
+        var entTipo = C_Entrada().selectTipoDescricao(DBHelper(context))
+        var entTipos = arrayOf<String>("Escolha um tipo",
+            entTipo[0],
+            entTipo[1],
+            entTipo[2],
+            entTipo[3],
+            entTipo[4],
+            entTipo[5],
+            entTipo[6])
+
+
+        var adapter = ArrayAdapter<String>(context,android.R.layout.simple_spinner_dropdown_item,entTipos )
         var adapterTempo = ArrayAdapter.createFromResource(context,R.array.EntradaTipoTempo, android.R.layout.simple_spinner_dropdown_item)
         var adapterQtde = ArrayAdapter.createFromResource(context,R.array.EntradaTipoQuantidade, android.R.layout.simple_spinner_dropdown_item)
         var adapterDose = ArrayAdapter.createFromResource(context,R.array.EntradaTipoDose, android.R.layout.simple_spinner_dropdown_item)
@@ -154,8 +166,6 @@ class EntradaCriaAlterDialog : Fragment() {
 
         txtTipo_EntradaNewDialog.text = "Tipo"
         txtData_EntradaNewDialog.text = "Data do registro"
-
-
 
         if (tipo){
             entrada = Entrada(0)
@@ -233,8 +243,8 @@ class EntradaCriaAlterDialog : Fragment() {
                     btnCriar_EntradaNewDialog.isEnabled = true
 
                     if(position == 1){
-                            txtQtde_EntradaNewDialog.text = "Bandejas"
-                            spiQtde_EntradaNewDialog.visibility = View.GONE
+                        txtQtde_EntradaNewDialog.text = "Bandejas"
+                        spiQtde_EntradaNewDialog.visibility = View.GONE
 
                     }
                     if(position == 5){
@@ -325,16 +335,16 @@ class EntradaCriaAlterDialog : Fragment() {
 
                 }
                 if(spiTipo_EntradaNewDialog.selectedItemPosition == 3){
-
+                    if(tipo){
+                        entrada!!.ent_reg = Reg_Agrotoxico(0)
+                    }
 
                     entrada!!.ent_reg.reg_nomecom = auTxtNome_EntradaNewDialog.text.toString()
                     entrada!!.ent_reg.reg_empresa = edtEmpresa_EntradaNewDialog.text.toString()
                     entrada!!.ent_reg.reg_ing_ativo = edtIng_EntradaNewDialog.text.toString()
                     entrada!!.ent_reg_lote = edtLoteDef_EntradaNewDialog.text.toString()
 
-                    if(entrada!!.ent_reg.reg_nomecom.compareTo(auTxtNome_EntradaNewDialog.text.toString()) != 0) {
-
-                        entrada!!.ent_reg = Reg_Agrotoxico(0)
+                    if(entrada!!.ent_reg != reg_agro_selected){
                         if (C_Reg_Agrotoxico().insertReg_Agrotoxico(DBHelper(context), entrada!!.ent_reg)) {
                             entrada!!.ent_reg.reg_numero =
                                 C_Reg_Agrotoxico().selectReg_Agrotoxico_LastID(DBHelper(context))
@@ -342,6 +352,7 @@ class EntradaCriaAlterDialog : Fragment() {
                             Toast.makeText(context, "Erro ao salvar registro do agrotóxico!", Toast.LENGTH_SHORT).show()
                         }
                     }
+
                 }
 
                 if(linTempo_EntradaNewDialog.visibility == View.VISIBLE){
@@ -391,15 +402,17 @@ class EntradaCriaAlterDialog : Fragment() {
         val dateSetListener = object : DatePickerDialog.OnDateSetListener {
             override fun onDateSet(view: DatePicker, year: Int, monthOfYear: Int,
                                    dayOfMonth: Int) {
+
                 cal.set(Calendar.YEAR, year)
                 cal.set(Calendar.MONTH, monthOfYear)
                 cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                entrada!!.setEnt_data(dayOfMonth, monthOfYear, year)
+                entrada!!.setEnt_data(dayOfMonth, (monthOfYear) + 1, year)
 
-                if(Utils_TG().formatDate(data_ant, true).compareTo(Utils_TG().formatDate(entrada!!.ent_data,true)) == 0){
-                    entrada!!.ent_data = data_ant
+                if(data_ant != null){
+                    if(Utils_TG().formatDate(data_ant, true).compareTo(Utils_TG().formatDate(entrada!!.ent_data,true)) == 0){
+                        entrada!!.ent_data = data_ant
+                    }
                 }
-
                 txtDataEscolhida_EntradaNewDialog.setText(Utils_TG().formatDate(entrada!!.ent_data, true))
             }
         }

@@ -13,7 +13,6 @@ import kotlin.coroutines.coroutineContext
 class CognitoHelper(context: Context){
     /*
 
-
     var userPool = CognitoUserPool(context,userPoolId,clientID,clientSecret,cognitoRegion)
 
 

@@ -2,9 +2,9 @@ package com.trabalho.tg.View
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -121,8 +121,8 @@ class EntradaFragment : Fragment() {
             onEntradaSelected(lotePam!!.lot_ent[position], userid!!, areaId!!, lotePam!!.lot_id, false)
         }
 
-        var recyclerView = view.findViewById<RecyclerView>(R.id.recView_Entrada)
-        recyclerView.layoutManager = LinearLayoutManager(activity) as RecyclerView.LayoutManager?
+        var recyclerView = view.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.recView_Entrada)
+        recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity) as androidx.recyclerview.widget.RecyclerView.LayoutManager?
 
         recyclerView.adapter = EntradaAdapter(lotePam!!.lot_ent, context, mlistener)
 
