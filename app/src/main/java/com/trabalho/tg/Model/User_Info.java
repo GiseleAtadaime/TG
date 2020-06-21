@@ -21,6 +21,10 @@ public class User_Info {
         return info_id;
     }
 
+    public void setInfo_id(Integer info_id) {
+        this.info_id = info_id;
+    }
+
     public String getInfo_nomefantasia() {
         return info_nomefantasia;
     }

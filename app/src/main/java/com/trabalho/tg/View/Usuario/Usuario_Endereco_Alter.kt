@@ -7,13 +7,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import com.trabalho.tg.Controller.C_Endereco
+import com.trabalho.tg.Helper.DBHelper
+import com.trabalho.tg.Helper.Utils_TG
+import com.trabalho.tg.Model.Endereco
+import com.trabalho.tg.Model.Usuario
 
 import com.trabalho.tg.R
+import kotlinx.android.synthetic.main.fragment_usuario__endereco__alter.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val USUARIO = "usuario"
+private const val ENDID = "endid"
 
 /**
  * A simple [Fragment] subclass.
@@ -26,15 +33,15 @@ private const val ARG_PARAM2 = "param2"
  */
 class Usuario_Endereco_Alter : Fragment() {
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var usuario: Usuario? = null
+    private var endid: Int? = null
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            usuario = it.getSerializable(USUARIO) as Usuario
+            endid = it.getInt(ENDID)
         }
     }
 
@@ -47,8 +54,8 @@ class Usuario_Endereco_Alter : Fragment() {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
+    fun onButtonPressed(usuario : Usuario) {
+        listener?.onEnderecoClick(usuario)
     }
 
     override fun onAttach(context: Context) {
@@ -78,7 +85,7 @@ class Usuario_Endereco_Alter : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+        fun onEnderecoClick(usuario : Usuario)
     }
 
     companion object {
@@ -92,12 +99,58 @@ class Usuario_Endereco_Alter : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(usuario : Usuario, endid : Int) =
             Usuario_Endereco_Alter().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putSerializable(USUARIO, usuario)
+                    putInt(ENDID, endid)
                 }
             }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        var endNum : Int = 1
+        var utils  =  Utils_TG()
+        edtEndereco_EndAlter.isEnabled = false
+
+        if(usuario!!.usr_user_info.info_endereco.size > 0){
+            endNum = endid!!
+
+
+            edtLog_EndAlter.setText(usuario!!.usr_user_info.info_endereco.get(endid!!).end_logradouro)
+            edtBairro_EndAlter.setText(usuario!!.usr_user_info.info_endereco.get(endid!!).end_bairro)
+            edtCidade_EndAlter.setText(usuario!!.usr_user_info.info_endereco.get(endid!!).end_Cidade)
+            edtCEP_EndAlter.setText(usuario!!.usr_user_info.info_endereco.get(endid!!).end_cep.toString())
+            edtUF_EndAlter.setText(usuario!!.usr_user_info.info_endereco.get(endid!!).end_uf)
+            edtLat_EndAlter.setText(utils.doubleToString(usuario!!.usr_user_info.info_endereco.get(endid!!).end_catx))
+            edtLong_EndAlter.setText(utils.doubleToString(usuario!!.usr_user_info.info_endereco.get(endid!!).end_carty))
+        }
+        else{
+            usuario!!.usr_user_info.info_endereco.add(endid!!, Endereco(endNum))
+        }
+
+
+        edtEndereco_EndAlter.setText("Endereço " + endNum.toString())
+
+        btnSalvar_EndAlter.setOnClickListener {
+            usuario!!.usr_user_info.info_endereco.get(endid!!).end_logradouro = edtLog_EndAlter.text.toString()
+            usuario!!.usr_user_info.info_endereco.get(endid!!).end_bairro = edtBairro_EndAlter.text.toString()
+            usuario!!.usr_user_info.info_endereco.get(endid!!).end_Cidade = edtCidade_EndAlter.text.toString()
+            usuario!!.usr_user_info.info_endereco.get(endid!!).end_cep = utils.stringToInteger(edtCEP_EndAlter.text.toString())
+            usuario!!.usr_user_info.info_endereco.get(endid!!).end_uf = edtUF_EndAlter.text.toString()
+            usuario!!.usr_user_info.info_endereco.get(endid!!).end_catx =  utils.stringToDouble(edtLat_EndAlter.text.toString())
+            usuario!!.usr_user_info.info_endereco.get(endid!!).end_carty =  utils.stringToDouble(edtLong_EndAlter.text.toString())
+
+
+
+            if(C_Endereco().insertEndereco(DBHelper(context),usuario!!.usr_user_info.info_endereco.get(endid!!),usuario!!.usr_user_info.info_id,usuario!!.usr_id)){
+                Toast.makeText(context, "Endereço inserido com sucesso!", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+
+
     }
 }

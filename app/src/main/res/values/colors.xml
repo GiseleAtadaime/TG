@@ -20,5 +20,7 @@
     <color name="ok_btn">#5A3411</color>
     <color name="ok_btn_fade">#705A3411</color>
 
+    <color name="required_label">#F00C0C</color>
+
 </resources>
 

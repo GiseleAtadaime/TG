@@ -1,19 +1,25 @@
 package com.trabalho.tg.View.Usuario
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import com.trabalho.tg.Controller.C_User_Info
+import com.trabalho.tg.Helper.DBHelper
+import com.trabalho.tg.Helper.Utils_TG
+import com.trabalho.tg.Model.User_Info
+import com.trabalho.tg.Model.Usuario
 
 import com.trabalho.tg.R
+import kotlinx.android.synthetic.main.fragment_usuario_info_alter.*
+import java.io.Serializable
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val USUARIO = "usuario"
 
 /**
  * A simple [Fragment] subclass.
@@ -26,15 +32,13 @@ private const val ARG_PARAM2 = "param2"
  */
 class UsuarioInfoAlter : Fragment() {
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var usuario: Usuario? = null
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            usuario = it.getSerializable(USUARIO) as Usuario
         }
     }
 
@@ -47,8 +51,8 @@ class UsuarioInfoAlter : Fragment() {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
+    fun onSaveUsuarioInfo() {
+        listener?.onSaveUsuarioInfo()
     }
 
     override fun onAttach(context: Context) {
@@ -78,7 +82,7 @@ class UsuarioInfoAlter : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+        fun onSaveUsuarioInfo()
     }
 
     companion object {
@@ -92,12 +96,58 @@ class UsuarioInfoAlter : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(u: Usuario) =
             UsuarioInfoAlter().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putSerializable(USUARIO, u as Serializable)
                 }
             }
     }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        if(usuario!!.usr_user_info == null){
+            txtRS_AlterUserInfo.setTextColor(resources.getColor(R.color.required_label))
+            txtCNPJ_AlterUserInfo.setTextColor(resources.getColor(R.color.required_label))
+        }
+        else{
+            edtNF_AlterUserInfo.setText(usuario!!.usr_user_info.info_nomefantasia)
+            edtRS_AlterUserInfo.setText(usuario!!.usr_user_info.info_rzsocial)
+            edtCNPJ_AlterUserInfo.setText(usuario!!.usr_user_info.info_cnpj)
+            edtTel_AlterUserInfo.setText(usuario!!.usr_user_info.info_telefone.toString())
+            edtSite_AlterUserInfo.setText(usuario!!.usr_user_info.info_site)
+
+        }
+
+        btnSave_AlterUserInfo.setOnClickListener{
+            var usr_user_info = User_Info(0)
+            usr_user_info.info_nomefantasia = edtNF_AlterUserInfo.text.toString()
+            usr_user_info.info_rzsocial = edtRS_AlterUserInfo.text.toString()
+            usr_user_info.info_cnpj = edtCNPJ_AlterUserInfo.text.toString()
+            usr_user_info.info_telefone = Utils_TG().stringToInteger(edtTel_AlterUserInfo.text.toString())
+            usr_user_info.info_site = edtSite_AlterUserInfo.text.toString()
+            try{
+                if(usuario!!.usr_user_info == null){
+                    if (C_User_Info().insertUser_Info(DBHelper(context),usr_user_info,usuario!!.usr_id)){
+                        Toast.makeText(context, "Seus dados foram incluídos com sucesso!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                else{
+                    usr_user_info.info_id = usuario!!.usr_user_info.info_id
+                    if(C_User_Info().updateUser_Info(DBHelper(context),usr_user_info)){
+                        Toast.makeText(context, "Seus dados foram atualizados com sucesso!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                onSaveUsuarioInfo()
+            }
+            catch(e : Exception){
+                Toast.makeText(context, "Não foi possível inserir os seus dados. Tente novamente mais tarde!", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+    }
+
 }

@@ -18,7 +18,7 @@ public class C_Endereco {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String query = "SELECT * FROM " + Contrato.Endereco.TABLENAME  +  " WHERE " + Contrato.Usuario_Info.COLUMN_INFO_ID + " = " + iID + ";";
+        String query = "SELECT * FROM " + Contrato.Endereco.TABLENAME  +  " WHERE " + Contrato.Endereco.COLUMN_INFO_ID + " = " + iID + ";";
 
 
         try{
@@ -65,10 +65,10 @@ public class C_Endereco {
         try{
             db.insert(Contrato.Endereco.TABLENAME, null,values);
             ret = true;
-            db.setTransactionSuccessful();
+            //db.setTransactionSuccessful();
         }
         finally{
-            db.endTransaction();
+            //db.endTransaction();
             db.close();
             return ret;
         }

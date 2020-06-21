@@ -28,7 +28,9 @@ import com.trabalho.tg.View.Detalhe.AreaCriaAlterDialog
 import com.trabalho.tg.View.Detalhe.EntradaCriaAlterDialog
 import com.trabalho.tg.View.Detalhe.EntradaDetalheDialog
 import com.trabalho.tg.View.Detalhe.LoteCriaAlterDialog
+import com.trabalho.tg.View.Usuario.UsuarioInfoAlter
 import com.trabalho.tg.View.Usuario.UsuarioInfoGeral
+import com.trabalho.tg.View.Usuario.Usuario_Endereco_Alter
 import java.util.*
 
 
@@ -45,8 +47,29 @@ class MainActivity : AppCompatActivity(),
     LoteCriaAlterDialog.OnFragmentInteractionListener,
     EntradaDetalheDialog.OnFragmentInteractionListener,
     EntradaCriaAlterDialog.OnFragmentInteractionListener,
-    UsuarioInfoGeral.OnFragmentInteractionListener
+    UsuarioInfoGeral.OnFragmentInteractionListener,
+    UsuarioInfoAlter.OnFragmentInteractionListener,
+    Usuario_Endereco_Alter.OnFragmentInteractionListener
 {
+    override fun onEnderecoClick(usuario: Usuario) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onSaveUsuarioInfo() {
+        usuario.usr_user_info = C_User_Info().selectUser_Info(DBHelper(this))
+        returnFragment(2)
+
+    }
+
+    override fun onInfoClick(usuario: Usuario, tipo: Int, endID : Int?) {
+        if(tipo == 1){
+            changeFragment( UsuarioInfoAlter.newInstance(usuario), true, "USUARIO_INFO_ALTER")
+        }
+        else if(tipo == 2){
+            changeFragment( Usuario_Endereco_Alter.newInstance(usuario, endID!!), true, "USUARIO_ENDERECO_ADD")
+        }
+    }
+
     override fun onCriaAlterDialog(userId: Int, areaId: Int, loteId: Int) {
         var indexArea = usuario.usr_area.indexOfFirst { it.ar_id == areaId }
         var indexLote = usuario.usr_area[indexArea].ar_lote.indexOfFirst { it.lot_id ==  loteId}
@@ -380,7 +403,9 @@ class MainActivity : AppCompatActivity(),
                 usuario.usr_user_info = C_User_Info().selectUser_Info(DBHelper(this))
                 if(usuario.usr_user_info != null){
                     usuario.usr_user_info.info_endereco = C_Endereco().selectEndereco(DBHelper(this), usuario.usr_user_info.info_id)
+
                 }
+
 
                 changeFragment(UsuarioInfoGeral.newInstance(usuario), true, "USUARIOGERAL_FRAGMENT")
             }
@@ -410,6 +435,15 @@ class MainActivity : AppCompatActivity(),
             }
         }
     }
+
+    fun returnFragment(i : Int){
+        var y : Int = 0
+        while(y < i){
+            supportFragmentManager.popBackStackImmediate()
+            y++
+        }
+    }
+
     fun removeFragment(tag : String){
         val fragment = supportFragmentManager.findFragmentByTag(tag)
         if (fragment != null)

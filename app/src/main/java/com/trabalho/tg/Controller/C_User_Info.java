@@ -25,6 +25,7 @@ public class C_User_Info {
                 u.setInfo_nomefantasia(c.getString(c.getColumnIndex(Contrato.Usuario_Info.COLUMN_NOMEFANTASIA)));
                 u.setInfo_rzsocial(c.getString(c.getColumnIndex(Contrato.Usuario_Info.COLUMN_RZSOCIAL)));
                 u.setInfo_telefone(c.getInt(c.getColumnIndex(Contrato.Usuario_Info.COLUMN_TELEFONE)));
+                u.setInfo_site(c.getString(c.getColumnIndex(Contrato.Usuario_Info.COLUMN_SITE)));
 
                 c.close();
             }
@@ -40,7 +41,6 @@ public class C_User_Info {
         Boolean ret = false;
 
         ContentValues values = new ContentValues();
-        values.put(Contrato.Usuario_Info.COLUMN_INFO_ID,u.getInfo_id());
         values.put(Contrato.Usuario_Info.COLUMN_CNPJ,u.getInfo_cnpj());
         values.put(Contrato.Usuario_Info.COLUMN_NOMEFANTASIA,u.getInfo_nomefantasia());
         values.put(Contrato.Usuario_Info.COLUMN_RZSOCIAL, u.getInfo_rzsocial());

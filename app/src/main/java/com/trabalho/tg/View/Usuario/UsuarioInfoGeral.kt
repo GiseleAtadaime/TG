@@ -1,14 +1,16 @@
 package com.trabalho.tg.View.Usuario
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.trabalho.tg.Controller.C_User_Info
+import com.trabalho.tg.Helper.DBHelper
 import com.trabalho.tg.Model.Usuario
 import com.trabalho.tg.R
+import com.trabalho.tg.View.MainActivity
 import kotlinx.android.synthetic.main.fragment_usuario_info_geral.*
 import java.io.Serializable
 
@@ -47,8 +49,8 @@ class UsuarioInfoGeral : Fragment() {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
+    fun onButtonPressed(usuario: Usuario, tipo: Int, endID : Int?) {
+        listener?.onInfoClick(usuario, tipo, endID)
     }
 
     override fun onAttach(context: Context) {
@@ -78,7 +80,7 @@ class UsuarioInfoGeral : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+        fun onInfoClick(usuario : Usuario, tipo : Int, endID : Int?)
     }
 
     companion object {
@@ -103,6 +105,13 @@ class UsuarioInfoGeral : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val con = requireActivity()
+        val frag = con.supportFragmentManager.findFragmentByTag("USUARIOGERAL_FRAGMENT")
+
+//        if(frag != null && frag.isVisible){
+//            usuario!!.usr_user_info = C_User_Info().selectUser_Info(DBHelper(context))
+//        }
+
 
         txtNome_UsuarioGeral.text = usuario!!.usr_nome
         txtEmail_UsuarioGeral.text = usuario!!.usr_email
@@ -126,5 +135,14 @@ class UsuarioInfoGeral : Fragment() {
             txtSite_UsuarioGeral.text = "Site: --"
         }
 
+        imgbtnAlterarInfo_UsuarioGeral.setOnClickListener {
+            onButtonPressed(usuario!!, 1, null)
+        }
+
+        btnAddEnd_UsuarioGeral.setOnClickListener{
+            onButtonPressed(usuario!!, 2, 0)
+        }
+
     }
+
 }
