@@ -52,7 +52,9 @@ class MainActivity : AppCompatActivity(),
     Usuario_Endereco_Alter.OnFragmentInteractionListener
 {
     override fun onEnderecoClick(usuario: Usuario) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        clearBackStack()
+        usuario.usr_user_info.info_endereco = C_Endereco().selectEndereco(DBHelper(this), usuario.usr_user_info.info_id)
+        changeFragment(UsuarioInfoGeral.newInstance(usuario), true, "USUARIOGERAL_FRAGMENT")
     }
 
     override fun onSaveUsuarioInfo() {
@@ -66,8 +68,21 @@ class MainActivity : AppCompatActivity(),
             changeFragment( UsuarioInfoAlter.newInstance(usuario), true, "USUARIO_INFO_ALTER")
         }
         else if(tipo == 2){
-            changeFragment( Usuario_Endereco_Alter.newInstance(usuario, endID!!), true, "USUARIO_ENDERECO_ADD")
+            changeFragment( Usuario_Endereco_Alter.newInstance(usuario, endID!!,false), true, "USUARIO_ENDERECO_ADD")
         }
+        else if(tipo == 3){
+
+            if(C_Endereco().deleteEndereco(DBHelper(this), endID!!)){
+                Toast.makeText(this, "Endereço removido!", Toast.LENGTH_SHORT).show()
+                clearBackStack()
+                usuario.usr_user_info.info_endereco = C_Endereco().selectEndereco(DBHelper(this), usuario.usr_user_info.info_id)
+                changeFragment(UsuarioInfoGeral.newInstance(usuario), true, "USUARIOGERAL_FRAGMENT")
+            }
+        }
+        else if(tipo == 4){
+            changeFragment( Usuario_Endereco_Alter.newInstance(usuario, endID!!, true), true, "USUARIO_ENDERECO_ALTER")
+        }
+
     }
 
     override fun onCriaAlterDialog(userId: Int, areaId: Int, loteId: Int) {
@@ -403,10 +418,7 @@ class MainActivity : AppCompatActivity(),
                 usuario.usr_user_info = C_User_Info().selectUser_Info(DBHelper(this))
                 if(usuario.usr_user_info != null){
                     usuario.usr_user_info.info_endereco = C_Endereco().selectEndereco(DBHelper(this), usuario.usr_user_info.info_id)
-
                 }
-
-
                 changeFragment(UsuarioInfoGeral.newInstance(usuario), true, "USUARIOGERAL_FRAGMENT")
             }
             R.id.nav_sair -> {

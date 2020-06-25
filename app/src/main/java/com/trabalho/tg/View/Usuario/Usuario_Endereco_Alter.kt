@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.fragment_usuario__endereco__alter.*
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val USUARIO = "usuario"
 private const val ENDID = "endid"
+private const val TIPO = "tipo"
 
 /**
  * A simple [Fragment] subclass.
@@ -35,6 +36,7 @@ class Usuario_Endereco_Alter : Fragment() {
     // TODO: Rename and change types of parameters
     private var usuario: Usuario? = null
     private var endid: Int? = null
+    private var tipo: Boolean? = null
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +44,7 @@ class Usuario_Endereco_Alter : Fragment() {
         arguments?.let {
             usuario = it.getSerializable(USUARIO) as Usuario
             endid = it.getInt(ENDID)
+            tipo = it.getBoolean(TIPO)
         }
     }
 
@@ -99,11 +102,12 @@ class Usuario_Endereco_Alter : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(usuario : Usuario, endid : Int) =
+        fun newInstance(usuario : Usuario, endid : Int, tipo : Boolean) =
             Usuario_Endereco_Alter().apply {
                 arguments = Bundle().apply {
                     putSerializable(USUARIO, usuario)
                     putInt(ENDID, endid)
+                    putBoolean(TIPO, tipo)
                 }
             }
     }
@@ -114,9 +118,9 @@ class Usuario_Endereco_Alter : Fragment() {
         var utils  =  Utils_TG()
         edtEndereco_EndAlter.isEnabled = false
 
-        if(usuario!!.usr_user_info.info_endereco.size > 0){
-            endNum = endid!!
 
+        if(usuario!!.usr_user_info.info_endereco.size > 0 && tipo!!){
+            endNum = endid!! + 1
 
             edtLog_EndAlter.setText(usuario!!.usr_user_info.info_endereco.get(endid!!).end_logradouro)
             edtBairro_EndAlter.setText(usuario!!.usr_user_info.info_endereco.get(endid!!).end_bairro)
@@ -127,11 +131,14 @@ class Usuario_Endereco_Alter : Fragment() {
             edtLong_EndAlter.setText(utils.doubleToString(usuario!!.usr_user_info.info_endereco.get(endid!!).end_carty))
         }
         else{
-            usuario!!.usr_user_info.info_endereco.add(endid!!, Endereco(endNum))
+
+            endNum = usuario!!.usr_user_info.info_endereco.size + 1
+
+            usuario!!.usr_user_info.info_endereco.add(Endereco(endNum))
         }
 
 
-        edtEndereco_EndAlter.setText("Endereço " + endNum.toString())
+        edtEndereco_EndAlter.setText("Endereço " + (endNum).toString())
 
         btnSalvar_EndAlter.setOnClickListener {
             usuario!!.usr_user_info.info_endereco.get(endid!!).end_logradouro = edtLog_EndAlter.text.toString()
@@ -144,9 +151,19 @@ class Usuario_Endereco_Alter : Fragment() {
 
 
 
-            if(C_Endereco().insertEndereco(DBHelper(context),usuario!!.usr_user_info.info_endereco.get(endid!!),usuario!!.usr_user_info.info_id,usuario!!.usr_id)){
-                Toast.makeText(context, "Endereço inserido com sucesso!", Toast.LENGTH_SHORT).show()
+            if(tipo!!){
+                if(C_Endereco().updateArea(DBHelper(context),usuario!!.usr_user_info.info_endereco.get(endid!!))){
+                    Toast.makeText(context, "Endereço atualizado com sucesso!", Toast.LENGTH_SHORT).show()
+                }
             }
+            else{
+                if(C_Endereco().insertEndereco(DBHelper(context),usuario!!.usr_user_info.info_endereco.get(endid!!),usuario!!.usr_user_info.info_id,usuario!!.usr_id)){
+                    Toast.makeText(context, "Endereço inserido com sucesso!", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            onButtonPressed(usuario!!)
+
         }
 
 

@@ -51,7 +51,6 @@ public class C_Endereco {
         Boolean ret = false;
 
         ContentValues values = new ContentValues();
-        values.put(Contrato.Endereco.COLUMN_ID,e.getEnd_id());
         values.put(Contrato.Endereco.COLUMN_INFO_ID,iID);
         values.put(Contrato.Endereco.COLUMN_CARTX,e.getEnd_catx());
         values.put(Contrato.Endereco.COLUMN_CARTY,e.getEnd_carty());
@@ -93,13 +92,27 @@ public class C_Endereco {
         try{
 
             db.update(Contrato.Endereco.TABLENAME,values,Contrato.Endereco.COLUMN_ID + " = ?", new String[]{e.getEnd_id().toString()});
-            db.setTransactionSuccessful();
+            //db.setTransactionSuccessful();
             ret = true;
         }
         finally {
-            db.endTransaction();
+            //db.endTransaction();
             return ret;
         }
 
+    }
+
+    public Boolean deleteEndereco(DBHelper dbHelper, Integer e){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Boolean ret = false;
+
+        try{
+
+            db.delete(Contrato.Endereco.TABLENAME,Contrato.Endereco.COLUMN_ID + " = ?", new String[]{e.toString()});
+            ret = true;
+        }
+        finally {
+            return ret;
+        }
     }
 }

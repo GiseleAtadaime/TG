@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import com.trabalho.tg.Adapters.EnderecoAdapter
 import com.trabalho.tg.Controller.C_User_Info
 import com.trabalho.tg.Helper.DBHelper
 import com.trabalho.tg.Model.Usuario
@@ -117,6 +119,7 @@ class UsuarioInfoGeral : Fragment() {
         txtEmail_UsuarioGeral.text = usuario!!.usr_email
         //TODO set foto de perfil
 
+
         if(usuario!!.usr_user_info != null){
 
             txtNF_UsuarioGeral.text = usuario!!.usr_user_info.info_nomefantasia
@@ -124,6 +127,26 @@ class UsuarioInfoGeral : Fragment() {
             txtRS_UsuarioGeral.text = usuario!!.usr_user_info.info_rzsocial
             txtTelefone_UsuarioGeral.text = usuario!!.usr_user_info.info_telefone.toString()
             txtSite_UsuarioGeral.text = usuario!!.usr_user_info.info_site
+
+
+
+            val mlistener = fun(view : View, position: Int , tipo : Int) {
+                Toast.makeText(context, "Position $position e tipo : $tipo", Toast.LENGTH_SHORT).show();
+
+                if(tipo == 1){
+                    onButtonPressed(usuario!!, 3, usuario!!.usr_user_info.info_endereco[position].end_id)
+                }
+                else{
+                    onButtonPressed(usuario!!, 4, position)
+                }
+
+            }
+
+
+            var recyclerView = view.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.recViewEndereco_UsuarioGeral)
+            recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity)
+
+            recyclerView.adapter = EnderecoAdapter(usuario!!.usr_user_info.info_endereco, context, mlistener)
 
 
         }
