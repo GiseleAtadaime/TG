@@ -1,8 +1,12 @@
 package com.trabalho.tg.View.Detalhe
 
+import android.app.Activity.RESULT_OK
 import androidx.appcompat.app.AlertDialog
 import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +17,17 @@ import com.trabalho.tg.Helper.DBHelper
 import com.trabalho.tg.Model.Area
 import com.trabalho.tg.R
 import kotlinx.android.synthetic.main.fragment_area_alter_dialog.*
+import kotlinx.android.synthetic.main.nav_header_main.*
 import java.io.Serializable
+import android.content.pm.PackageManager
+import android.R.attr.bitmap
+import java.nio.file.Files.exists
+import android.content.ContextWrapper
+import android.graphics.BitmapFactory
+import android.util.Log
+import java.io.File
+import java.io.FileOutputStream
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,6 +50,10 @@ class AreaCriaAlterDialog : Fragment() {
     private var tipoPam: Int? = null
     private var userid: Int? = null
     private var listener: OnFragmentInteractionListener? = null
+    val REQUEST_IMAGE_CAPTURE = 1
+    private var bitmap : Bitmap? = null
+    private var image_path : String? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,8 +127,32 @@ class AreaCriaAlterDialog : Fragment() {
             }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            val imageBitmap = data?.extras?.get("data") as Bitmap
+            imgArea_DialogFragment.setImageBitmap(imageBitmap)
+            bitmap = imageBitmap
+        }
+    }
+
+
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+
+
+
+        fun dispatchTakePictureIntent() {
+            val pm = this!!.context!!.getPackageManager()
+            Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+                takePictureIntent.resolveActivity(pm)?.also {
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                }
+            }
+        }
 
 
 
@@ -134,9 +176,39 @@ class AreaCriaAlterDialog : Fragment() {
                 else{
                     txtExemplo_AlterAreaFragment.setText("Exemplo: 12122019_01")
                 }
-
             }
+        }
 
+        imgArea_DialogFragment.setOnClickListener {
+            dispatchTakePictureIntent()
+        }
+
+        if(areaPam!!.ar_imagem != null){
+            val cw = ContextWrapper(context)
+            val file = File(areaPam!!.ar_imagem)
+            if (file.exists()) {
+                imgArea_DialogFragment.setImageBitmap(BitmapFactory.decodeFile(file.toString()))
+            }
+        }
+
+        //TODO set a function to determine if an image file can be converted to bitmap from gallery
+        fun saveBitmap() {
+            val cw = ContextWrapper(context)
+            val directory = cw.getDir("imageDir", Context.MODE_PRIVATE)
+            val file = File(directory, areaPam!!.ar_nome.replace(" ","_") + ".jpg")
+            if (!file.exists()) {
+                Log.d("path", file.toString())
+                image_path = file.toString()
+                var fos: FileOutputStream? = null
+                try {
+                    fos = FileOutputStream(file)
+                    bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, fos)
+                    fos!!.flush()
+                    fos!!.close()
+                } catch (e: java.io.IOException) {
+                    e.printStackTrace()
+                }
+            }
         }
 
 
@@ -156,7 +228,8 @@ class AreaCriaAlterDialog : Fragment() {
                     area.setAr_lote_cont(spiContagem_AreaDialog.selectedItemId.toInt())
                     area.ar_nome = edtTxtNome_AreaDialog.text.toString()
                     area.ar_del = "A"
-
+                    saveBitmap()
+                    area.ar_imagem = image_path
                     if (C_Area().updateArea(DBHelper(context), area)){
                         val builder = AlertDialog.Builder(this!!.context!!)
                         builder.setTitle("Alterar área")
@@ -186,6 +259,7 @@ class AreaCriaAlterDialog : Fragment() {
                     area.setAr_lote_cont(spiContagem_AreaDialog.selectedItemId.toInt())
                     area.ar_nome = edtTxtNome_AreaDialog.text.toString()
                     area.ar_del = "A"
+                    saveBitmap()
 
                     if (C_Area().insertArea(DBHelper(context), area , userid)){
                         val builder = AlertDialog.Builder(this!!.context!!)
@@ -203,7 +277,7 @@ class AreaCriaAlterDialog : Fragment() {
             }
         }
 
-
     }
+
 
 }
