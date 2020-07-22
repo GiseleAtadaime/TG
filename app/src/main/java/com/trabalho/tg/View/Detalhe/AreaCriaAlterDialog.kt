@@ -17,14 +17,12 @@ import com.trabalho.tg.Helper.DBHelper
 import com.trabalho.tg.Model.Area
 import com.trabalho.tg.R
 import kotlinx.android.synthetic.main.fragment_area_alter_dialog.*
-import kotlinx.android.synthetic.main.nav_header_main.*
 import java.io.Serializable
-import android.content.pm.PackageManager
-import android.R.attr.bitmap
-import java.nio.file.Files.exists
 import android.content.ContextWrapper
 import android.graphics.BitmapFactory
+import android.graphics.Camera
 import android.util.Log
+import com.trabalho.tg.Helper.cameraUtils
 import java.io.File
 import java.io.FileOutputStream
 
@@ -135,7 +133,16 @@ class AreaCriaAlterDialog : Fragment() {
         }
     }
 
+    fun takePicture() : String?{
+        val camera  =  cameraUtils()
+        val takePictureIntent = camera.dispatchTakePictureIntent(this!!.context!!)
 
+        if(takePictureIntent != null){
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+            
+        }
+        return camera.currentPhotoPath
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -183,19 +190,11 @@ class AreaCriaAlterDialog : Fragment() {
             dispatchTakePictureIntent()
         }
 
-        if(areaPam!!.ar_imagem != null){
-            val cw = ContextWrapper(context)
-            val file = File(areaPam!!.ar_imagem)
-            if (file.exists()) {
-                imgArea_DialogFragment.setImageBitmap(BitmapFactory.decodeFile(file.toString()))
-            }
-        }
-
         //TODO set a function to determine if an image file can be converted to bitmap from gallery
-        fun saveBitmap() {
+        fun saveBitmap(area : Area) {
             val cw = ContextWrapper(context)
             val directory = cw.getDir("imageDir", Context.MODE_PRIVATE)
-            val file = File(directory, areaPam!!.ar_nome.replace(" ","_") + ".jpg")
+            val file = File(directory, area.ar_nome.replace(" ","_") + ".jpg")
             if (!file.exists()) {
                 Log.d("path", file.toString())
                 image_path = file.toString()
@@ -219,6 +218,14 @@ class AreaCriaAlterDialog : Fragment() {
 
             spiContagem_AreaDialog.setSelection(areaPam!!.getLoteContID())
 
+            if(areaPam!!.ar_imagem != null){
+                val cw = ContextWrapper(context)
+                val file = File(areaPam!!.ar_imagem)
+                if (file.exists()) {
+                    imgArea_DialogFragment.setImageBitmap(BitmapFactory.decodeFile(file.toString()))
+                }
+            }
+
             btnCriarAlt_AreaDialog.setOnClickListener{
                 if (edtTxtNome_AreaDialog.text.isNullOrBlank()){
                     Toast.makeText(context, "Informe o nome para a área!", Toast.LENGTH_SHORT).show()
@@ -228,7 +235,7 @@ class AreaCriaAlterDialog : Fragment() {
                     area.setAr_lote_cont(spiContagem_AreaDialog.selectedItemId.toInt())
                     area.ar_nome = edtTxtNome_AreaDialog.text.toString()
                     area.ar_del = "A"
-                    saveBitmap()
+                    saveBitmap(area)
                     area.ar_imagem = image_path
                     if (C_Area().updateArea(DBHelper(context), area)){
                         val builder = AlertDialog.Builder(this!!.context!!)
@@ -259,7 +266,8 @@ class AreaCriaAlterDialog : Fragment() {
                     area.setAr_lote_cont(spiContagem_AreaDialog.selectedItemId.toInt())
                     area.ar_nome = edtTxtNome_AreaDialog.text.toString()
                     area.ar_del = "A"
-                    saveBitmap()
+                    saveBitmap(area)
+                    area.ar_imagem = image_path
 
                     if (C_Area().insertArea(DBHelper(context), area , userid)){
                         val builder = AlertDialog.Builder(this!!.context!!)

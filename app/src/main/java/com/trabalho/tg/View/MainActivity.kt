@@ -278,8 +278,11 @@ class MainActivity : AppCompatActivity(),
             usuario.usr_area[pos].ar_lote = C_Lote().selectLote(DBHelper(this),usuario.usr_area[pos].ar_id)
             changeFragment(LoteFragment.newInstance(usuario.usr_area[pos]), true, "LOTE_FRAGMENT")
         }
-        else if(tipo == 1 || tipo == 3) { //alterar
+        else if(tipo == 1) { //alterar
             changeFragment(AreaCriaAlterDialog.newInstance(area[pos], tipo, usuario.usr_id), true, "AREA_ALTER_FRAGMENT")
+        }
+        else if(tipo == 3){
+            changeFragment(AreaCriaAlterDialog.newInstance(Area(0), tipo, usuario.usr_id), true, "AREA_ALTER_FRAGMENT")
         }
         else if (tipo == 2){ // deletar
 
