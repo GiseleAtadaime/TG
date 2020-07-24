@@ -21,10 +21,17 @@ import java.io.Serializable
 import android.content.ContextWrapper
 import android.graphics.BitmapFactory
 import android.graphics.Camera
+import android.net.Uri
+import android.os.Environment
 import android.util.Log
+import androidx.core.content.FileProvider
 import com.trabalho.tg.Helper.cameraUtils
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
+import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -51,6 +58,7 @@ class AreaCriaAlterDialog : Fragment() {
     val REQUEST_IMAGE_CAPTURE = 1
     private var bitmap : Bitmap? = null
     private var image_path : String? = null
+    private var image_big : String? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -125,41 +133,70 @@ class AreaCriaAlterDialog : Fragment() {
             }
     }
 
+    lateinit var currentPhotoPath: String
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            val imageBitmap = data?.extras?.get("data") as Bitmap
+//            val imageBitmap = data?.extras?.get("data") as Bitmap
+            val imageBitmap = BitmapFactory.decodeFile(currentPhotoPath)
             imgArea_DialogFragment.setImageBitmap(imageBitmap)
             bitmap = imageBitmap
         }
     }
 
-    fun takePicture() : String?{
-        val camera  =  cameraUtils()
-        val takePictureIntent = camera.dispatchTakePictureIntent(this!!.context!!)
-
-        if(takePictureIntent != null){
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-            
-        }
-        return camera.currentPhotoPath
-    }
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
 
+//        fun dispatchTakePictureIntent() {
+//            val pm = this!!.context!!.getPackageManager()
+//            Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+//                takePictureIntent.resolveActivity(pm)?.also {
+//                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+//                }
+//            }
+//        }
 
 
+
+        @Throws(IOException::class)
+        fun createImageFile(context: Context): File {
+            // Create an image file name
+            val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+            val storageDir: File = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+
+            return File(storageDir, "$timeStamp.jpg")
+        }
 
         fun dispatchTakePictureIntent() {
-            val pm = this!!.context!!.getPackageManager()
-            Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-                takePictureIntent.resolveActivity(pm)?.also {
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+            try{
+                val file = createImageFile(context!!)
+                val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+                val intentCamera = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                currentPhotoPath = file.toString()
+                intentCamera.putExtra(
+                    MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(
+                        this!!.context!!,
+                        "com.trabalho.tg.fileprovider",
+                        file
+                    )
+                )
+
+                if(intentCamera.resolveActivity(context!!.packageManager) != null){
+                    startActivityForResult(intentCamera, REQUEST_IMAGE_CAPTURE)
                 }
+                else{
+
+                }
+
             }
+            catch(e : Exception){
+                System.out.println("ERRO CRIANDO FOTO : " + e.message)
+            }
+
         }
+
+
 
 
 
@@ -186,8 +223,13 @@ class AreaCriaAlterDialog : Fragment() {
             }
         }
 
+//        imgArea_DialogFragment.setOnClickListener {
+//            dispatchTakePictureIntent()
+//        }
         imgArea_DialogFragment.setOnClickListener {
+
             dispatchTakePictureIntent()
+
         }
 
         //TODO set a function to determine if an image file can be converted to bitmap from gallery
@@ -209,6 +251,9 @@ class AreaCriaAlterDialog : Fragment() {
                 }
             }
         }
+
+
+
 
 
         if (tipoPam == 1){//Alterar
