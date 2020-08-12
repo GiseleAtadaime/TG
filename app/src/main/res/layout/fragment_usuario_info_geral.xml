@@ -6,11 +6,20 @@
             android:layout_height="match_parent"
             tools:context=".View.Usuario.UsuarioInfoGeral" android:id="@+id/frameLayout6" android:fillViewport="true">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                       xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                       xmlns:tools="http://schemas.android.com/tools"
-                                                       android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
                                                        android:layout_height="match_parent">
+
+        <ProgressBar
+                android:id="@+id/usuarioInfoBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                app:layout_constraintHorizontal_bias="0.498" android:layout_marginTop="8dp"
+                app:layout_constraintTop_toTopOf="@+id/constraintLayout" android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintVertical_bias="0.2"/>
+
         <ImageButton
                 app:srcCompat="@drawable/baseline_create_black_24"
                 android:layout_width="66dp"
@@ -41,12 +50,29 @@
             <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="0dp"
+                    android:layout_height="0dp" android:id="@+id/fotoLayout"
+                    app:layout_constraintTop_toTopOf="@+id/imgFoto_UsuarioGeral"
+                    app:layout_constraintEnd_toEndOf="@+id/imgFoto_UsuarioGeral"
+                    app:layout_constraintStart_toStartOf="@+id/imgFoto_UsuarioGeral"
+                    app:layout_constraintBottom_toBottomOf="parent" android:gravity="bottom" android:visibility="gone">
+                <Button
+                        android:text="Tirar Foto"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:id="@+id/btnTakePhoto_UsuarioGeral"/>
+                <Button
+                        android:text="Escolher foto"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:id="@+id/btnSelectPhoto_UsuarioGeral"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
                     android:layout_height="0dp"
                     app:layout_constraintEnd_toStartOf="@+id/imgFoto_UsuarioGeral" android:layout_marginEnd="8dp"
                     app:layout_constraintBottom_toBottomOf="@+id/imgFoto_UsuarioGeral"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginStart="8dp" android:layout_marginTop="8dp"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent" android:id="@+id/linearLayout3">
                 <TextView
                         android:text="TextView"
                         android:layout_width="match_parent"

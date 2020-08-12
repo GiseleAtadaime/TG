@@ -1,6 +1,8 @@
 package com.trabalho.tg.Adapters;
 
 import android.content.Context;
+import android.content.ContextWrapper;
+import android.graphics.BitmapFactory;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import com.trabalho.tg.Model.Lote;
 import com.trabalho.tg.R;
 
+import java.io.File;
 import java.util.List;
 
 public class LoteAdapter extends RecyclerView.Adapter{
@@ -47,6 +50,13 @@ public class LoteAdapter extends RecyclerView.Adapter{
         int pos = loteViewHolder.getAdapterPosition();
         loteViewHolder.nomeText.setText(lote.get(pos).getLot_nome());
 
+        if(lote.get(pos).getLot_imagem() != null){
+            ContextWrapper cw = new ContextWrapper(this.c);
+            File file = new File(lote.get(pos).getLot_imagem());
+            if (file.exists()) {
+                loteViewHolder.loteImagem.setImageBitmap(BitmapFactory.decodeFile(file.toString()));
+            }
+        }
     }
 
 

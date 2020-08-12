@@ -25,6 +25,7 @@ public class C_Usuario {
             if (c.moveToFirst()) {
                 u = new Usuario(c.getInt(c.getColumnIndex(Contrato.Usuario.COLUMN_ID)));
                 u.setUsr_nome(c.getString(c.getColumnIndex(Contrato.Usuario.COLUMN_NOME)));
+                u.setUsr_fotoperfil(c.getString(c.getColumnIndex(Contrato.Usuario.COLUMN_FOTOPERFIL)));
                 u.setUsr_email(c.getString(c.getColumnIndex(Contrato.Usuario.COLUMN_EMAIL)));
                 u.setUsr_senha(c.getString(c.getColumnIndex(Contrato.Usuario.COLUMN_SENHA)));
                 i++;
@@ -65,6 +66,7 @@ public class C_Usuario {
         ContentValues values = new ContentValues();
         values.put(Contrato.Usuario.COLUMN_NOME, u.getUsr_nome());
         values.put(Contrato.Usuario.COLUMN_EMAIL, u.getUsr_email());
+        values.put(Contrato.Usuario.COLUMN_FOTOPERFIL, u.getUsr_fotoperfil());
         values.put(Contrato.Usuario.COLUMN_SENHA, u.getUsr_senha());
 
         try{
@@ -72,6 +74,26 @@ public class C_Usuario {
             ret = true;
         }
         finally{
+            db.close();
+            return ret;
+        }
+    }
+
+    public Boolean updateUsuario(DBHelper dbHelper, Usuario u){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Boolean ret = false;
+
+        ContentValues values = new ContentValues();
+
+        values.put(Contrato.Usuario.COLUMN_NOME,u.getUsr_nome());
+        values.put(Contrato.Usuario.COLUMN_FOTOPERFIL,u.getUsr_fotoperfil());
+
+        try{
+
+            db.update(Contrato.Usuario.TABLENAME,values,Contrato.Usuario.COLUMN_ID + " = ?", new String[]{u.getUsr_id().toString()});
+            ret = true;
+        }
+        finally {
             db.close();
             return ret;
         }

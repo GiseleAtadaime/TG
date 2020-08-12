@@ -1,8 +1,9 @@
 package com.trabalho.tg.Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class User_Info {
+public class User_Info implements Serializable {
 
     private Integer info_id;
     private String info_nomefantasia;

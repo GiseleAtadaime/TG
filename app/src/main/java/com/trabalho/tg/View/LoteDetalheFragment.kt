@@ -1,6 +1,8 @@
 package com.trabalho.tg.View
 
 import android.content.Context
+import android.content.ContextWrapper
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,9 +13,12 @@ import com.highsoft.highcharts.common.hichartsclasses.*
 import com.highsoft.highcharts.core.HIChartView
 import com.trabalho.tg.Controller.C_Entrada
 import com.trabalho.tg.Helper.DBHelper
+import com.trabalho.tg.Helper.cameraUtils
 import com.trabalho.tg.Model.Lote
 import com.trabalho.tg.R
+import kotlinx.android.synthetic.main.fragment_lote_alter_dialog.*
 import kotlinx.android.synthetic.main.fragment_lote_detalhe.*
+import java.io.File
 import java.io.Serializable
 import java.util.*
 import java.util.Arrays.asList
@@ -284,7 +289,13 @@ class LoteDetalheFragment : Fragment() {
 
             chartView2.options = options2
 
-
+            if(lotePam!!.lot_imagem != null){
+                val cw = ContextWrapper(context)
+                val file = File(lotePam!!.lot_imagem)
+                if (file.exists()) {
+                    imgLoteDet.setImageBitmap(BitmapFactory.decodeFile(file.toString()))
+                }
+            }
 
     }
 }
