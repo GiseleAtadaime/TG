@@ -1,5 +1,6 @@
 package com.trabalho.tg.Model;
 
+import android.graphics.Bitmap;
 import com.trabalho.tg.R;
 
 import java.io.Serializable;
@@ -10,6 +11,7 @@ public class Area implements Serializable {
     private Integer ar_id;
     private String ar_lote_cont;
     private String ar_imagem;
+    private Bitmap ar_imagem_cached;
     private String ar_nome;
     private String ar_del;
     private ArrayList<Lote> ar_lote = new ArrayList<>();
@@ -32,7 +34,6 @@ public class Area implements Serializable {
         }
         else{
             this.ar_lote_cont = "Data + Numero";
-
         }
     }
 
@@ -84,5 +85,11 @@ public class Area implements Serializable {
         return ret;
     }
 
+    public Bitmap getAr_imagem_cached() {
+        return ar_imagem_cached;
+    }
 
+    public void setAr_imagem_cached(Bitmap ar_imagem_cached) {
+        this.ar_imagem_cached = ar_imagem_cached;
+    }
 }

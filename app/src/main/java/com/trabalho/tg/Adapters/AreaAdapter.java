@@ -1,6 +1,8 @@
 package com.trabalho.tg.Adapters;
 
 import android.content.Context;
+import android.content.ContextWrapper;
+import android.graphics.BitmapFactory;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import com.trabalho.tg.Model.Area;
 import com.trabalho.tg.R;
 
+import java.io.File;
 import java.util.List;
 
 public class AreaAdapter extends RecyclerView.Adapter{
@@ -47,6 +50,14 @@ public class AreaAdapter extends RecyclerView.Adapter{
         final AreaViewHolder areaViewHolder = (AreaViewHolder) viewHolder;
         int pos = areaViewHolder.getAdapterPosition();
         areaViewHolder.nomeText.setText(area.get(pos).getAr_nome());
+
+        if(area.get(pos).getAr_imagem() != null){
+            ContextWrapper cw = new ContextWrapper(this.c);
+            File file = new File(area.get(pos).getAr_imagem());
+            if (file.exists()) {
+                areaViewHolder.areaImagem.setImageBitmap(BitmapFactory.decodeFile(file.toString()));
+            }
+        }
     }
 
     @Override
@@ -65,6 +76,8 @@ public class AreaAdapter extends RecyclerView.Adapter{
 
         public AreaViewHolder(@NonNull View itemView, final AdapterListener listener) {
             super(itemView);
+
+
 
             areaImagem = itemView.findViewById(R.id.imgAreaAdapter);
             nomeText = itemView.findViewById(R.id.txtNome_AreaAdapter);

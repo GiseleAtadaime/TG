@@ -19,10 +19,7 @@ import android.widget.Toast
 import com.trabalho.tg.Controller.*
 import com.trabalho.tg.Helper.Contrato
 import com.trabalho.tg.Helper.DBHelper
-import com.trabalho.tg.Model.Area
-import com.trabalho.tg.Model.Entrada
-import com.trabalho.tg.Model.Lote
-import com.trabalho.tg.Model.Usuario
+import com.trabalho.tg.Model.*
 import com.trabalho.tg.R
 import com.trabalho.tg.View.Detalhe.AreaCriaAlterDialog
 import com.trabalho.tg.View.Detalhe.EntradaCriaAlterDialog
@@ -68,6 +65,7 @@ class MainActivity : AppCompatActivity(),
             changeFragment( UsuarioInfoAlter.newInstance(usuario), true, "USUARIO_INFO_ALTER")
         }
         else if(tipo == 2){
+
             changeFragment( Usuario_Endereco_Alter.newInstance(usuario, endID!!,false), true, "USUARIO_ENDERECO_ADD")
         }
         else if(tipo == 3){
@@ -278,8 +276,11 @@ class MainActivity : AppCompatActivity(),
             usuario.usr_area[pos].ar_lote = C_Lote().selectLote(DBHelper(this),usuario.usr_area[pos].ar_id)
             changeFragment(LoteFragment.newInstance(usuario.usr_area[pos]), true, "LOTE_FRAGMENT")
         }
-        else if(tipo == 1 || tipo == 3) { //alterar
+        else if(tipo == 1) { //alterar
             changeFragment(AreaCriaAlterDialog.newInstance(area[pos], tipo, usuario.usr_id), true, "AREA_ALTER_FRAGMENT")
+        }
+        else if(tipo == 3){
+            changeFragment(AreaCriaAlterDialog.newInstance(Area(0), tipo, usuario.usr_id), true, "AREA_ALTER_FRAGMENT")
         }
         else if (tipo == 2){ // deletar
 

@@ -1,6 +1,8 @@
 package com.trabalho.tg.Model;
 
-public class Endereco {
+import java.io.Serializable;
+
+public class Endereco implements Serializable {
 
     private Integer end_id;
     private String end_logradouro;

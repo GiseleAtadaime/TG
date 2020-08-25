@@ -1,6 +1,8 @@
 package com.trabalho.tg.Model;
 
-public class Reg_Agrotoxico {
+import java.io.Serializable;
+
+public class Reg_Agrotoxico implements Serializable {
 
     private Integer reg_numero;
     private String reg_nomecom;
