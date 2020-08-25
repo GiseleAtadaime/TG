@@ -273,20 +273,17 @@ class LoteCriaAlterDialog : Fragment() {
                     lote.lot_planta = edtPlanta_LoteDialog.text.toString()
 
                     if(!lote.lot_nome.equals(lotePam!!.lot_nome) && lotePam!!.lot_imagem != null){
-                        val cw = ContextWrapper(context)
-                        val directory = cw.getDir("imageDir", Context.MODE_PRIVATE)
-                        var file = File(lotePam!!.lot_imagem)
-                        var to = File(directory,lote.lot_nome.replace(" ","_") + ".jpg")
+                        bitmap = (imgLote_LoteDialog.drawable as BitmapDrawable).bitmap
+                        var file = File(lote.lot_imagem)
                         if(file.exists()){
                             try{
-                               file.renameTo(to)
+                                file.delete()
                             }
                             catch(e : Exception){
                                 System.out.println("File not deleted" + e.message)
                             }
                         }
                     }
-
                     saveBitmap(lote)
                     lote.lot_imagem = image_path
 

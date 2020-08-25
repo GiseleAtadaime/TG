@@ -306,6 +306,7 @@ class AreaCriaAlterDialog : Fragment() {
                     area.ar_nome = edtTxtNome_AreaDialog.text.toString()
                     area.ar_del = "A"
                     if(!area.ar_nome.equals(areaPam!!.ar_nome) && areaPam!!.ar_imagem != null){
+                        bitmap = (imgArea_DialogFragment.drawable as BitmapDrawable).bitmap
                         var file = File(areaPam!!.ar_imagem)
                         if(file.exists()){
                             try{
@@ -316,6 +317,7 @@ class AreaCriaAlterDialog : Fragment() {
                             }
                         }
                     }
+
                     saveBitmap(area)
                     area.ar_imagem = image_path
                     if (C_Area().updateArea(DBHelper(context), area)){

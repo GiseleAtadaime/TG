@@ -258,6 +258,14 @@ class UsuarioInfoGeral : Fragment() {
         }
 
 
+        if(usuario!!.usr_fotoperfil != null){
+            val cw = ContextWrapper(context)
+            val file = File(usuario!!.usr_fotoperfil)
+            if (file.exists()) {
+                cameraUtils().setPic(imgFoto_UsuarioGeral, usuario!!.usr_fotoperfil)
+            }
+        }
+
         usuarioInfoBar.visibility = View.GONE
         if(usuario!!.usr_user_info != null){
 
@@ -266,15 +274,6 @@ class UsuarioInfoGeral : Fragment() {
             txtRS_UsuarioGeral.text = usuario!!.usr_user_info.info_rzsocial
             txtTelefone_UsuarioGeral.text = usuario!!.usr_user_info.info_telefone.toString()
             txtSite_UsuarioGeral.text = usuario!!.usr_user_info.info_site
-
-            if(usuario!!.usr_fotoperfil != null){
-                val cw = ContextWrapper(context)
-                val file = File(usuario!!.usr_fotoperfil)
-                if (file.exists()) {
-                    cameraUtils().setPic(imgFoto_UsuarioGeral, usuario!!.usr_fotoperfil)
-                }
-            }
-
 
 
             val mlistener = fun(view : View, position: Int , tipo : Int) {
@@ -310,7 +309,13 @@ class UsuarioInfoGeral : Fragment() {
         }
 
         btnAddEnd_UsuarioGeral.setOnClickListener{
-            onButtonPressed(usuario!!, 2, 0)
+
+            if(usuario!!.usr_user_info != null) {
+                onButtonPressed(usuario!!, 2, 0)
+            }
+            else{
+                Toast.makeText(context, "Preencha suas informações antes de criar um endereço!", Toast.LENGTH_SHORT).show()
+            }
         }
 
     }

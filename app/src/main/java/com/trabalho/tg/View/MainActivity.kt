@@ -19,10 +19,7 @@ import android.widget.Toast
 import com.trabalho.tg.Controller.*
 import com.trabalho.tg.Helper.Contrato
 import com.trabalho.tg.Helper.DBHelper
-import com.trabalho.tg.Model.Area
-import com.trabalho.tg.Model.Entrada
-import com.trabalho.tg.Model.Lote
-import com.trabalho.tg.Model.Usuario
+import com.trabalho.tg.Model.*
 import com.trabalho.tg.R
 import com.trabalho.tg.View.Detalhe.AreaCriaAlterDialog
 import com.trabalho.tg.View.Detalhe.EntradaCriaAlterDialog
@@ -68,6 +65,7 @@ class MainActivity : AppCompatActivity(),
             changeFragment( UsuarioInfoAlter.newInstance(usuario), true, "USUARIO_INFO_ALTER")
         }
         else if(tipo == 2){
+
             changeFragment( Usuario_Endereco_Alter.newInstance(usuario, endID!!,false), true, "USUARIO_ENDERECO_ADD")
         }
         else if(tipo == 3){
