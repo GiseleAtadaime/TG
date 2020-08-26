@@ -58,7 +58,7 @@
                     android:text="TextView"
                     android:layout_width="match_parent"
                     android:layout_height="45dp" android:id="@+id/txtDataEscolhida_EntradaNewDialog"
-                    android:gravity="center|left"/>
+                    android:gravity="center|left" android:inputType="date"/>
             <TextView
                     android:text="Tempo"
                     android:layout_width="match_parent"
@@ -70,7 +70,7 @@
                 <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:inputType="number"
+                        android:inputType="numberDecimal"
                         android:ems="10"
                         android:id="@+id/edtTempo_EntradaNewDialog"/>
                 <Spinner
