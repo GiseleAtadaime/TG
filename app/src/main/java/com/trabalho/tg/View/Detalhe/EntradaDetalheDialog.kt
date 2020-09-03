@@ -255,7 +255,7 @@ class EntradaDetalheDialog : Fragment() {
 
         }
 
-        
+
         imgBtnAlter_EntradaDetalhe.setOnClickListener(){
             onAlterDetalheClick(entrada!!,userid!!,areaId!!, loteId!!, false)
         }

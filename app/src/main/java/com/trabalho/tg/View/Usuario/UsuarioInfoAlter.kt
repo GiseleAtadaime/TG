@@ -126,7 +126,7 @@ class UsuarioInfoAlter : Fragment() {
             usr_user_info.info_nomefantasia = edtNF_AlterUserInfo.text.toString()
             usr_user_info.info_rzsocial = edtRS_AlterUserInfo.text.toString()
             usr_user_info.info_cnpj = edtCNPJ_AlterUserInfo.text.toString()
-            usr_user_info.info_telefone = Utils_TG().stringToInteger(edtTel_AlterUserInfo.text.toString())
+            usr_user_info.info_telefone = edtTel_AlterUserInfo.text.toString()
             usr_user_info.info_site = edtSite_AlterUserInfo.text.toString()
             try{
                 if(usuario!!.usr_user_info == null){

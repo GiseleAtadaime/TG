@@ -24,7 +24,7 @@ public class C_User_Info {
                 u.setInfo_cnpj(c.getString(c.getColumnIndex(Contrato.Usuario_Info.COLUMN_CNPJ)));
                 u.setInfo_nomefantasia(c.getString(c.getColumnIndex(Contrato.Usuario_Info.COLUMN_NOMEFANTASIA)));
                 u.setInfo_rzsocial(c.getString(c.getColumnIndex(Contrato.Usuario_Info.COLUMN_RZSOCIAL)));
-                u.setInfo_telefone(c.getInt(c.getColumnIndex(Contrato.Usuario_Info.COLUMN_TELEFONE)));
+                u.setInfo_telefone(c.getString(c.getColumnIndex(Contrato.Usuario_Info.COLUMN_TELEFONE)));
                 u.setInfo_site(c.getString(c.getColumnIndex(Contrato.Usuario_Info.COLUMN_SITE)));
 
                 c.close();
