@@ -272,9 +272,10 @@ class LoteCriaAlterDialog : Fragment() {
                     lote.lot_nome = edtTxtNome_LoteDialog.text.toString()
                     lote.lot_planta = edtPlanta_LoteDialog.text.toString()
 
+                    bitmap = (imgLote_LoteDialog.drawable as BitmapDrawable).bitmap
+
                     if(!lote.lot_nome.equals(lotePam!!.lot_nome) && lotePam!!.lot_imagem != null){
-                        bitmap = (imgLote_LoteDialog.drawable as BitmapDrawable).bitmap
-                        var file = File(lote.lot_imagem)
+                        var file = File(lotePam!!.lot_imagem)
                         if(file.exists()){
                             try{
                                 file.delete()

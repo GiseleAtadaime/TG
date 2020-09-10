@@ -61,7 +61,6 @@ class AreaCriaAlterDialog : Fragment() {
     val REQUEST_GALLERY_IMAGE = 2
     private var bitmap : Bitmap? = null
     private var image_path : String? = null
-    private var old_bitmap : Bitmap? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -141,6 +140,7 @@ class AreaCriaAlterDialog : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
         if(resultCode == RESULT_OK) {
+
             if (requestCode == REQUEST_IMAGE_CAPTURE) {
 
 
@@ -321,15 +321,8 @@ class AreaCriaAlterDialog : Fragment() {
                         }
                     }
 
-                    if(old_bitmap != bitmap){
-                        saveBitmap(area)
-                        area.ar_imagem = image_path
-                    }
-                    else{
-                        area.ar_imagem = areaPam!!.ar_imagem
-                    }
-
-
+                    saveBitmap(area)
+                    area.ar_imagem = image_path
 
                     if (C_Area().updateArea(DBHelper(context), area)){
                         val builder = AlertDialog.Builder(this!!.context!!)
@@ -378,9 +371,6 @@ class AreaCriaAlterDialog : Fragment() {
                 }
             }
         }
-
-        old_bitmap = (imgArea_DialogFragment.drawable as BitmapDrawable).bitmap
-
 
     }
 
