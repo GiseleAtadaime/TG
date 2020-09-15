@@ -159,6 +159,8 @@ class EntradaCriaAlterDialog : Fragment() {
         var adapterTempo = ArrayAdapter.createFromResource(context,R.array.EntradaTipoTempo, android.R.layout.simple_spinner_dropdown_item)
         var adapterQtde = ArrayAdapter.createFromResource(context,R.array.EntradaTipoQuantidade, android.R.layout.simple_spinner_dropdown_item)
         var adapterDose = ArrayAdapter.createFromResource(context,R.array.EntradaTipoDose, android.R.layout.simple_spinner_dropdown_item)
+        var adapterTempoCarencia = ArrayAdapter.createFromResource(context,R.array.EntradaTempoCarencia, android.R.layout.simple_spinner_dropdown_item)
+
 
         val tipo = entrada == null //if true = Cria
 
@@ -183,148 +185,325 @@ class EntradaCriaAlterDialog : Fragment() {
             txtDataEscolhida_EntradaNewDialog.text = utils.formatDate(entrada!!.ent_data, true)
         }
 
-        spiTipo_EntradaNewDialog.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        spiTipo_EntradaNewDialog.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (position == 0){
+                if (position == 0) {
                     imgTipoCor_EntradaNewDialog.setImageResource(R.color.white)
-                }else{
+                } else {
                     entrada?.ent_tipo = position
                     imgTipoCor_EntradaNewDialog.setImageResource(entrada!!.entradaColor)
                 }
 
-                if(position != 2 &&
-                    position != 3 &&
-                    position != 7 ||
-                    position == 0){
 
-                    txtTempo_EntradaNewDialog.visibility = View.GONE
-                    linTempo_EntradaNewDialog.visibility = View.GONE
-                }
-                else{
-                    spiTempo_EntradaNewDialog.adapter = adapterTempo
-                    txtTempo_EntradaNewDialog.visibility = View.VISIBLE
-                    linTempo_EntradaNewDialog.visibility = View.VISIBLE
+                txtTempo_EntradaNewDialog.visibility = View.GONE
+                linTempo_EntradaNewDialog.visibility = View.GONE
 
-                    if(entrada!!.ent_tipo == 3){
-                        txtTempo_EntradaNewDialog.text = "Tempo de carência"
-                    }
-                    else{
-                        txtTempo_EntradaNewDialog.text = "Tempo gasto"
-                    }
-                    if(!tipo){
-                        edtTempo_EntradaNewDialog.setText(entrada!!.ent_tempo.toString())
-                        spiTempo_EntradaNewDialog.setSelection(adapterTempo.getPosition(entrada!!.ent_tpun))
-                    }
+                txtQtde_EntradaNewDialog.visibility = View.GONE
+                linQtde_EntradaNewDialog.visibility = View.GONE
+                txtValor_EntradaNewDialog.visibility = View.GONE
+                edtValor_EntradaNewDialog.visibility = View.GONE
+                linDados_EntradaNewDialog.isEnabled = true
+                btnCriar_EntradaNewDialog.isEnabled = true
 
-                }
+                spiQtde_EntradaNewDialog.visibility = View.GONE
 
-                if(position == 7 ||
-                    position == 0){
+                txtMudasB_EntradaNewDialog.visibility = View.GONE
+                edtMudasB_EntradaNewDialog.visibility = View.GONE
+                linAgr_EntradaNewDialog.visibility = View.GONE
 
-                    txtQtde_EntradaNewDialog.visibility = View.GONE
-                    linQtde_EntradaNewDialog.visibility = View.GONE
-                    txtValor_EntradaNewDialog.visibility = View.GONE
-                    edtValor_EntradaNewDialog.visibility = View.GONE
-                    linDados_EntradaNewDialog.isEnabled = true
-                    btnCriar_EntradaNewDialog.isEnabled = true
-                }
-                else{
-                    spiQtde_EntradaNewDialog.adapter = adapterQtde
-                    txtQtde_EntradaNewDialog.visibility = View.VISIBLE
-                    linQtde_EntradaNewDialog.visibility = View.VISIBLE
-                    txtValor_EntradaNewDialog.visibility = View.VISIBLE
-                    edtValor_EntradaNewDialog.visibility = View.VISIBLE
+                when (position) {
 
-                    linDados_EntradaNewDialog.isEnabled = true
-                    btnCriar_EntradaNewDialog.isEnabled = true
+                    1 -> {
 
-                    if(position == 1){
+                        txtQtde_EntradaNewDialog.visibility = View.VISIBLE
+                        linQtde_EntradaNewDialog.visibility = View.VISIBLE
+                        txtValor_EntradaNewDialog.visibility = View.VISIBLE
+                        edtValor_EntradaNewDialog.visibility = View.VISIBLE
+
+                        linDados_EntradaNewDialog.isEnabled = true
+                        btnCriar_EntradaNewDialog.isEnabled = true
+
                         txtQtde_EntradaNewDialog.text = "Bandejas"
-                        spiQtde_EntradaNewDialog.visibility = View.GONE
+
+                        txtValor_EntradaNewDialog.text = "Valor total"
+
+                        edtValor_EntradaNewDialog.addTextChangedListener(
+                            utils.MascaraMonetaria(
+                                edtValor_EntradaNewDialog
+                            )
+                        )
+
+                        txtMudasB_EntradaNewDialog.visibility = View.VISIBLE
+                        edtMudasB_EntradaNewDialog.visibility = View.VISIBLE
+
+                        txtMudasB_EntradaNewDialog.text = "Mudas por bandeja"
+
+                        if (!tipo) {
+                            edtQtde_EntradaNewDialog.setText(entrada!!.ent_qtde.toString())
+                            edtValor_EntradaNewDialog.setText(utils.formatMonetario(utils.doubleToString(entrada!!.ent_valor)))
+                            spiQtde_EntradaNewDialog.setSelection(
+                                (spiQtde_EntradaNewDialog.adapter as ArrayAdapter<CharSequence>).getPosition(
+                                    entrada!!.ent_qtun
+                                )
+                            )
+                            edtMudasB_EntradaNewDialog.setText(entrada!!.ent_mudas_bandeja.toString())
+                        }
 
                     }
-                    if(position == 5){
-                        txtQtde_EntradaNewDialog.text = "Pessoas"
-                        spiQtde_EntradaNewDialog.visibility = View.GONE
-                    }
-                    else if(position == 2 || position == 6 || position == 4){
+                    2 -> {
+                        spiTempo_EntradaNewDialog.adapter = adapterTempo
+                        txtTempo_EntradaNewDialog.visibility = View.VISIBLE
+                        linTempo_EntradaNewDialog.visibility = View.VISIBLE
+
+                        txtTempo_EntradaNewDialog.text = "Tempo gasto"
+
+                        spiQtde_EntradaNewDialog.adapter = adapterQtde
+                        spiQtde_EntradaNewDialog.visibility = View.VISIBLE
+                        txtQtde_EntradaNewDialog.visibility = View.VISIBLE
+                        linQtde_EntradaNewDialog.visibility = View.VISIBLE
+                        txtValor_EntradaNewDialog.visibility = View.VISIBLE
+                        edtValor_EntradaNewDialog.visibility = View.VISIBLE
+
+                        linDados_EntradaNewDialog.isEnabled = true
+                        btnCriar_EntradaNewDialog.isEnabled = true
                         txtQtde_EntradaNewDialog.text = "Quantidade"
+
+
+                        txtValor_EntradaNewDialog.text = "Valor total"
+
+                        if (!tipo) {
+                            edtQtde_EntradaNewDialog.setText(entrada!!.ent_qtde.toString())
+                            edtValor_EntradaNewDialog.setText(utils.formatMonetario(utils.doubleToString(entrada!!.ent_valor)))
+                            spiQtde_EntradaNewDialog.setSelection(
+                                (spiQtde_EntradaNewDialog.adapter as ArrayAdapter<CharSequence>).getPosition(
+                                    entrada!!.ent_qtun
+                                )
+                            )
+                            edtTempo_EntradaNewDialog.setText(entrada!!.ent_tempo.toString())
+                            spiTempo_EntradaNewDialog.setSelection(adapterTempo.getPosition(entrada!!.ent_tpun))
+                        }
+
+                        edtValor_EntradaNewDialog.addTextChangedListener(
+                            utils.MascaraMonetaria(
+                                edtValor_EntradaNewDialog
+                            )
+                        )
                     }
-                    else if(position == 3){
+
+                    3 -> {
+
+                        spiTempo_EntradaNewDialog.adapter = adapterTempoCarencia
+                        txtTempo_EntradaNewDialog.visibility = View.VISIBLE
+                        linTempo_EntradaNewDialog.visibility = View.VISIBLE
+                        txtTempo_EntradaNewDialog.text = "Tempo de carência"
+
+                        spiQtde_EntradaNewDialog.adapter = adapterQtde
+                        txtQtde_EntradaNewDialog.visibility = View.VISIBLE
+                        linQtde_EntradaNewDialog.visibility = View.VISIBLE
+                        txtValor_EntradaNewDialog.visibility = View.VISIBLE
+                        edtValor_EntradaNewDialog.visibility = View.VISIBLE
+
+                        linDados_EntradaNewDialog.isEnabled = true
+                        btnCriar_EntradaNewDialog.isEnabled = true
+
+
                         txtQtde_EntradaNewDialog.text = "Dose"
                         spiQtde_EntradaNewDialog.adapter = adapterDose
-                    }
+                        spiQtde_EntradaNewDialog.visibility = View.VISIBLE
 
-                    txtValor_EntradaNewDialog.text = "Valor total"
+                        txtValor_EntradaNewDialog.text = "Valor total"
 
-                    if(!tipo){
-                        edtQtde_EntradaNewDialog.setText(entrada!!.ent_qtde.toString())
-                        edtValor_EntradaNewDialog.setText(utils.formatMonetario(utils.doubleToString(entrada!!.ent_valor)))
-                        spiQtde_EntradaNewDialog.setSelection((spiQtde_EntradaNewDialog.adapter as ArrayAdapter<CharSequence>).getPosition(entrada!!.ent_qtun))
-                    }
+                        if (!tipo) {
+                            edtQtde_EntradaNewDialog.setText(entrada!!.ent_qtde.toString())
+                            edtValor_EntradaNewDialog.setText(utils.formatMonetario(utils.doubleToString(entrada!!.ent_valor)))
+                            spiQtde_EntradaNewDialog.setSelection(
+                                (spiQtde_EntradaNewDialog.adapter as ArrayAdapter<CharSequence>).getPosition(
+                                    entrada!!.ent_qtun
+                                )
+                            )
+                            edtTempo_EntradaNewDialog.setText(entrada!!.ent_tempo.toString())
+                            spiTempo_EntradaNewDialog.setSelection(adapterTempo.getPosition(entrada!!.ent_tpun))
 
-                    edtValor_EntradaNewDialog.addTextChangedListener(utils.MascaraMonetaria(edtValor_EntradaNewDialog))
-                }
-                if(position != 1 ||
-                    position == 0){
-
-                    txtMudasB_EntradaNewDialog.visibility = View.GONE
-                    edtMudasB_EntradaNewDialog.visibility = View.GONE
-
-                }
-                else{
-                    txtMudasB_EntradaNewDialog.visibility = View.VISIBLE
-                    edtMudasB_EntradaNewDialog.visibility = View.VISIBLE
-
-                    txtMudasB_EntradaNewDialog.text = "Mudas por bandeja"
-                    if(!tipo){
-                        edtMudasB_EntradaNewDialog.setText(entrada!!.ent_mudas_bandeja.toString())
-                    }
-                }
-
-                if(position == 3) {
-
-                    if(!tipo){
-                        auTxtNome_EntradaNewDialog.setText(entrada!!.ent_reg.reg_nomecom)
-                        edtEmpresa_EntradaNewDialog.setText(entrada!!.ent_reg.reg_empresa)
-                        edtIng_EntradaNewDialog.setText(entrada!!.ent_reg.reg_ing_ativo)
-                        edtLoteDef_EntradaNewDialog.setText(entrada!!.ent_reg_lote)
-                    }
-
-                    linAgr_EntradaNewDialog.visibility = View.VISIBLE
-
-                    var mList: List<Reg_Agrotoxico> = C_Reg_Agrotoxico().selectReg_Agrotoxico(DBHelper(context))
-
-                    reg_agro_adapter = AgrotoxicoAdapter(
-                        context,
-                        R.layout.fragment_entrada_new_dialog,
-                        R.id.txtAgrNome_RowLayout,
-                        mList
-                    )
-                    auTxtNome_EntradaNewDialog.setAdapter(reg_agro_adapter)
-                    auTxtNome_EntradaNewDialog.onItemClickListener =
-                        AdapterView.OnItemClickListener { adapterView, _, pos, _ ->
-                            //this is the way to find selected object/item
-                            reg_agro_selected = adapterView.getItemAtPosition(pos) as Reg_Agrotoxico
-
-                            if(tipo){
-                                entrada!!.ent_reg = Reg_Agrotoxico(0)
-                            }
-                            entrada!!.ent_reg.reg_numero = reg_agro_selected!!.reg_numero
-                            auTxtNome_EntradaNewDialog.setText(reg_agro_selected!!.reg_nomecom)
-                            edtEmpresa_EntradaNewDialog.setText(reg_agro_selected!!.reg_empresa)
-                            edtIng_EntradaNewDialog.setText(reg_agro_selected!!.reg_ing_ativo)
+                            auTxtNome_EntradaNewDialog.setText(entrada!!.ent_reg.reg_nomecom)
+                            edtEmpresa_EntradaNewDialog.setText(entrada!!.ent_reg.reg_empresa)
+                            edtIng_EntradaNewDialog.setText(entrada!!.ent_reg.reg_ing_ativo)
+                            edtLoteDef_EntradaNewDialog.setText(entrada!!.ent_reg_lote)
                         }
-                }
-                else{
-                    linAgr_EntradaNewDialog.visibility = View.GONE
+
+                        edtValor_EntradaNewDialog.addTextChangedListener(
+                            utils.MascaraMonetaria(
+                                edtValor_EntradaNewDialog
+                            )
+                        )
+
+
+                        linAgr_EntradaNewDialog.visibility = View.VISIBLE
+
+                        var mList: List<Reg_Agrotoxico> = C_Reg_Agrotoxico().selectReg_Agrotoxico(DBHelper(context))
+
+                        reg_agro_adapter = AgrotoxicoAdapter(
+                            context,
+                            R.layout.fragment_entrada_new_dialog,
+                            R.id.txtAgrNome_RowLayout,
+                            mList
+                        )
+                        auTxtNome_EntradaNewDialog.setAdapter(reg_agro_adapter)
+                        auTxtNome_EntradaNewDialog.onItemClickListener =
+                            AdapterView.OnItemClickListener { adapterView, _, pos, _ ->
+                                //this is the way to find selected object/item
+                                reg_agro_selected = adapterView.getItemAtPosition(pos) as Reg_Agrotoxico
+
+                                if (tipo) {
+                                    entrada!!.ent_reg = Reg_Agrotoxico(0)
+                                }
+                                entrada!!.ent_reg.reg_numero = reg_agro_selected!!.reg_numero
+                                auTxtNome_EntradaNewDialog.setText(reg_agro_selected!!.reg_nomecom)
+                                edtEmpresa_EntradaNewDialog.setText(reg_agro_selected!!.reg_empresa)
+                                edtIng_EntradaNewDialog.setText(reg_agro_selected!!.reg_ing_ativo)
+                            }
+
+                    }
+                    4 -> {
+
+                        spiQtde_EntradaNewDialog.adapter = adapterQtde
+                        spiQtde_EntradaNewDialog.visibility = View.VISIBLE
+                        txtQtde_EntradaNewDialog.visibility = View.VISIBLE
+                        linQtde_EntradaNewDialog.visibility = View.VISIBLE
+                        txtValor_EntradaNewDialog.visibility = View.VISIBLE
+                        edtValor_EntradaNewDialog.visibility = View.VISIBLE
+
+                        linDados_EntradaNewDialog.isEnabled = true
+                        btnCriar_EntradaNewDialog.isEnabled = true
+
+
+                        txtQtde_EntradaNewDialog.text = "Quantidade"
+
+
+                        txtValor_EntradaNewDialog.text = "Valor total"
+
+                        if (!tipo) {
+                            edtQtde_EntradaNewDialog.setText(entrada!!.ent_qtde.toString())
+                            edtValor_EntradaNewDialog.setText(utils.formatMonetario(utils.doubleToString(entrada!!.ent_valor)))
+                            spiQtde_EntradaNewDialog.setSelection(
+                                (spiQtde_EntradaNewDialog.adapter as ArrayAdapter<CharSequence>).getPosition(
+                                    entrada!!.ent_qtun
+                                )
+                            )
+                            edtTempo_EntradaNewDialog.setText(entrada!!.ent_tempo.toString())
+                            spiTempo_EntradaNewDialog.setSelection(adapterTempo.getPosition(entrada!!.ent_tpun))
+                        }
+
+                        edtValor_EntradaNewDialog.addTextChangedListener(
+                            utils.MascaraMonetaria(
+                                edtValor_EntradaNewDialog
+                            )
+                        )
+
+
+                    }
+                    5 -> {
+
+
+                        spiQtde_EntradaNewDialog.adapter = adapterQtde
+                        txtQtde_EntradaNewDialog.visibility = View.VISIBLE
+                        linQtde_EntradaNewDialog.visibility = View.VISIBLE
+                        txtValor_EntradaNewDialog.visibility = View.VISIBLE
+                        edtValor_EntradaNewDialog.visibility = View.VISIBLE
+
+                        linDados_EntradaNewDialog.isEnabled = true
+                        btnCriar_EntradaNewDialog.isEnabled = true
+
+
+
+                        txtQtde_EntradaNewDialog.text = "Pessoas"
+
+
+                        txtValor_EntradaNewDialog.text = "Valor total"
+
+                        if (!tipo) {
+                            edtQtde_EntradaNewDialog.setText(entrada!!.ent_qtde.toString())
+                            edtValor_EntradaNewDialog.setText(utils.formatMonetario(utils.doubleToString(entrada!!.ent_valor)))
+                            spiQtde_EntradaNewDialog.setSelection(
+                                (spiQtde_EntradaNewDialog.adapter as ArrayAdapter<CharSequence>).getPosition(
+                                    entrada!!.ent_qtun
+                                )
+                            )
+                            edtTempo_EntradaNewDialog.setText(entrada!!.ent_tempo.toString())
+                            spiTempo_EntradaNewDialog.setSelection(adapterTempo.getPosition(entrada!!.ent_tpun))
+                        }
+
+                        edtValor_EntradaNewDialog.addTextChangedListener(
+                            utils.MascaraMonetaria(
+                                edtValor_EntradaNewDialog
+                            )
+                        )
+
+                    }
+                    6 -> {
+
+
+                        spiQtde_EntradaNewDialog.adapter = adapterQtde
+                        spiQtde_EntradaNewDialog.visibility = View.VISIBLE
+                        txtQtde_EntradaNewDialog.visibility = View.VISIBLE
+                        linQtde_EntradaNewDialog.visibility = View.VISIBLE
+                        txtValor_EntradaNewDialog.visibility = View.VISIBLE
+                        edtValor_EntradaNewDialog.visibility = View.VISIBLE
+
+                        linDados_EntradaNewDialog.isEnabled = true
+                        btnCriar_EntradaNewDialog.isEnabled = true
+
+
+                        txtQtde_EntradaNewDialog.text = "Quantidade"
+
+
+                        txtValor_EntradaNewDialog.text = "Valor total"
+
+                        if (!tipo) {
+                            edtQtde_EntradaNewDialog.setText(entrada!!.ent_qtde.toString())
+                            edtValor_EntradaNewDialog.setText(utils.formatMonetario(utils.doubleToString(entrada!!.ent_valor)))
+                            spiQtde_EntradaNewDialog.setSelection(
+                                (spiQtde_EntradaNewDialog.adapter as ArrayAdapter<CharSequence>).getPosition(
+                                    entrada!!.ent_qtun
+                                )
+                            )
+                            edtTempo_EntradaNewDialog.setText(entrada!!.ent_tempo.toString())
+                            spiTempo_EntradaNewDialog.setSelection(adapterTempo.getPosition(entrada!!.ent_tpun))
+                        }
+
+                        edtValor_EntradaNewDialog.addTextChangedListener(
+                            utils.MascaraMonetaria(
+                                edtValor_EntradaNewDialog
+                            )
+                        )
+
+                    }
+                    7 -> {
+                        spiTempo_EntradaNewDialog.adapter = adapterTempo
+                        txtTempo_EntradaNewDialog.visibility = View.VISIBLE
+                        linTempo_EntradaNewDialog.visibility = View.VISIBLE
+
+
+                        txtTempo_EntradaNewDialog.text = "Tempo gasto"
+
+                        if (!tipo) {
+                            edtTempo_EntradaNewDialog.setText(entrada!!.ent_tempo.toString())
+                            spiTempo_EntradaNewDialog.setSelection(adapterTempo.getPosition(entrada!!.ent_tpun))
+                        }
+
+                    }
+                    else -> {
+                        //TODO alguma coisa
+                        linAgr_EntradaNewDialog.visibility = View.GONE
+                    }
                 }
             }
         }
+
+
 
         btnCriar_EntradaNewDialog.setOnClickListener(){
 

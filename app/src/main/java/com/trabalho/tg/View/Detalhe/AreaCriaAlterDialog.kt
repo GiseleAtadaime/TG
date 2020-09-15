@@ -61,7 +61,6 @@ class AreaCriaAlterDialog : Fragment() {
     val REQUEST_GALLERY_IMAGE = 2
     private var bitmap : Bitmap? = null
     private var image_path : String? = null
-    private var image_big : String? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -141,6 +140,7 @@ class AreaCriaAlterDialog : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
         if(resultCode == RESULT_OK) {
+
             if (requestCode == REQUEST_IMAGE_CAPTURE) {
 
 
@@ -161,8 +161,6 @@ class AreaCriaAlterDialog : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
 
 
         @Throws(IOException::class)
@@ -256,6 +254,8 @@ class AreaCriaAlterDialog : Fragment() {
             }
         }
 
+
+
         //TODO set a function to determine if an image file can be converted to bitmap from gallery
         fun saveBitmap(area : Area) {
             val cw = ContextWrapper(context)
@@ -296,6 +296,7 @@ class AreaCriaAlterDialog : Fragment() {
             }
 
 
+
             btnCriarAlt_AreaDialog.setOnClickListener{
                 if (edtTxtNome_AreaDialog.text.isNullOrBlank()){
                     Toast.makeText(context, "Informe o nome para a área!", Toast.LENGTH_SHORT).show()
@@ -305,8 +306,10 @@ class AreaCriaAlterDialog : Fragment() {
                     area.setAr_lote_cont(spiContagem_AreaDialog.selectedItemId.toInt())
                     area.ar_nome = edtTxtNome_AreaDialog.text.toString()
                     area.ar_del = "A"
+
+                    bitmap = (imgArea_DialogFragment.drawable as BitmapDrawable).bitmap
+
                     if(!area.ar_nome.equals(areaPam!!.ar_nome) && areaPam!!.ar_imagem != null){
-                        bitmap = (imgArea_DialogFragment.drawable as BitmapDrawable).bitmap
                         var file = File(areaPam!!.ar_imagem)
                         if(file.exists()){
                             try{
@@ -320,6 +323,7 @@ class AreaCriaAlterDialog : Fragment() {
 
                     saveBitmap(area)
                     area.ar_imagem = image_path
+
                     if (C_Area().updateArea(DBHelper(context), area)){
                         val builder = AlertDialog.Builder(this!!.context!!)
                         builder.setTitle("Alterar área")

@@ -272,7 +272,7 @@ class UsuarioInfoGeral : Fragment() {
             txtNF_UsuarioGeral.text = usuario!!.usr_user_info.info_nomefantasia
             txtCNPJ_UsuarioGeral.text = usuario!!.usr_user_info.info_cnpj
             txtRS_UsuarioGeral.text = usuario!!.usr_user_info.info_rzsocial
-            txtTelefone_UsuarioGeral.text = usuario!!.usr_user_info.info_telefone.toString()
+            txtTelefone_UsuarioGeral.text = usuario!!.usr_user_info.info_telefone
             txtSite_UsuarioGeral.text = usuario!!.usr_user_info.info_site
 
 

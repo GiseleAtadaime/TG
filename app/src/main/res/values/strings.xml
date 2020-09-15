@@ -82,6 +82,11 @@
         <item>g</item>
     </string-array>
 
+    <string-array name="EntradaTempoCarencia">
+        <item>Dias</item>
+        <item>Horas</item>
+    </string-array>
+
 
     <string name="spi_data">Data + Letra</string>
     <string name="spi_num">Data + Numero</string>

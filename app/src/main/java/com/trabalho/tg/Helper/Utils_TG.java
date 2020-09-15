@@ -372,4 +372,27 @@ public class Utils_TG {
         }
     }
 
+    public String removerMascaraNumeroVirgula(String str){
+
+        str = str.replaceAll("[,]", ".");
+
+        return str;
+    }
+
+    public String formatNumeroVirgula(Double number){
+        Locale ptBr = new Locale("pt","BR");
+        NumberFormat nf = NumberFormat.getNumberInstance(ptBr);
+        String string;
+        try {
+
+            string = doubleToString(number);
+            string = string.replaceAll("[.]", ",");
+
+
+        } catch (NumberFormatException e) {
+            string = "";
+        }
+        return string;
+    }
+
 }

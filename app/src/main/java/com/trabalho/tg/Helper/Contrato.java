@@ -196,7 +196,7 @@ public final class Contrato {
                     Usuario_Info.COLUMN_NOMEFANTASIA + " VARCHAR(60), " +
                     Usuario_Info.COLUMN_CNPJ + " VARCHAR(14), " +
                     Usuario_Info.COLUMN_SITE + " VARCHAR(60), " +
-                    Usuario_Info.COLUMN_TELEFONE + " INTEGER, " +
+                    Usuario_Info.COLUMN_TELEFONE + " VARCHAR(20), " +
                     Usuario_Info.COLUMN_RZSOCIAL + " VARCHAR(100), " +
             " CONSTRAINT fk_info_usuario FOREIGN KEY ( " + Usuario_Info.COLUMN_USR_ID + ") REFERENCES " + Usuario.TABLENAME + " (  " +  Usuario.COLUMN_ID + " ));";
 

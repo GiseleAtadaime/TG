@@ -59,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName"
                     android:ems="10"
-                    android:id="@+id/edtCEP_EndAlter" android:textSize="24sp"/>
+                    android:id="@+id/edtCEP_EndAlter" android:textSize="24sp" android:maxLength="8"/>
             <TextView
                     android:text="UF"
                     android:layout_width="match_parent"
@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName"
                     android:ems="10"
-                    android:id="@+id/edtUF_EndAlter" android:textSize="24sp"/>
+                    android:id="@+id/edtUF_EndAlter" android:textSize="24sp" android:maxLength="2"/>
             <TextView
                     android:text="Latitude"
                     android:layout_width="match_parent"
@@ -77,9 +77,9 @@
             <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
+                    android:inputType="numberSigned|number"
                     android:ems="10"
-                    android:id="@+id/edtLat_EndAlter" android:textSize="24sp"/>
+                    android:id="@+id/edtLat_EndAlter" android:textSize="24sp" android:digits="0123456798.-"/>
             <TextView
                     android:text="Longitude"
                     android:layout_width="match_parent"
@@ -87,9 +87,9 @@
             <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
+                    android:inputType="numberSigned|number"
                     android:ems="10"
-                    android:id="@+id/edtLong_EndAlter" android:textSize="24sp"/>
+                    android:id="@+id/edtLong_EndAlter" android:textSize="24sp" android:digits="0123456789.-"/>
             <Button
                     android:text="Salvar"
                     android:layout_width="match_parent"

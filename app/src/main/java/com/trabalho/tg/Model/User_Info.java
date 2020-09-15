@@ -8,7 +8,7 @@ public class User_Info implements Serializable {
     private Integer info_id;
     private String info_nomefantasia;
     private String info_cnpj;
-    private Integer info_telefone;
+    private String info_telefone;
     private String info_rzsocial;
     private String info_site;
     private ArrayList<Endereco> info_endereco = new ArrayList<Endereco>();
@@ -42,11 +42,11 @@ public class User_Info implements Serializable {
         this.info_cnpj = info_cnpj;
     }
 
-    public Integer getInfo_telefone() {
+    public String getInfo_telefone() {
         return info_telefone;
     }
 
-    public void setInfo_telefone(Integer info_telefone) {
+    public void setInfo_telefone(String info_telefone) {
         this.info_telefone = info_telefone;
     }
 
