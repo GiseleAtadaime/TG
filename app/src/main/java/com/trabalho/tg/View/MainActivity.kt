@@ -207,8 +207,10 @@ class MainActivity : AppCompatActivity(),
 
                     Toast.makeText(this, "Gerar relatório!", Toast.LENGTH_SHORT).show()
 
+                    usuario.loadUsuario(this)
+
                     Report_Helper().generateRelatorioGeral(usuario,this,indexArea,indexLote)
-                    Report_Helper().generateRelatorioFiscal(usuario,this,indexArea,indexLote)
+                    Report_Helper().generateRelatorioFiscal(usuario,this,indexArea,indexLote, 1)
 
 
                     Toast.makeText(this, "Relatório gerado!", Toast.LENGTH_SHORT).show()
@@ -381,6 +383,9 @@ class MainActivity : AppCompatActivity(),
 
         usuario = intent.extras.get("usuario") as Usuario
         usuario.usr_area = C_Area().selectArea(DBHelper(this), true)
+
+        usuario.usr_user_info = C_User_Info().selectUser_Info(DBHelper(this))
+
 
         for (area in usuario.usr_area){
             area.ar_lote = C_Lote().selectLote(DBHelper(this), area.ar_id)

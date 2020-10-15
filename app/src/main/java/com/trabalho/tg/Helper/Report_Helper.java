@@ -292,7 +292,7 @@ public class Report_Helper {
 
     public List<String> tratarEndereco(Usuario usuario,Integer endID){
 
-        List<String> endereco = null;
+        List<String> endereco = new ArrayList<>();
 
         endereco.add(usuario.getUsr_nome());
         endereco.add(usuario.getUsr_user_info().getInfo_nomefantasia());
@@ -312,8 +312,8 @@ public class Report_Helper {
     }
 
     public List<List<String>> tratarAgrotoxico(Lote argLote){
-        List<List<String>> entradas = null;
-        List<String> entrada = null;
+        List<List<String>> entradas = new ArrayList<>();
+        List<String> entrada = new ArrayList<>();
 
         for(Entrada ent : argLote.getLot_EntAgro()){
 
@@ -322,7 +322,7 @@ public class Report_Helper {
                 entrada.add(ent.getEnt_tempo() + " " + ent.getEnt_tpun());
                 entrada.add(ent.getEnt_qtde() + " " + ent.getEnt_qtun());
 
-                entradas.add(entrada);
+                entradas.add((List<String>) ((ArrayList<String>) entrada).clone());
                 entrada.clear();
         }
 

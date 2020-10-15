@@ -48,7 +48,7 @@ public class Lote implements Serializable {
     }
 
     public ArrayList<Entrada> getLot_EntAgro() {
-        ArrayList<Entrada> agro = null;
+        ArrayList<Entrada> agro = new ArrayList<>();
         for(Entrada ent : lot_ent){
             if(ent.getEnt_tipo() == 3){
                 agro.add(ent);
