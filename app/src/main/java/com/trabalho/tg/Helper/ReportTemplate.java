@@ -592,7 +592,8 @@ public class ReportTemplate {
                     "		}" +
                     "" +
                     "" +
-                    "	</style>";
+                    "	</style>" +
+                    "</head>";
 
 
 

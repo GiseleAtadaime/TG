@@ -47,6 +47,16 @@ public class Lote implements Serializable {
         return lot_ent;
     }
 
+    public ArrayList<Entrada> getLot_EntAgro() {
+        ArrayList<Entrada> agro = null;
+        for(Entrada ent : lot_ent){
+            if(ent.getEnt_tipo() == 3){
+                agro.add(ent);
+            }
+        }
+        return agro;
+    }
+
     public void setLot_ent(ArrayList<Entrada> lot_ent) {
         this.lot_ent = lot_ent;
     }

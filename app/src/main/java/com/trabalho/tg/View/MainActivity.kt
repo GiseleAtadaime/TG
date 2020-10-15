@@ -19,6 +19,7 @@ import android.widget.Toast
 import com.trabalho.tg.Controller.*
 import com.trabalho.tg.Helper.Contrato
 import com.trabalho.tg.Helper.DBHelper
+import com.trabalho.tg.Helper.Report_Helper
 import com.trabalho.tg.Model.*
 import com.trabalho.tg.R
 import com.trabalho.tg.View.Detalhe.AreaCriaAlterDialog
@@ -196,6 +197,39 @@ class MainActivity : AppCompatActivity(),
             builder.show()
         }
         else if(tipo == 3){//Fechar lote
+
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Fechar lote")
+            builder.setMessage("Tem certeza que gostaria de finalizar as operações do lote ${usuario.usr_area[indexArea].ar_lote[indexLote].lot_nome}? Esta operação não pode ser desfeita!")
+
+            builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+                if(usuario.usr_area[indexArea].ar_lote[indexLote].lot_ent.size > 0){
+
+                    Toast.makeText(this, "Gerar relatório!", Toast.LENGTH_SHORT).show()
+
+                    Report_Helper().generateRelatorioGeral(usuario,this,indexArea,indexLote)
+                    Report_Helper().generateRelatorioFiscal(usuario,this,indexArea,indexLote)
+
+
+                    Toast.makeText(this, "Relatório gerado!", Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
+                    //onCloseLoteDialog(areaId)
+
+
+
+                }
+                else{
+                    Toast.makeText(this, "Este lote não possui entradas para que um relatório seja gerado!", Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
+                }
+
+            }
+            builder.setNegativeButton(android.R.string.no){dialog, which ->
+                dialog.dismiss()
+            }
+
+            builder.show()
+
 
         }
         else if(tipo == 4){//Novo entrada

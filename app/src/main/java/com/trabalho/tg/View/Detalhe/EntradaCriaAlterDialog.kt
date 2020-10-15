@@ -210,6 +210,7 @@ class EntradaCriaAlterDialog : Fragment() {
                 btnCriar_EntradaNewDialog.isEnabled = true
 
                 spiQtde_EntradaNewDialog.visibility = View.GONE
+                spiTempo_EntradaNewDialog.visibility = View.GONE
 
                 txtMudasB_EntradaNewDialog.visibility = View.GONE
                 edtMudasB_EntradaNewDialog.visibility = View.GONE
@@ -245,11 +246,6 @@ class EntradaCriaAlterDialog : Fragment() {
                         if (!tipo) {
                             edtQtde_EntradaNewDialog.setText(entrada!!.ent_qtde.toString())
                             edtValor_EntradaNewDialog.setText(utils.formatMonetario(utils.doubleToString(entrada!!.ent_valor)))
-                            spiQtde_EntradaNewDialog.setSelection(
-                                (spiQtde_EntradaNewDialog.adapter as ArrayAdapter<CharSequence>).getPosition(
-                                    entrada!!.ent_qtun
-                                )
-                            )
                             edtMudasB_EntradaNewDialog.setText(entrada!!.ent_mudas_bandeja.toString())
                         }
 
@@ -534,13 +530,13 @@ class EntradaCriaAlterDialog : Fragment() {
 
                 }
 
-                if(linTempo_EntradaNewDialog.visibility == View.VISIBLE){
+                if(spiTempo_EntradaNewDialog.visibility == View.VISIBLE){
                     entrada!!.ent_tpun = spiTempo_EntradaNewDialog.selectedItem.toString()
                 }
                 else{
                     entrada!!.ent_tpun = null
                 }
-                if(linQtde_EntradaNewDialog.visibility == View.VISIBLE){
+                if(spiQtde_EntradaNewDialog.visibility == View.VISIBLE){
                     entrada!!.ent_qtun = spiQtde_EntradaNewDialog.selectedItem.toString()
                 }
                 else{

@@ -1,15 +1,18 @@
 package com.trabalho.tg.Helper;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.os.Environment;
 import com.trabalho.tg.Model.Area;
 import com.trabalho.tg.Model.Entrada;
 import com.trabalho.tg.Model.Lote;
+import com.trabalho.tg.Model.Usuario;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -68,7 +71,7 @@ public class Report_Helper {
         // }
     }
 
-    public void addHeaderFiscal(String... values) {
+    public void addHeaderFiscal(List<String> values) {
         // if (values.length != columns) {
         //     System.out.println("Error column lenth");
         // } else {
@@ -76,18 +79,18 @@ public class Report_Helper {
         if (lastIndex > 0) {
             StringBuilder sb = new StringBuilder();
             sb.append(template.HEADERFISCALSTART);
-            sb.append(template.HEADERNOME + values[0]);
-            sb.append(template.HEADERNOMEFANT + values[0]);
-            sb.append(template.HEADERRAZAO + values[0]);
-            sb.append(template.HEADERCNPJ + values[0]);
-            sb.append(template.HEADEREMAIL + values[0]);
-            sb.append(template.HEADERTELEFONE + values[0]);
-            sb.append(template.HEADERLOGRADOURO + values[0]);
-            sb.append(template.HEADERCIDADE + values[0]);
-            sb.append(template.HEADERBAIRRO + values[0]);
-            sb.append(template.HEADERCEP + values[0]);
-            sb.append(template.HEADERLATITUDE + values[0]);
-            sb.append(template.HEADERLONGITUDE + values[0]);
+            sb.append(template.HEADERNOME + values.get(0));
+            sb.append(template.HEADERNOMEFANT + values.get(1));
+            sb.append(template.HEADERRAZAO + values.get(2));
+            sb.append(template.HEADERCNPJ + values.get(3));
+            sb.append(template.HEADEREMAIL + values.get(4));
+            sb.append(template.HEADERTELEFONE + values.get(5));
+            sb.append(template.HEADERLOGRADOURO + values.get(6));
+            sb.append(template.HEADERCIDADE + values.get(7));
+            sb.append(template.HEADERBAIRRO + values.get(8));
+            sb.append(template.HEADERCEP + values.get(9));
+            sb.append(template.HEADERLATITUDE + values.get(10));
+            sb.append(template.HEADERLONGITUDE + values.get(11));
             sb.append(template.HEADERFISCALEND);
             htmlBuilder.insert(lastIndex, sb.toString());
         }
@@ -114,7 +117,7 @@ public class Report_Helper {
     /**
      * @param values
      */
-    public void addRowValuesFiscal(String... values) {
+    public void addRowValuesFiscal(List<List<String>> values) {
         // if (values.length != columns) {
         //     System.out.println("Error column lenth");
         // } else {
@@ -123,20 +126,20 @@ public class Report_Helper {
             int index = lastIndex + template.SEGUNDOHEADERFISCALEND.length();
             StringBuilder sb = new StringBuilder();
             sb.append(template.TABLEFISCALSTART);
-            for (String value : values) {
+            for (List<String> value : values) {
                 sb.append(template.ROW_START);
 
                 sb.append(template.DATA_ROW_START);
-                sb.append(values[0]);
+                sb.append(value.get(0));
                 sb.append(template.DATA_ROW_END);
                 sb.append(template.NOME_ROW_START);
-                sb.append(values[0]);
+                sb.append(value.get(1));
                 sb.append(template.NOME_ROW_END);
                 sb.append(template.CARENCIA_ROW_START);
-                sb.append(values[0]);
+                sb.append(value.get(2));
                 sb.append(template.CARENCIA_ROW_END);
                 sb.append(template.DOSE_ROW_START);
-                sb.append(values[0]);
+                sb.append(value.get(3));
                 sb.append(template.DOSE_ROW_END);
 
                 sb.append(template.ROW_END);
@@ -208,10 +211,13 @@ public class Report_Helper {
         return htmlBuilder.toString();
     }
 
-    public static void whenWriteStringUsingBufferedWritter_thenCorrect(String str, Context context)
+    public static void whenWriteStringUsingBufferedWritter_thenCorrect(String str, String filename, Context context)
             throws IOException {
-        File dir = new File(context.getFilesDir(),"reports");
-        File file = new File(dir,"testereport1.html");
+
+        ContextWrapper cw = new ContextWrapper(context);
+        File directory = cw.getDir("reports", Context.MODE_PRIVATE);
+        File file = new File(directory, filename + ".html");
+
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
         writer.write(str);
         writer.close();
@@ -220,12 +226,12 @@ public class Report_Helper {
 
     public List<List<String>> treatEntradas(Lote argLote){
 
-        List<List<String>> lote = null;
-        List<String> entrada = null;
+        List<List<String>> lote = new ArrayList<List<String>>();
+        List<String> entrada = new ArrayList<>();
 
         for(Entrada ent : argLote.getLot_ent()){
 
-            entrada.add(utils.formatDate(ent.getEnt_data(),true));
+            entrada.add(utils.formatDate(ent.getEnt_data(),true));//null pointer exception
             entrada.add(ent.getEnt_desc());
 
 
@@ -271,17 +277,56 @@ public class Report_Helper {
                     entrada.add(utils.doubleToString(ent.getEnt_tempo()) + " " + ent.getEnt_tpun());
                     entrada.add("-");
                     entrada.add("-");
-                    entrada.add("-" + utils.formatMonetario(utils.doubleToString(ent.getEnt_valor())));
+                    entrada.add("-");
                     break;
             }
 
 
-            lote.add(entrada);
+            lote.add((List<String>) ((ArrayList<String>) entrada).clone());
 
             entrada.clear();
         }
 
         return lote;
+    }
+
+    public List<String> tratarEndereco(Usuario usuario,Integer endID){
+
+        List<String> endereco = null;
+
+        endereco.add(usuario.getUsr_nome());
+        endereco.add(usuario.getUsr_user_info().getInfo_nomefantasia());
+        endereco.add(usuario.getUsr_user_info().getInfo_rzsocial());
+        endereco.add(usuario.getUsr_user_info().getInfo_cnpj());
+        endereco.add(usuario.getUsr_email());
+        endereco.add(usuario.getUsr_user_info().getInfo_telefone());
+        endereco.add(usuario.getUsr_user_info().getInfo_endereco().get(endID).getEnd_logradouro());
+        endereco.add(usuario.getUsr_user_info().getInfo_endereco().get(endID).getEnd_Cidade() + "/" + usuario.getUsr_user_info().getInfo_endereco().get(endID).getEnd_uf());
+        endereco.add(usuario.getUsr_user_info().getInfo_endereco().get(endID).getEnd_bairro());
+        endereco.add(usuario.getUsr_user_info().getInfo_endereco().get(endID).getEnd_cep().toString());
+        endereco.add(utils.doubleToString(usuario.getUsr_user_info().getInfo_endereco().get(endID).getEnd_catx()));
+        endereco.add(utils.doubleToString(usuario.getUsr_user_info().getInfo_endereco().get(endID).getEnd_carty()));
+
+
+        return endereco;
+    }
+
+    public List<List<String>> tratarAgrotoxico(Lote argLote){
+        List<List<String>> entradas = null;
+        List<String> entrada = null;
+
+        for(Entrada ent : argLote.getLot_EntAgro()){
+
+                entrada.add(utils.formatDate(ent.getEnt_data(),true));
+                entrada.add(ent.getEnt_reg().getReg_nomecom());
+                entrada.add(ent.getEnt_tempo() + " " + ent.getEnt_tpun());
+                entrada.add(ent.getEnt_qtde() + " " + ent.getEnt_qtun());
+
+                entradas.add(entrada);
+                entrada.clear();
+        }
+
+        return entradas;
     }
 
     public Double calcTotal(Lote lote){
@@ -293,19 +338,27 @@ public class Report_Helper {
                 total += ent.getEnt_valor();
             }
             else{
-                total -= ent.getEnt_valor();
+                if(ent.getEnt_valor() != null){
+                    total -= ent.getEnt_valor();
+                }
+
             }
         }
 
         return total;
     }
 
-    public void generateRelatorioGeral(Area area, Context context, Integer loteID){
+    public void generateRelatorioGeral(Usuario usuario, Context context, Integer areaID,Integer loteID){
 
         Report_Helper htmlBuilder = new Report_Helper();
-        htmlBuilder.addHeaderGeral(area.getAr_nome(),area.getAr_lote().get(loteID).getLot_nome(),area.getAr_lote().get(loteID).getLot_planta());
 
-        Double total = calcTotal(area.getAr_lote().get(loteID));
+        htmlBuilder.addHeaderGeral(
+                usuario.getUsr_area().get(areaID).getAr_nome(),
+                usuario.getUsr_area().get(areaID).getAr_lote().get(loteID).getLot_nome(),
+                usuario.getUsr_area().get(areaID).getAr_lote().get(loteID).getLot_planta()
+        );
+
+        Double total = calcTotal(usuario.getUsr_area().get(areaID).getAr_lote().get(loteID));
         String totalString = "";
 
         if(total < 0.0){
@@ -316,12 +369,45 @@ public class Report_Helper {
             totalString = utils.formatMonetario(utils.doubleToString(total));
         }
 
-        htmlBuilder.addRowValuesGeral(treatEntradas(area.getAr_lote().get(loteID)), totalString);
+        htmlBuilder.addRowValuesGeral(treatEntradas(usuario.getUsr_area().get(areaID).getAr_lote().get(loteID)), totalString);
+
 
         String html = htmlBuilder.build();
         //System.out.println(htmlBuilder.toString());
         try{
-            whenWriteStringUsingBufferedWritter_thenCorrect(html, context);
+            whenWriteStringUsingBufferedWritter_thenCorrect(
+                    html,
+                    usuario.getUsr_area().get(areaID).getAr_lote().get(loteID).getLot_nome().replace(" ", "_") + "_geral" ,
+                    context);
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    public void generateRelatorioFiscal(Usuario usuario, Context context, Integer areaID,Integer loteID, Integer endID){
+
+        Report_Helper htmlBuilder = new Report_Helper();
+
+        htmlBuilder.addHeaderFiscal(tratarEndereco(usuario, endID));
+
+        htmlBuilder.addInfoHeaderFiscal(
+                usuario.getUsr_area().get(areaID).getAr_nome(),
+                usuario.getUsr_area().get(areaID).getAr_lote().get(loteID).getLot_nome(),
+                usuario.getUsr_area().get(areaID).getAr_lote().get(loteID).getLot_planta()
+        );
+
+
+        htmlBuilder.addRowValuesFiscal(tratarAgrotoxico(usuario.getUsr_area().get(areaID).getAr_lote().get(loteID)));
+
+        String html = htmlBuilder.build();
+        //System.out.println(htmlBuilder.toString());
+        try{
+            whenWriteStringUsingBufferedWritter_thenCorrect(
+                    html,
+                    usuario.getUsr_area().get(areaID).getAr_lote().get(loteID).getLot_nome().replace(" ", "_") + "_fiscal",
+                    context);
         }
         catch (Exception e){
             System.out.println(e.getMessage());
