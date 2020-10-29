@@ -1,14 +1,12 @@
 package com.trabalho.tg.Adapters;
 
 import android.content.Context;
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 import com.trabalho.tg.Model.Area;
 import com.trabalho.tg.Model.Endereco;
 import com.trabalho.tg.R;
@@ -20,17 +18,19 @@ public class EnderecoAdapter extends RecyclerView.Adapter{
     private Context c;
     List<Endereco> endereco;
     AdapterListener listener;
+    Boolean tipo;
+    public int mSelectedItem = 0;
 
     public interface AdapterListener {
         void onClick(View view, int adapterPosition, Integer tipo);
     }
 
 
-    public EnderecoAdapter(List<Endereco> endereco, Context c, AdapterListener listener) {
+    public EnderecoAdapter(List<Endereco> endereco, Context c, AdapterListener listener, Boolean tipo) {
         this.endereco = endereco;
         this.c = c;
         this.listener = listener;
-
+        this.tipo = tipo;
     }
 
     @NonNull
@@ -58,6 +58,8 @@ public class EnderecoAdapter extends RecyclerView.Adapter{
         enderecoViewHolder.cepText.setText("CEP: " +endereco.get(pos).getEnd_cep().toString());
         enderecoViewHolder.latText.setText("Latitude: " +endereco.get(pos).getEnd_catx().toString());
         enderecoViewHolder.longText.setText("Longitude: " +endereco.get(pos).getEnd_carty().toString());
+
+        enderecoViewHolder.radioButtonEnd.setChecked(pos == mSelectedItem);
     }
 
     @Override
@@ -78,6 +80,7 @@ public class EnderecoAdapter extends RecyclerView.Adapter{
         protected TextView longText;
         protected ImageButton delImagem;
         protected ImageButton editImagem;
+        protected RadioButton radioButtonEnd;
 
         public EnderecoViewHolder(@NonNull View itemView, final AdapterListener listener) {
             super(itemView);
@@ -92,22 +95,46 @@ public class EnderecoAdapter extends RecyclerView.Adapter{
             longText = itemView.findViewById(R.id.txtLong_EnderecoViewAdapter);
             delImagem = itemView.findViewById(R.id.imgbtnDelete_EnderecoViewAdapter);
             editImagem = itemView.findViewById(R.id.imgbtnAlterar_EnderecoViewAdapter);
+            radioButtonEnd = itemView.findViewById(R.id.rdbtnEnd_EnderecoViewAdapter);
 
             this.listener = listener;
 
-            delImagem.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onClick(v, getAdapterPosition(), 1);
-                }
-            });
+            if(tipo){
 
-            editImagem.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onClick(v, getAdapterPosition(), 0);
-                }
-            });
+
+                delImagem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onClick(v, getAdapterPosition(), 1);
+                    }
+                });
+
+                editImagem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onClick(v, getAdapterPosition(), 0);
+                    }
+                });
+            }
+            else{
+                delImagem.setVisibility(View.GONE);
+                editImagem.setVisibility(View.GONE);
+                radioButtonEnd.setVisibility(View.VISIBLE);
+
+
+                radioButtonEnd.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+
+                        notifyItemChanged(mSelectedItem); // to update last selected item.
+                        mSelectedItem = getAdapterPosition();
+                        notifyItemChanged(mSelectedItem); // to update last selected item.
+                        listener.onClick(v, getAdapterPosition(), 2);
+                    }
+                });
+            }
+
 
         }
 

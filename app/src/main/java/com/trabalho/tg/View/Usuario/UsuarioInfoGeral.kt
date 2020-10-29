@@ -292,7 +292,7 @@ class UsuarioInfoGeral : Fragment() {
             var recyclerView = view.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.recViewEndereco_UsuarioGeral)
             recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity)
 
-            recyclerView.adapter = EnderecoAdapter(usuario!!.usr_user_info.info_endereco, context, mlistener)
+            recyclerView.adapter = EnderecoAdapter(usuario!!.usr_user_info.info_endereco, context, mlistener, true)
 
 
         }

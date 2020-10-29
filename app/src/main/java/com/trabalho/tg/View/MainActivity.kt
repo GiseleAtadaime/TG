@@ -47,8 +47,17 @@ class MainActivity : AppCompatActivity(),
     EntradaCriaAlterDialog.OnFragmentInteractionListener,
     UsuarioInfoGeral.OnFragmentInteractionListener,
     UsuarioInfoAlter.OnFragmentInteractionListener,
-    Usuario_Endereco_Alter.OnFragmentInteractionListener
+    Usuario_Endereco_Alter.OnFragmentInteractionListener,
+    reportGenerateDetails.OnFragmentInteractionListener
 {
+    override fun onEndClick(usuario: Usuario, tipo: Int, endID: Int?) {
+
+
+        removeFragment("GENERATE_REPORT_FRAGMENT")
+
+
+    }
+
     override fun onEnderecoClick(usuario: Usuario) {
         clearBackStack()
         usuario.usr_user_info.info_endereco = C_Endereco().selectEndereco(DBHelper(this), usuario.usr_user_info.info_id)
@@ -209,15 +218,14 @@ class MainActivity : AppCompatActivity(),
 
                     usuario.loadUsuario(this)
 
-                    Report_Helper().generateRelatorioGeral(usuario,this,indexArea,indexLote)
-                    Report_Helper().generateRelatorioFiscal(usuario,this,indexArea,indexLote, 1)
-
 
                     Toast.makeText(this, "Relatório gerado!", Toast.LENGTH_SHORT).show()
                     dialog.dismiss()
                     //onCloseLoteDialog(areaId)
 
 
+                    changeFragment(reportGenerateDetails.newInstance(usuario, indexArea,indexLote),
+                        true, "GENERATE_REPORT_FRAGMENT")
 
                 }
                 else{
