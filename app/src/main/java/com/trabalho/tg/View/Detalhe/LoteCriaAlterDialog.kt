@@ -234,7 +234,7 @@ class LoteCriaAlterDialog : Fragment() {
         fun saveBitmap(lote : Lote) {
             val cw = ContextWrapper(context)
             val directory = cw.getDir("imageDir", Context.MODE_PRIVATE)
-            val file = File(directory, lote.lot_nome.replace(" ","_") + ".jpg")
+            val file = File(directory, "loteID_" + lote.lot_id + "_" + lote.lot_nome.replace(" ","_") + ".jpg")
             //if (!file.exists()) {
             Log.d("path", file.toString())
             image_path = file.toString()
@@ -312,17 +312,18 @@ class LoteCriaAlterDialog : Fragment() {
                 else{
 
                     var lote = Lote(0)
-                    lote.lot_planta = edtPlanta_LoteDialog.text.toString()
-
-                    saveBitmap(lote)
-                    lote.lot_imagem = image_path
-
                     if(edtTxtNome_LoteDialog.text.isNullOrBlank()){
                         lote.lot_nome = "20191026A"//TODO mudar essa lógica
                     }
                     else{
                         lote.lot_nome = edtTxtNome_LoteDialog.text.toString()
                     }
+                    lote.lot_planta = edtPlanta_LoteDialog.text.toString()
+
+                    saveBitmap(lote)
+                    lote.lot_imagem = image_path
+
+
 
                     if (C_Lote().insertLote(DBHelper(context), lote ,areaId, userid)){
                         val builder = AlertDialog.Builder(this!!.context!!)

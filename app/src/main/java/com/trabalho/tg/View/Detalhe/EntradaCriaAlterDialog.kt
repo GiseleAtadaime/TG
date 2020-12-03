@@ -222,6 +222,7 @@ class EntradaCriaAlterDialog : Fragment() {
 
                         txtQtde_EntradaNewDialog.visibility = View.VISIBLE
                         linQtde_EntradaNewDialog.visibility = View.VISIBLE
+
                         txtValor_EntradaNewDialog.visibility = View.VISIBLE
                         edtValor_EntradaNewDialog.visibility = View.VISIBLE
 
@@ -252,6 +253,7 @@ class EntradaCriaAlterDialog : Fragment() {
                     }
                     2 -> {
                         spiTempo_EntradaNewDialog.adapter = adapterTempo
+                        spiTempo_EntradaNewDialog.visibility = View.VISIBLE
                         txtTempo_EntradaNewDialog.visibility = View.VISIBLE
                         linTempo_EntradaNewDialog.visibility = View.VISIBLE
 
@@ -293,6 +295,7 @@ class EntradaCriaAlterDialog : Fragment() {
                     3 -> {
 
                         spiTempo_EntradaNewDialog.adapter = adapterTempoCarencia
+                        spiTempo_EntradaNewDialog.visibility = View.VISIBLE
                         txtTempo_EntradaNewDialog.visibility = View.VISIBLE
                         linTempo_EntradaNewDialog.visibility = View.VISIBLE
                         txtTempo_EntradaNewDialog.text = "Tempo de carência"
@@ -479,6 +482,7 @@ class EntradaCriaAlterDialog : Fragment() {
                     }
                     7 -> {
                         spiTempo_EntradaNewDialog.adapter = adapterTempo
+                        spiTempo_EntradaNewDialog.visibility = View.VISIBLE
                         txtTempo_EntradaNewDialog.visibility = View.VISIBLE
                         linTempo_EntradaNewDialog.visibility = View.VISIBLE
 

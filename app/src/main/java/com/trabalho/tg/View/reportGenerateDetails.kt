@@ -60,8 +60,8 @@ class reportGenerateDetails : Fragment() {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(usuario: Usuario, tipo: Int, endID : Int?) {
-        listener?.onEndClick(usuario, tipo, endID)
+    fun onButtonPressed(areaID: Int, lotID : Int?, type : Boolean) {
+        listener?.onEndClick(areaID, lotID,type)
     }
 
     override fun onAttach(context: Context) {
@@ -91,7 +91,7 @@ class reportGenerateDetails : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onEndClick(usuario : Usuario, tipo : Int, endID : Int?)
+        fun onEndClick(areaID: Int, lotID : Int?, type : Boolean)
     }
 
     companion object {
@@ -154,18 +154,39 @@ class reportGenerateDetails : Fragment() {
             recyclerView.adapter = EnderecoAdapter(usuario!!.usr_user_info.info_endereco, context, mlistener, false)
 
 
+            swtFiscal_RelatFrag.setOnClickListener(){
+                btnGerar_RelatFrag.isEnabled = (swtFiscal_RelatFrag.isChecked || swtGeral_RelatFrag.isChecked)
+            }
+
+            swtGeral_RelatFrag.setOnClickListener(){
+                btnGerar_RelatFrag.isEnabled = (swtFiscal_RelatFrag.isChecked || swtGeral_RelatFrag.isChecked)
+            }
+
+
 
             btnGerar_RelatFrag.setOnClickListener(){
 
-                Report_Helper().generateRelatorioGeral(usuario,context,indexArea,indexLote)
-                Report_Helper().generateRelatorioFiscal(usuario,context,indexArea,indexLote, end)
+                if(swtFiscal_RelatFrag.isChecked){
+                    Report_Helper().generateRelatorioFiscal(usuario,context,indexArea,indexLote, end)
+                }
+
+                if(swtGeral_RelatFrag.isChecked){
+                    Report_Helper().generateRelatorioGeral(usuario,context,indexArea,indexLote)
+                }
+
+                if(chkbxEmail_RelatFrag.isChecked){
+
+                    Toast.makeText(context, "Enviado por e-mail!", Toast.LENGTH_SHORT).show()
+
+                }
 
                 Toast.makeText(context, "Relatório gerado!", Toast.LENGTH_SHORT).show()
+                onButtonPressed(indexArea!!,indexLote!!, true)
 
             }
 
             btnCancelar_RelatFrag.setOnClickListener(){
-
+                onButtonPressed( indexArea!!,indexLote!!, false)
             }
 
 

@@ -1,5 +1,12 @@
 package com.trabalho.tg.Model;
 
+import android.content.Context;
+import com.trabalho.tg.Controller.C_Entrada;
+import com.trabalho.tg.Controller.C_Entrada_Fechado;
+import com.trabalho.tg.Controller.C_Lote;
+import com.trabalho.tg.Controller.C_Lote_Fechado;
+import com.trabalho.tg.Helper.DBHelper;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -85,5 +92,23 @@ public class Lote implements Serializable {
             }
         }
         return total;
+    }
+
+    public void fecharLote(Context context, Integer aID, Integer uID){
+
+
+        Lote_Fechado l = new Lote_Fechado(this.lot_id);
+        l.setLot_imagem(this.lot_imagem);
+        l.setLot_nome(this.lot_nome);
+        l.setLot_planta(this.lot_planta);
+        l.setLot_ent(this.lot_ent);
+
+
+        if(new C_Lote_Fechado().insertLote_Fechado(new DBHelper(context),l,aID,uID)){
+            if(new C_Entrada_Fechado().insertListEntrada(new DBHelper(context),this.lot_ent,this.lot_id,uID)){
+                new C_Entrada().deleteAllEntradasByLote(new DBHelper(context),this.lot_id);
+                new C_Lote().deleteLote(new DBHelper(context),this.lot_id);
+            }
+        }
     }
 }

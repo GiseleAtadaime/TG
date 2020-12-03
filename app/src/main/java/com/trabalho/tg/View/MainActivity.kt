@@ -50,11 +50,23 @@ class MainActivity : AppCompatActivity(),
     Usuario_Endereco_Alter.OnFragmentInteractionListener,
     reportGenerateDetails.OnFragmentInteractionListener
 {
-    override fun onEndClick(usuario: Usuario, tipo: Int, endID: Int?) {
+    override fun onAreaFechadosSelected(area: List<Area>, pos: Int) {
+        //newInstance(usuario.usr_area[pos]
+        changeFragment(LoteFechadoFragment(), true, "LOTE_FECHADO_FRAGMENT")
+    }
 
+    override fun onEndClick(areaID: Int, lotID : Int?, type : Boolean) {
+        var aID =  usuario.usr_area[areaID].ar_id
+        var lID = usuario.usr_area[areaID].ar_lote[lotID!!].lot_id
 
         removeFragment("GENERATE_REPORT_FRAGMENT")
-
+        if(type){
+            usuario.usr_area[areaID].ar_lote[lotID].fecharLote(this,aID,lID)
+            usuario.reloadAreas(this)
+            usuario.loadFechados(this)
+            clearBackStack()
+            changeFragment(FechadoFragment(), true, "FECHADO_FRAGMENT")
+        }
 
     }
 
@@ -184,7 +196,7 @@ class MainActivity : AppCompatActivity(),
 
             builder.setPositiveButton(android.R.string.yes) { dialog, which ->
                 if(usuario.usr_area[indexArea].ar_lote.size > 1){
-                    if (C_Lote().deleteLote(DBHelper(this), usuario.usr_area[indexArea].ar_lote[indexLote])){
+                    if (C_Lote().deleteLote(DBHelper(this), usuario.usr_area[indexArea].ar_lote[indexLote].lot_id)){
                         dialog.dismiss()
                         onCloseLoteDialog(areaId)
                     }
@@ -206,41 +218,66 @@ class MainActivity : AppCompatActivity(),
             builder.show()
         }
         else if(tipo == 3){//Fechar lote
+            var incompleto = true;
 
-            val builder = AlertDialog.Builder(this)
-            builder.setTitle("Fechar lote")
-            builder.setMessage("Tem certeza que gostaria de finalizar as operações do lote ${usuario.usr_area[indexArea].ar_lote[indexLote].lot_nome}? Esta operação não pode ser desfeita!")
+            if(usuario.usr_user_info != null){
+                if(usuario.usr_user_info.info_endereco.size > 0){
 
-            builder.setPositiveButton(android.R.string.yes) { dialog, which ->
-                if(usuario.usr_area[indexArea].ar_lote[indexLote].lot_ent.size > 0){
+                    val builder = AlertDialog.Builder(this)
+                    builder.setTitle("Fechar lote")
+                    builder.setMessage("Tem certeza que gostaria de finalizar as operações do lote ${usuario.usr_area[indexArea].ar_lote[indexLote].lot_nome}? Esta operação não pode ser desfeita!")
 
-                    Toast.makeText(this, "Gerar relatório!", Toast.LENGTH_SHORT).show()
+                    builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+                        if(usuario.usr_area[indexArea].ar_lote[indexLote].lot_ent.size > 0){
 
-                    usuario.loadUsuario(this)
+                            Toast.makeText(this, "Gerar relatório!", Toast.LENGTH_SHORT).show()
 
-
-                    Toast.makeText(this, "Relatório gerado!", Toast.LENGTH_SHORT).show()
-                    dialog.dismiss()
-                    //onCloseLoteDialog(areaId)
+                            usuario.loadUsuario(this)
 
 
-                    changeFragment(reportGenerateDetails.newInstance(usuario, indexArea,indexLote),
-                        true, "GENERATE_REPORT_FRAGMENT")
+                            Toast.makeText(this, "Relatório gerado!", Toast.LENGTH_SHORT).show()
+                            dialog.dismiss()
+                            //onCloseLoteDialog(areaId)
 
+
+                            changeFragment(reportGenerateDetails.newInstance(usuario, indexArea,indexLote),
+                                true, "GENERATE_REPORT_FRAGMENT")
+
+                        }
+                        else{
+                            Toast.makeText(this, "Este lote não possui entradas para que um relatório seja gerado!", Toast.LENGTH_SHORT).show()
+                            dialog.dismiss()
+                        }
+
+                    }
+                    builder.setNegativeButton(android.R.string.no){dialog, which ->
+                        dialog.dismiss()
+                    }
+
+                    builder.show()
+
+                    incompleto = false;
                 }
                 else{
-                    Toast.makeText(this, "Este lote não possui entradas para que um relatório seja gerado!", Toast.LENGTH_SHORT).show()
+                    incompleto = true;
+                }
+            }
+            else{
+                incompleto = true;
+            }
+
+            if(incompleto){
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle("Erro!")
+                builder.setMessage("Não é possível fechar o lote ${usuario.usr_area[indexArea].ar_lote[indexLote].lot_nome} pois as suas informações/endereços não foram preenchidos!")
+
+
+                builder.setNeutralButton(android.R.string.ok){dialog, which ->
                     dialog.dismiss()
                 }
 
+                builder.show()
             }
-            builder.setNegativeButton(android.R.string.no){dialog, which ->
-                dialog.dismiss()
-            }
-
-            builder.show()
-
-
         }
         else if(tipo == 4){//Novo entrada
             var datamin : Date? = null
@@ -286,7 +323,7 @@ class MainActivity : AppCompatActivity(),
 
             builder.setPositiveButton(android.R.string.yes) { dialog, which ->
                 if(usuario.usr_area[indexArea].ar_lote.size > 1){
-                    if (C_Lote().deleteLote(DBHelper(this), usuario.usr_area[indexArea].ar_lote[pos])){
+                    if (C_Lote().deleteLote(DBHelper(this), usuario.usr_area[indexArea].ar_lote[pos].lot_id)){
                         dialog.dismiss()
                         onCloseLoteDialog(areaId)
                     }
@@ -390,17 +427,7 @@ class MainActivity : AppCompatActivity(),
 
 
         usuario = intent.extras.get("usuario") as Usuario
-        usuario.usr_area = C_Area().selectArea(DBHelper(this), true)
-
-        usuario.usr_user_info = C_User_Info().selectUser_Info(DBHelper(this))
-
-
-        for (area in usuario.usr_area){
-            area.ar_lote = C_Lote().selectLote(DBHelper(this), area.ar_id)
-            for(lote in area.ar_lote){
-                lote.lot_ent = C_Entrada().selectEntrada(DBHelper(this), lote.lot_id)
-            }
-        }
+        usuario.loadUsuario(this)
 
         if (usuario.usr_area.size == 0){
             createArea()
@@ -454,7 +481,10 @@ class MainActivity : AppCompatActivity(),
             }
             R.id.nav_fechado -> {
                 clearBackStack()
-                changeFragment(FechadoFragment(), true, "FECHADO_FRAGMENT")
+                if(!usuario.checkLoteFechado()){
+                    usuario.loadFechados(this)
+                }
+                changeFragment(FechadoFragment.newInstance(usuario.usr_area), true, "FECHADO_FRAGMENT")
             }
             R.id.nav_qrcode -> {
                 clearBackStack()

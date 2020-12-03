@@ -7,13 +7,14 @@ import com.trabalho.tg.Model.Area;
 import com.trabalho.tg.Model.Entrada;
 import com.trabalho.tg.Model.Lote;
 import com.trabalho.tg.Model.Usuario;
+import org.w3c.dom.Document;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+
+
+import static java.security.AccessController.getContext;
 
 
 /**
@@ -211,18 +212,6 @@ public class Report_Helper {
         return htmlBuilder.toString();
     }
 
-    public static void whenWriteStringUsingBufferedWritter_thenCorrect(String str, String filename, Context context)
-            throws IOException {
-
-        ContextWrapper cw = new ContextWrapper(context);
-        File directory = cw.getDir("reports", Context.MODE_PRIVATE);
-        File file = new File(directory, filename + ".html");
-
-        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-        writer.write(str);
-        writer.close();
-    }
-
 
     public List<List<String>> treatEntradas(Lote argLote){
 
@@ -348,6 +337,45 @@ public class Report_Helper {
         return total;
     }
 
+    public static File whenWriteStringUsingBufferedWritter_thenCorrect(String str, String filename, Context context)
+            throws IOException {
+
+        ContextWrapper cw = new ContextWrapper(context);
+        File directory = cw.getDir("reports", Context.MODE_PRIVATE);
+        File file = new File(directory, filename + ".html");
+
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+        writer.write(str);
+        writer.close();
+        return file;
+    }
+
+//    public void htmlToPDF(String htmlFile, String fileName, Context context){
+//        try
+//        {
+//            // Write stream output to local file
+//            ContextWrapper cw = new ContextWrapper(context);
+//            File directory = cw.getDir("reports", Context.MODE_PRIVATE);
+//            File pdfFile =  new File (directory, fileName + ".pdf");
+//            OutputStream opStream = new FileOutputStream(pdfFile);
+//            pdfFile.setWritable(true);
+//            opStream.write(htmlFile.getBytes());
+//            opStream.flush();
+//            opStream.close();
+//
+//            Pdf converter = PdfConverter.getInstance();
+//            File file = new File(Environment.getExternalStorageDirectory().toString(), "file.pdf");
+//            String htmlString = "<html><body><p>WHITE (default)</p></body></html>";
+//            converter.convert(getContext(), htmlString, file);
+//// By now the pdf has been printed in the file.
+//
+//
+//        } catch (Exception e)
+//        {
+//            System.out.println("Error printing to PDF -> " + e.getLocalizedMessage());
+//        }
+//    }
+
     public void generateRelatorioGeral(Usuario usuario, Context context, Integer areaID,Integer loteID){
 
         Report_Helper htmlBuilder = new Report_Helper();
@@ -374,11 +402,15 @@ public class Report_Helper {
 
         String html = htmlBuilder.build();
         //System.out.println(htmlBuilder.toString());
+        String filename = "loteID" + usuario.getUsr_area().get(areaID).getAr_lote().get(loteID).getLot_id() + "_" + usuario.getUsr_area().get(areaID).getAr_lote().get(loteID).getLot_nome().replace(" ", "_") + "_geral";
         try{
             whenWriteStringUsingBufferedWritter_thenCorrect(
                     html,
-                    usuario.getUsr_area().get(areaID).getAr_lote().get(loteID).getLot_nome().replace(" ", "_") + "_geral" ,
+                     filename,
                     context);
+//            htmlToPDF(html,
+//                    filename,
+//                    context);
         }
         catch (Exception e){
             System.out.println(e.getMessage());
@@ -403,11 +435,16 @@ public class Report_Helper {
 
         String html = htmlBuilder.build();
         //System.out.println(htmlBuilder.toString());
+        String filename = "loteID" + usuario.getUsr_area().get(areaID).getAr_lote().get(loteID).getLot_id() + "_" + usuario.getUsr_area().get(areaID).getAr_lote().get(loteID).getLot_nome().replace(" ", "_") + "_fiscal";
         try{
             whenWriteStringUsingBufferedWritter_thenCorrect(
                     html,
-                    usuario.getUsr_area().get(areaID).getAr_lote().get(loteID).getLot_nome().replace(" ", "_") + "_fiscal",
+                    filename,
                     context);
+
+//            htmlToPDF(html,
+//                    filename,
+//                    context);
         }
         catch (Exception e){
             System.out.println(e.getMessage());

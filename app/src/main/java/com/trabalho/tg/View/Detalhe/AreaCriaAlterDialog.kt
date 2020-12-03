@@ -260,7 +260,7 @@ class AreaCriaAlterDialog : Fragment() {
         fun saveBitmap(area : Area) {
             val cw = ContextWrapper(context)
             val directory = cw.getDir("imageDir", Context.MODE_PRIVATE)
-            val file = File(directory, area.ar_nome.replace(" ","_") + ".jpg")
+            val file = File(directory, "areaID_" + area.ar_id + "_" + area.ar_nome.replace(" ","_") + ".jpg")
             //if (!file.exists()) {
                 Log.d("path", file.toString())
                 image_path = file.toString()

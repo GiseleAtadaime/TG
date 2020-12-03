@@ -157,7 +157,7 @@ class UsuarioInfoGeral : Fragment() {
     fun saveBitmap() {
         val cw = ContextWrapper(context)
         val directory = cw.getDir("imageDir", Context.MODE_PRIVATE)
-        val file = File(directory, usuario!!.usr_nome.replace(" ","_") + ".jpg")
+        val file = File(directory, "usrID_" + usuario!!.usr_id + "_" + usuario!!.usr_nome.replace(" ","_") + ".jpg")
         //if (!file.exists()) {
         Log.d("path", file.toString())
         image_path = file.toString()

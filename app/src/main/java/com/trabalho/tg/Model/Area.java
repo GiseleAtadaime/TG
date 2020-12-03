@@ -15,6 +15,7 @@ public class Area implements Serializable {
     private String ar_nome;
     private String ar_del;
     private ArrayList<Lote> ar_lote = new ArrayList<>();
+    private ArrayList<Lote_Fechado> ar_lote_fechado = new ArrayList<>();
 
     public Area(Integer ar_id) {
         this.ar_id = ar_id;
@@ -74,7 +75,19 @@ public class Area implements Serializable {
     }
 
     public void addLote(Lote lote){
-        ar_lote.add(lote);
+        this.ar_lote.add(lote);
+    }
+
+    public ArrayList<Lote_Fechado> getAr_lote_Fechado() {
+        return ar_lote_fechado;
+    }
+
+    public void setAr_lote_Fechado(ArrayList<Lote_Fechado> ar_lote_fechado) {
+        this.ar_lote_fechado = ar_lote_fechado;
+    }
+
+    public void addLote_Fechado(Lote_Fechado ar_lote_fechado){
+        this.ar_lote_fechado.add(ar_lote_fechado);
     }
 
     public Integer getLoteContID(){

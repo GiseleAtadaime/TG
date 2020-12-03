@@ -87,13 +87,13 @@ public class C_Lote {
     //A entrada que é fechada tbm deve ser salva em outra tabela e excluída da original
     //A entrada não precisa de status aberto ou fechado pois ele é definido pelo status do Lote
 
-    public Boolean deleteLote(DBHelper dbHelper, Lote l){
+    public Boolean deleteLote(DBHelper dbHelper, Integer lotID){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         Boolean ret = false;
 
         try{
 
-            db.delete(Contrato.Lote.TABLENAME,Contrato.Lote.COLUMN_ID + " = ?", new String[]{l.getLot_id().toString()});
+            db.delete(Contrato.Lote.TABLENAME,Contrato.Lote.COLUMN_ID + " = ?", new String[]{lotID.toString()});
             ret = true;
         }
         finally {

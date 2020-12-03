@@ -104,4 +104,49 @@ public class Usuario implements Serializable {
 
 
     }
+
+    public Boolean checkLoteFechado(){
+        for(Area a : this.usr_area){
+            if(a.getAr_lote_Fechado().size() > 0){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void reloadAreas(Context context){
+        DBHelper helper = new DBHelper(context);
+
+        this.usr_area = new C_Area().selectArea(helper,true);
+
+        if(this.usr_area != null){
+            for (Area area : this.usr_area){
+                area.setAr_lote( new C_Lote().selectLote(helper, area.getAr_id()));
+                for(Lote lote : area.getAr_lote()){
+                    lote.setLot_ent(new C_Entrada().selectEntrada(helper, lote.getLot_id()));
+                }
+            }
+        }
+
+
+    }
+
+    public void loadFechados(Context context){
+        DBHelper helper = new DBHelper(context);
+
+        ArrayList<Area> area = new C_Area().selectArea(helper,false);
+        if(area.size() > 0){
+            for(Area a : area){
+                this.usr_area.add(a);
+            }
+        }
+
+        for(Area a : this.usr_area){
+            a.setAr_lote_Fechado(new C_Lote_Fechado().selectLote_Fechado(helper,a.getAr_id()));
+            for(Lote_Fechado l : a.getAr_lote_Fechado()){
+                l.setLot_ent(new C_Entrada_Fechado().selectEntrada(helper,l.getLot_id()));
+            }
+        }
+
+    }
 }

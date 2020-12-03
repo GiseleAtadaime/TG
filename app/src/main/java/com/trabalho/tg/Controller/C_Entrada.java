@@ -240,14 +240,15 @@ public class C_Entrada {
         try{
             entradas = selectEntrada(dbHelper,loteID);
 
-            for(i=0;i< entradas.size() - 1;i++){
+            for(i=0;i< entradas.size();i++){
                 db.delete(Contrato.Entrada.TABLENAME,Contrato.Entrada.COLUMN_NUMERO + " = ?", new String[]{entradas.get(i).getEnt_numero().toString()});
                 db.delete(Contrato.Entrada_Detalhe.TABLENAME,Contrato.Entrada_Detalhe.COLUMN_DETALHE_NUMERO + " = ?", new String[]{entradas.get(i).getEnt_tipo().toString()});
             }
             ret = true;
+            db.setTransactionSuccessful();
         }
         finally {
-            db.setTransactionSuccessful();
+
             db.close();
             return ret;
         }
