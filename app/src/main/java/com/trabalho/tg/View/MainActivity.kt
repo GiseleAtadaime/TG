@@ -48,11 +48,21 @@ class MainActivity : AppCompatActivity(),
     UsuarioInfoGeral.OnFragmentInteractionListener,
     UsuarioInfoAlter.OnFragmentInteractionListener,
     Usuario_Endereco_Alter.OnFragmentInteractionListener,
-    reportGenerateDetails.OnFragmentInteractionListener
+    reportGenerateDetails.OnFragmentInteractionListener,
+    LoteFechadoFragment.OnFragmentInteractionListener
 {
+
+    val FECHADO : Boolean = false
+    val ABERTO : Boolean = true
+
+    override fun onLoteFechadoSelected(lote : List<Lote_Fechado>, pos : Int, tipo : Int, areaId : Int) {
+
+        changeFragment(LoteDetalheFragment.newInstance(null, lote[pos],usuario.usr_id,areaId), true, "LOTE_FECHADO_DETALHE_FRAGMENT")
+    }
+
     override fun onAreaFechadosSelected(area: List<Area>, pos: Int) {
         //newInstance(usuario.usr_area[pos]
-        changeFragment(LoteFechadoFragment(), true, "LOTE_FECHADO_FRAGMENT")
+        changeFragment(LoteFechadoFragment.newInstance(area[pos]), true, "LOTE_FECHADO_FRAGMENT")
     }
 
     override fun onEndClick(areaID: Int, lotID : Int?, type : Boolean) {
@@ -114,7 +124,7 @@ class MainActivity : AppCompatActivity(),
 
         changeFragment(EntradaFragment.newInstance(
             usuario.usr_area[indexArea].ar_lote[indexLote],
-            usuario.usr_id,areaId), true, "ENTRADA_FRAGMENT")
+            usuario.usr_id,areaId, ABERTO), true, "ENTRADA_FRAGMENT")
 
     }
 
@@ -130,7 +140,7 @@ class MainActivity : AppCompatActivity(),
 
             changeFragment(EntradaFragment.newInstance(
                 usuario.usr_area[indexArea].ar_lote[indexLote],
-                usuario.usr_id,areaId), true, "ENTRADA_FRAGMENT")
+                usuario.usr_id,areaId, ABERTO), true, "ENTRADA_FRAGMENT")
         }
         else{
             var datamin : Date? = usuario.usr_area[indexArea].ar_lote[indexLote].lot_ent[0].ent_data
@@ -157,7 +167,7 @@ class MainActivity : AppCompatActivity(),
         changeFragment(AreaFragment.newInstance(usuario.usr_area), true, "AREA_FRAGMENT")
     }
 
-    override fun onEntradaSelected(entrada: Entrada, userId : Int, areaId : Int, loteId : Int, new : Boolean) {
+    override fun onEntradaSelected(entrada: Entrada, userId : Int, areaId : Int, loteId : Int, new : Boolean, tipolote : Boolean) {
         var indexArea = usuario.usr_area.indexOfFirst { it.ar_id == areaId }
         var indexLote = usuario.usr_area[indexArea].ar_lote.indexOfFirst { it.lot_id ==  loteId}
         if (new){
@@ -173,7 +183,7 @@ class MainActivity : AppCompatActivity(),
                 true, "ENTRADA_CRIA_ALTER_DIALOG")
         }
         else{
-            changeFragment(EntradaDetalheDialog.newInstance(entrada, userId,areaId,loteId), true, "ENTRADA_DETALHE_DIALOG")
+            changeFragment(EntradaDetalheDialog.newInstance(entrada, userId,areaId,loteId, tipolote), true, "ENTRADA_DETALHE_DIALOG")
         }
 
     }
@@ -293,11 +303,31 @@ class MainActivity : AppCompatActivity(),
 
         }
         else if(tipo == 5){//Ver entradas
-            usuario.usr_area[indexArea].ar_lote[indexLote].lot_ent = C_Entrada().selectEntrada(DBHelper(this),loteId)
 
-            changeFragment(EntradaFragment.newInstance(
-                usuario.usr_area[indexArea].ar_lote[indexLote],
-                usuario.usr_id,areaId), true, "ENTRADA_FRAGMENT")
+            if(indexLote != -1){
+                usuario.reloadAreas(this)
+
+                changeFragment(
+                    EntradaFragment.newInstance(
+                        usuario.usr_area[indexArea].ar_lote[indexLote],
+                        usuario.usr_id, areaId,
+                        ABERTO
+                    ), true, "ENTRADA_FRAGMENT"
+                )
+            }
+            else {
+                usuario.loadFechados(this)
+
+                indexLote = usuario.usr_area[indexArea].ar_lote_Fechado.indexOfFirst { it.lot_id ==  loteId}
+                changeFragment(
+                    EntradaFragment.newInstance(
+                        usuario.usr_area[indexArea].ar_lote_Fechado[indexLote],
+                        usuario.usr_id, areaId,
+                        FECHADO
+
+                    ), true, "ENTRADA_FRAGMENT"
+                )
+            }
         }
     }
 
@@ -309,7 +339,8 @@ class MainActivity : AppCompatActivity(),
             usuario.usr_area[indexArea].ar_lote[pos].lot_ent = C_Entrada().selectEntrada(DBHelper(this),lote[pos].lot_id)
 
             changeFragment(LoteDetalheFragment.newInstance(usuario.
-                usr_area[indexArea].ar_lote[pos]
+                usr_area[indexArea].ar_lote[pos],
+                null
                 ,usuario.usr_id, areaId), true, "LOTE_DETALHE_FRAGMENT")
         }
         else if(tipo == 1 || tipo == 3) { //alterar
@@ -465,12 +496,7 @@ class MainActivity : AppCompatActivity(),
         when (item.itemId) {
             R.id.nav_main -> {
                 if (!MainFragment().isVisible){
-                    for (area in usuario.usr_area){
-                        area.ar_lote = C_Lote().selectLote(DBHelper(this), area.ar_id)
-                        for(lote in area.ar_lote){
-                            lote.lot_ent = C_Entrada().selectEntrada(DBHelper(this), lote.lot_id)
-                        }
-                    }
+                    usuario.reloadAreas(this)
                     changeFragment(MainFragment.newInstance(usuario), true, "MAIN_FRAGMENT")
                 }
 

@@ -7,13 +7,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import com.trabalho.tg.Adapters.LoteAdapter
+import com.trabalho.tg.Adapters.LoteFechadoAdapter
+import com.trabalho.tg.Model.Area
+import com.trabalho.tg.Model.Lote_Fechado
 
 import com.trabalho.tg.R
+import java.io.Serializable
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val AREAPAM = "areaPam"
 
 /**
  * A simple [Fragment] subclass.
@@ -26,15 +31,13 @@ private const val ARG_PARAM2 = "param2"
  */
 class LoteFechadoFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var areaPam: Area? = null
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            areaPam = it.getSerializable(AREAPAM) as Area
         }
     }
 
@@ -47,8 +50,8 @@ class LoteFechadoFragment : Fragment() {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
+    fun onLoteFechadoSelected(lote : List<Lote_Fechado>, pos : Int, tipo : Int, areaId: Int) {
+        listener?.onLoteFechadoSelected(lote, pos, tipo, areaId)
     }
 
     override fun onAttach(context: Context) {
@@ -78,7 +81,7 @@ class LoteFechadoFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+        fun onLoteFechadoSelected(lote : List<Lote_Fechado>, pos : Int, tipo : Int, areaId : Int)
     }
 
     companion object {
@@ -92,12 +95,27 @@ class LoteFechadoFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(areaPam: Area) =
             LoteFechadoFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putSerializable(AREAPAM, areaPam as Serializable)
                 }
             }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+        val mlistener = fun(view : View, position: Int, tipo : Int) {
+            Toast.makeText(context, "Position $position", Toast.LENGTH_SHORT).show();
+            onLoteFechadoSelected(areaPam!!.ar_lote_Fechado, position, tipo, areaPam!!.ar_id)
+        }
+
+
+        var recyclerView = view.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.recView_LoteFechadoFrag)
+        recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity)
+
+        recyclerView.adapter = LoteFechadoAdapter(areaPam!!.ar_lote_Fechado, context, mlistener)
     }
 }

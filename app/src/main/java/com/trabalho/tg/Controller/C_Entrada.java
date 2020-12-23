@@ -241,9 +241,11 @@ public class C_Entrada {
             entradas = selectEntrada(dbHelper,loteID);
 
             for(i=0;i< entradas.size();i++){
-                db.delete(Contrato.Entrada.TABLENAME,Contrato.Entrada.COLUMN_NUMERO + " = ?", new String[]{entradas.get(i).getEnt_numero().toString()});
-                db.delete(Contrato.Entrada_Detalhe.TABLENAME,Contrato.Entrada_Detalhe.COLUMN_DETALHE_NUMERO + " = ?", new String[]{entradas.get(i).getEnt_tipo().toString()});
+                db.delete(Contrato.Entrada_Detalhe.TABLENAME,Contrato.Entrada_Detalhe.COLUMN_DETALHE_NUMERO + " = ?", new String[]{entradas.get(i).getEnt_detalhe_num().toString()});
             }
+
+            db.delete(Contrato.Entrada.TABLENAME,Contrato.Entrada.COLUMN_LOTE_ID + " = ?", new String[]{loteID.toString()});
+
             ret = true;
             db.setTransactionSuccessful();
         }

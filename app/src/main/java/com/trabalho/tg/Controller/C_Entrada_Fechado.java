@@ -20,9 +20,13 @@ public class C_Entrada_Fechado {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String query = "SELECT * FROM " + Contrato.Fec_entrada.TABLENAME + " e, " + Contrato.Fec_Entrada_Detalhe.TABLENAME + " t WHERE " +
-                " e." + Contrato.Fec_entrada.COLUMN_DETALHE + " = " + "t." + Contrato.Fec_Entrada_Detalhe.COLUMN_DETALHE_NUMERO +
-                " AND e." + Contrato.Fec_entrada.COLUMN_LOTE_ID + " = " + lID;
+        String query = "SELECT * FROM " + Contrato.Fec_entrada.TABLENAME + " e, " + Contrato.Fec_Entrada_Detalhe.TABLENAME + " d, " +
+                Contrato.Tipo_Entrada.TABLENAME + " t " +
+                " WHERE " +
+                "e." + Contrato.Fec_entrada.COLUMN_DETALHE + " = " + "d." + Contrato.Fec_Entrada_Detalhe.COLUMN_DETALHE_NUMERO +
+                " AND t." + Contrato.Tipo_Entrada.COLUMN_TIPO_NUMERO + " = " + "d." + Contrato.Fec_Entrada_Detalhe.COLUMN_TIPO_NUM +
+                " AND e." + Contrato.Fec_entrada.COLUMN_LOTE_ID + " = " + lID +
+                " order by " + Contrato.Fec_entrada.COLUMN_DATA + " desc ";
 
         try{
             c = db.rawQuery(query,null);
@@ -30,6 +34,7 @@ public class C_Entrada_Fechado {
             if (c.moveToFirst()) {
                 do{
                     e.add(new Entrada(c.getInt(c.getColumnIndex(Contrato.Fec_entrada.COLUMN_NUMERO))));
+                    e.get(i).setEnt_detalhe_num(c.getInt(c.getColumnIndex(Contrato.Fec_Entrada_Detalhe.COLUMN_DETALHE_NUMERO)));
                     e.get(i).setEnt_data(new Utils_TG().getStringToDate(c.getString(c.getColumnIndex(Contrato.Fec_entrada.COLUMN_DATA))));
                     e.get(i).setEnt_desc(c.getString(c.getColumnIndex(Contrato.Tipo_Entrada.COLUMN_DESCRICAO)));
                     e.get(i).setEnt_tipo(c.getInt(c.getColumnIndex(Contrato.Fec_Entrada_Detalhe.COLUMN_TIPO_NUM)));
@@ -39,7 +44,26 @@ public class C_Entrada_Fechado {
                     e.get(i).setEnt_qtun(c.getString(c.getColumnIndex(Contrato.Fec_Entrada_Detalhe.COLUMN_QTUN)));
                     e.get(i).setEnt_mudas_bandeja(c.getInt(c.getColumnIndex(Contrato.Fec_Entrada_Detalhe.COLUMN_MUDAS_BANDEJA)));
                     e.get(i).setEnt_valor(c.getDouble(c.getColumnIndex(Contrato.Fec_Entrada_Detalhe.COLUMN_VALOR)));
-                    e.get(i).setEnt_reg(new Reg_Agrotoxico(c.getInt(c.getColumnIndex(Contrato.Fec_Entrada_Detalhe.COLUMN_REG_NUM))));
+                    if(!c.isNull(c.getColumnIndex(Contrato.Fec_Entrada_Detalhe.COLUMN_REG_NUM))){
+                        e.get(i).setEnt_reg(new C_Reg_Agrotoxico().selectReg_Agrotoxico_Especifico(dbHelper,c.getInt(c.getColumnIndex(Contrato.Fec_Entrada_Detalhe.COLUMN_REG_NUM))));
+                    }
+                    else{
+                        e.get(i).setEnt_reg(null);
+                    }
+
+                    if(e.get(i).getEnt_tempo() == 0){
+                        e.get(i).setEnt_tempo(null);
+                    }
+                    if(e.get(i).getEnt_qtde() == 0){
+                        e.get(i).setEnt_qtde(null);
+                    }
+                    if(e.get(i).getEnt_mudas_bandeja() == 0){
+                        e.get(i).setEnt_mudas_bandeja(null);
+                    }
+                    if(e.get(i).getEnt_valor() == 0){
+                        e.get(i).setEnt_valor(null);
+                    }
+
                     i++;
                 }
                 while(c.moveToNext());
