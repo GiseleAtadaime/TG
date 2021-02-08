@@ -240,7 +240,8 @@ public class C_Entrada {
         try{
             entradas = selectEntrada(dbHelper,loteID);
 
-            for(i=0;i< entradas.size();i++){
+            for(i=0;i <= entradas.size();i++){
+                System.out.println(entradas.get(i).getEnt_detalhe_num().toString());
                 db.delete(Contrato.Entrada_Detalhe.TABLENAME,Contrato.Entrada_Detalhe.COLUMN_DETALHE_NUMERO + " = ?", new String[]{entradas.get(i).getEnt_detalhe_num().toString()});
             }
 

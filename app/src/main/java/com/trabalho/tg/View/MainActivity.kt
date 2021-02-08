@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity(),
             usuario.reloadAreas(this)
             usuario.loadFechados(this)
             clearBackStack()
-            changeFragment(FechadoFragment(), true, "FECHADO_FRAGMENT")
+            changeFragment(FechadoFragment.newInstance(usuario.usr_area), true, "FECHADO_FRAGMENT")
         }
 
     }
