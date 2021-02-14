@@ -251,7 +251,7 @@ public class Report_Helper {
                     entrada.add(utils.formatMonetario(utils.doubleToString(ent.getEnt_valor())));
                     break;
                 case 5://mão de obra
-                    entrada.add(utils.doubleToString(ent.getEnt_tempo()) + " " + ent.getEnt_tpun());
+                    entrada.add("-");
                     entrada.add(utils.doubleToString(ent.getEnt_qtde()) + " " + ent.getEnt_qtun());
                     entrada.add("-");
                     entrada.add("-" + utils.formatMonetario(utils.doubleToString(ent.getEnt_valor())));

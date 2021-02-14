@@ -106,7 +106,7 @@ public class Lote implements Serializable {
 
         if(new C_Lote_Fechado().insertLote_Fechado(new DBHelper(context),l,aID,uID)){
             if(new C_Entrada_Fechado().insertListEntrada(new DBHelper(context),this.lot_ent,this.lot_id,uID)){
-                new C_Entrada().deleteAllEntradasByLote(new DBHelper(context),this.lot_id);
+                new C_Entrada().deleteAllEntradasByLote(new DBHelper(context),this.lot_id, this.lot_ent);
                 new C_Lote().deleteLote(new DBHelper(context),this.lot_id);
             }
         }

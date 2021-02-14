@@ -272,21 +272,25 @@ class LoteCriaAlterDialog : Fragment() {
                     lote.lot_nome = edtTxtNome_LoteDialog.text.toString()
                     lote.lot_planta = edtPlanta_LoteDialog.text.toString()
 
-                    bitmap = (imgLote_LoteDialog.drawable as BitmapDrawable).bitmap
+                    if(imgLote_LoteDialog.drawable.constantState != resources.getDrawable(R.drawable.ic_menu_camera).constantState) {
+                        bitmap = (imgLote_LoteDialog.drawable as BitmapDrawable).bitmap
 
-                    if(!lote.lot_nome.equals(lotePam!!.lot_nome) && lotePam!!.lot_imagem != null){
-                        var file = File(lotePam!!.lot_imagem)
-                        if(file.exists()){
-                            try{
-                                file.delete()
-                            }
-                            catch(e : Exception){
-                                System.out.println("File not deleted" + e.message)
+                        if (!lote.lot_nome.equals(lotePam!!.lot_nome) && lotePam!!.lot_imagem != null) {
+                            var file = File(lotePam!!.lot_imagem)
+                            if (file.exists()) {
+                                try {
+                                    file.delete()
+                                } catch (e: Exception) {
+                                    System.out.println("File not deleted" + e.message)
+                                }
                             }
                         }
+                        saveBitmap(lote)
+                        lote.lot_imagem = image_path
                     }
-                    saveBitmap(lote)
-                    lote.lot_imagem = image_path
+                    else{
+                        lote.lot_imagem = null;
+                    }
 
                     if (C_Lote().updateLote(DBHelper(context), lote)){
                         val builder = AlertDialog.Builder(this!!.context!!)
@@ -320,10 +324,13 @@ class LoteCriaAlterDialog : Fragment() {
                     }
                     lote.lot_planta = edtPlanta_LoteDialog.text.toString()
 
-                    saveBitmap(lote)
-                    lote.lot_imagem = image_path
-
-
+                    if(imgLote_LoteDialog.drawable.constantState != resources.getDrawable(R.drawable.ic_menu_camera).constantState) {
+                        saveBitmap(lote)
+                        lote.lot_imagem = image_path
+                    }
+                    else{
+                        lote.lot_imagem = null
+                    }
 
                     if (C_Lote().insertLote(DBHelper(context), lote ,areaId, userid)){
                         val builder = AlertDialog.Builder(this!!.context!!)

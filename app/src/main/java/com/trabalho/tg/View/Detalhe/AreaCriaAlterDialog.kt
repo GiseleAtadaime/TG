@@ -28,6 +28,7 @@ import android.os.Environment
 import android.util.Log
 import androidx.core.content.FileProvider
 import com.trabalho.tg.Helper.cameraUtils
+import kotlinx.android.synthetic.main.fragment_lote_alter_dialog.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -307,22 +308,25 @@ class AreaCriaAlterDialog : Fragment() {
                     area.ar_nome = edtTxtNome_AreaDialog.text.toString()
                     area.ar_del = "A"
 
-                    bitmap = (imgArea_DialogFragment.drawable as BitmapDrawable).bitmap
+                    if(imgArea_DialogFragment.drawable.constantState != resources.getDrawable(R.drawable.ic_menu_camera).constantState) {
+                        bitmap = (imgArea_DialogFragment.drawable as BitmapDrawable).bitmap
 
-                    if(!area.ar_nome.equals(areaPam!!.ar_nome) && areaPam!!.ar_imagem != null){
-                        var file = File(areaPam!!.ar_imagem)
-                        if(file.exists()){
-                            try{
-                                file.delete()
-                            }
-                            catch(e : Exception){
-                                System.out.println("File not deleted" + e.message)
+                        if (!area.ar_nome.equals(areaPam!!.ar_nome) && areaPam!!.ar_imagem != null) {
+                            var file = File(areaPam!!.ar_imagem)
+                            if (file.exists()) {
+                                try {
+                                    file.delete()
+                                } catch (e: Exception) {
+                                    System.out.println("File not deleted" + e.message)
+                                }
                             }
                         }
+                        saveBitmap(area)
+                        area.ar_imagem = image_path
                     }
-
-                    saveBitmap(area)
-                    area.ar_imagem = image_path
+                    else{
+                        area.ar_imagem = null;
+                    }
 
                     if (C_Area().updateArea(DBHelper(context), area)){
                         val builder = AlertDialog.Builder(this!!.context!!)
@@ -353,8 +357,14 @@ class AreaCriaAlterDialog : Fragment() {
                     area.setAr_lote_cont(spiContagem_AreaDialog.selectedItemId.toInt())
                     area.ar_nome = edtTxtNome_AreaDialog.text.toString()
                     area.ar_del = "A"
-                    saveBitmap(area)
-                    area.ar_imagem = image_path
+
+                    if(imgArea_DialogFragment.drawable.constantState != resources.getDrawable(R.drawable.ic_menu_camera).constantState){
+                        saveBitmap(area)
+                        area.ar_imagem = image_path
+                    }
+                    else{
+                        area.ar_imagem = null
+                    }
 
                     if (C_Area().insertArea(DBHelper(context), area , userid)){
                         val builder = AlertDialog.Builder(this!!.context!!)
