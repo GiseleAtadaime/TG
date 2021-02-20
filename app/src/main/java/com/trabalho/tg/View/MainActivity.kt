@@ -474,6 +474,7 @@ class MainActivity : AppCompatActivity(),
         supportFragmentManager.inTransaction {
             add(R.id.frmMainContainer, MainFragment.newInstance(usuario))
         }
+
     }
 
     override fun onBackPressed() {

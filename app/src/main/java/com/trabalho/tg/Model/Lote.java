@@ -10,6 +10,7 @@ import com.trabalho.tg.Helper.DBHelper;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class Lote implements Serializable {
     private Integer lot_id;
@@ -72,6 +73,18 @@ public class Lote implements Serializable {
         lot_ent.add(ent);
     }
 
+    public List<Integer> todosTipos(){
+        ArrayList<Integer> tipos = new ArrayList<>();
+        for (Entrada e : lot_ent
+        ) {
+            if(!tipos.contains(e.getEnt_tipo())){
+                tipos.add(e.getEnt_tipo());
+            }
+        }
+
+        return tipos;
+    }
+
     public int totalTipoEntrada(int tipo){
         int total = 0;
         for (Entrada e : lot_ent
@@ -93,6 +106,28 @@ public class Lote implements Serializable {
         }
         return total;
     }
+
+    public Double maiorDespesa(){
+        Double total = 0.00;
+        Double atual = 0.00;
+
+        List<Integer> tipos = todosTipos();
+        if(tipos.contains(4)){
+            tipos.remove(tipos.indexOf(4));
+        }
+        if(tipos.contains(7)){
+            tipos.remove(tipos.indexOf(7));
+        }
+
+        for(Integer tipo : tipos){
+            atual = valorTotal(tipo);
+            if(atual > total){
+                total = atual;
+            }
+        }
+        return total;
+    }
+
 
     public void fecharLote(Context context, Integer aID, Integer uID){
 

@@ -178,6 +178,7 @@ class LoteDetalheFragment : Fragment() {
             chart.backgroundColor = null
             chart.plotBorderWidth = null
             chart.plotShadow = false
+//            options.exporting.enabled = false
             options.chart = chart
 
             var title = HITitle()
@@ -196,6 +197,7 @@ class LoteDetalheFragment : Fragment() {
             plotOptions.pie.dataLabels = HIDataLabels()
             plotOptions.pie.dataLabels.enabled = false
             plotOptions.pie.showInLegend = true
+            plotOptions.pie.colors = ArrayList(Arrays.asList("#034204", "#F5896C","#DCF109","#00FF03","#48D3BC","#FF1100","#1733DA"))
             options.plotOptions = plotOptions
 
 
@@ -219,9 +221,11 @@ class LoteDetalheFragment : Fragment() {
                 i++;
             }
 
-
+            series1.colors = ArrayList(Arrays.asList("#034204", "#F5896C","#DCF109","#00FF03","#48D3BC","#FF1100","#1733DA"))
             series1.data = data
             options.series = ArrayList(Arrays.asList(series1))
+            options.exporting = HIExporting();
+            options.exporting.enabled = false;
             chartView.options = options
 
             //Gráfico valores
@@ -231,7 +235,7 @@ class LoteDetalheFragment : Fragment() {
             val options2 = HIOptions()
 
             val title2 = HITitle()
-            title2.text = "Gastos totais"
+            title2.text = "Balanço"
             options2.title = title2
 
             val xAxis2 = HIXAxis()
@@ -248,7 +252,7 @@ class LoteDetalheFragment : Fragment() {
             }
 
             val yAxis2 = HIYAxis()
-            yAxis2.min = 0
+            yAxis2.min = (lotePam!!.maiorDespesa() * -1)
             yAxis2.title = HITitle()
             yAxis2.title.text = "Valor"
             options2.yAxis = object : ArrayList<HIYAxis?>() {
@@ -256,6 +260,8 @@ class LoteDetalheFragment : Fragment() {
                     add(yAxis2)
                 }
             }
+
+//            options2.colors = ArrayList(listOf("#ff0000", "#007508"))
 
             val legend2 = HILegend()
             legend2.enabled = false
@@ -273,11 +279,14 @@ class LoteDetalheFragment : Fragment() {
             y = 0
             tipo.removeAt(tipo.lastIndex)
             for (t in tipo){
-                var obj = arrayOf(t, lotePam!!.valorTotal(i))
+                var obj = arrayOf(t, (lotePam!!.valorTotal(i) * -1))
+
+                if(t.contentEquals("colheita")){
+                    obj = arrayOf(t, lotePam!!.valorTotal(i))
+                }
                 data2.add(y++, obj.clone())
                 i++
             }
-
 
             series2.data = data2
 
@@ -286,6 +295,8 @@ class LoteDetalheFragment : Fragment() {
             series2.dataLabels.enabled = true
             series2.dataLabels.rotation = -90
             series2.dataLabels.color = HIColor.initWithHexValue("FFFFFF")
+            series2.colors = ArrayList(Arrays.asList("#b50000", "#b50000","#b50000","#176100","#b50000","#b50000"))
+            series2.colorByPoint = true
             series2.dataLabels.align = "right"
             series2.dataLabels.format = "{point.y:.1f}"
             series2.dataLabels.y = 10
@@ -293,7 +304,8 @@ class LoteDetalheFragment : Fragment() {
             series2.dataLabels.style.fontSize = "13px"
             series2.dataLabels.style.fontFamily = "Verdana, sans-serif"
             options2.setSeries(ArrayList(asList(series2)))
-
+            options2.exporting = HIExporting();
+            options2.exporting.enabled = false;
             chartView2.options = options2
 
             if(lotePam!!.lot_imagem != null){
@@ -339,6 +351,8 @@ class LoteDetalheFragment : Fragment() {
             chart.plotBorderWidth = null
             chart.plotShadow = false
             options.chart = chart
+            options.exporting = HIExporting();
+            options.exporting.enabled = false;
 
             var title = HITitle()
             title.text = lotePamFechado!!.lot_nome
@@ -356,6 +370,7 @@ class LoteDetalheFragment : Fragment() {
             plotOptions.pie.dataLabels = HIDataLabels()
             plotOptions.pie.dataLabels.enabled = false
             plotOptions.pie.showInLegend = true
+            plotOptions.pie.colors
             options.plotOptions = plotOptions
 
 
@@ -380,6 +395,7 @@ class LoteDetalheFragment : Fragment() {
             }
 
 
+            series1.colors = ArrayList(Arrays.asList("#034204", "#F5896C","#DCF109","#00FF03","#48D3BC","#FF1100","#1733DA"))
             series1.data = data
             options.series = ArrayList(Arrays.asList(series1))
             chartView.options = options
@@ -391,8 +407,10 @@ class LoteDetalheFragment : Fragment() {
             val options2 = HIOptions()
 
             val title2 = HITitle()
-            title2.text = "Gastos totais"
+            title2.text = "Balanço"
             options2.title = title2
+            options2.exporting = HIExporting();
+            options2.exporting.enabled = false;
 
             val xAxis2 = HIXAxis()
             xAxis2.type = "category"
@@ -408,7 +426,7 @@ class LoteDetalheFragment : Fragment() {
             }
 
             val yAxis2 = HIYAxis()
-            yAxis2.min = 0
+            yAxis2.min = (lotePamFechado!!.maiorDespesa() * -1)
             yAxis2.title = HITitle()
             yAxis2.title.text = "Valor"
             options2.yAxis = object : ArrayList<HIYAxis?>() {
@@ -433,7 +451,11 @@ class LoteDetalheFragment : Fragment() {
             y = 0
             tipo.removeAt(tipo.lastIndex)
             for (t in tipo){
-                var obj = arrayOf(t, lotePamFechado!!.valorTotal(i))
+                var obj = arrayOf(t, (lotePamFechado!!.valorTotal(i) * -1))
+
+                if(t.contentEquals("colheita")){
+                    obj = arrayOf(t, lotePamFechado!!.valorTotal(i))
+                }
                 data2.add(y++, obj.clone())
                 i++
             }
@@ -441,7 +463,8 @@ class LoteDetalheFragment : Fragment() {
 
             series2.data = data2
 
-
+            series2.colors =ArrayList(Arrays.asList("#b50000", "#b50000","#b50000","#176100","#b50000","#b50000"))
+            series2.colorByPoint = true
             series2.dataLabels = HIDataLabels()
             series2.dataLabels.enabled = true
             series2.dataLabels.rotation = -90
