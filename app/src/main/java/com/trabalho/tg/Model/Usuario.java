@@ -1,5 +1,9 @@
 package com.trabalho.tg.Model;
 
+import android.content.Context;
+import com.trabalho.tg.Controller.*;
+import com.trabalho.tg.Helper.DBHelper;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -70,5 +74,87 @@ public class Usuario implements Serializable {
 
     public void addArea(Area a){
         usr_area.add(a);
+    }
+
+    public void loadUsuario(Context context){
+        DBHelper helper = new DBHelper(context);
+        Usuario u = new C_Usuario().selectUsuario(helper);
+
+        this.usr_nome = (u.getUsr_nome());
+        this.usr_fotoperfil = (u.getUsr_fotoperfil());
+        this.usr_email = (u.getUsr_email());
+        this.usr_senha = (u.getUsr_senha());
+
+        this.usr_user_info = new C_User_Info().selectUser_Info(helper);
+
+        if(this.usr_user_info != null){
+            this.usr_user_info.setInfo_endereco(new C_Endereco().selectEndereco(helper, this.usr_user_info.getInfo_id()));
+        }
+
+        this.usr_area = new C_Area().selectArea(helper,true);
+
+        if(this.usr_area != null){
+            for (Area area : this.usr_area){
+                area.setAr_lote( new C_Lote().selectLote(helper, area.getAr_id()));
+                for(Lote lote : area.getAr_lote()){
+                    lote.setLot_ent(new C_Entrada().selectEntrada(helper, lote.getLot_id()));
+                }
+            }
+        }
+    }
+
+    public void reloadUsuarioInfo(Context context){
+        DBHelper helper = new DBHelper(context);
+        this.usr_user_info = new C_User_Info().selectUser_Info(helper);
+
+        if(this.usr_user_info != null){
+            this.usr_user_info.setInfo_endereco(new C_Endereco().selectEndereco(helper, this.usr_user_info.getInfo_id()));
+        }
+
+    }
+
+    public Boolean checkLoteFechado(){
+        for(Area a : this.usr_area){
+            if(a.getAr_lote_Fechado().size() > 0){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void reloadAreas(Context context){
+        DBHelper helper = new DBHelper(context);
+
+        this.usr_area = new C_Area().selectArea(helper,true);
+
+        if(this.usr_area != null){
+            for (Area area : this.usr_area){
+                area.setAr_lote( new C_Lote().selectLote(helper, area.getAr_id()));
+                for(Lote lote : area.getAr_lote()){
+                    lote.setLot_ent(new C_Entrada().selectEntrada(helper, lote.getLot_id()));
+                }
+            }
+        }
+
+
+    }
+
+    public void loadFechados(Context context){
+        DBHelper helper = new DBHelper(context);
+
+        ArrayList<Area> area = new C_Area().selectArea(helper,false);
+        if(area.size() > 0){
+            for(Area a : area){
+                this.usr_area.add(a);
+            }
+        }
+
+        for(Area a : this.usr_area){
+            a.setAr_lote_Fechado(new C_Lote_Fechado().selectLote_Fechado(helper,a.getAr_id()));
+            for(Lote_Fechado l : a.getAr_lote_Fechado()){
+                l.setLot_ent(new C_Entrada_Fechado().selectEntrada(helper,l.getLot_id()));
+            }
+        }
+
     }
 }

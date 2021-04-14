@@ -19,6 +19,7 @@ import android.widget.Toast
 import com.trabalho.tg.Controller.*
 import com.trabalho.tg.Helper.Contrato
 import com.trabalho.tg.Helper.DBHelper
+import com.trabalho.tg.Helper.Report_Helper
 import com.trabalho.tg.Model.*
 import com.trabalho.tg.R
 import com.trabalho.tg.View.Detalhe.AreaCriaAlterDialog
@@ -46,18 +47,49 @@ class MainActivity : AppCompatActivity(),
     EntradaCriaAlterDialog.OnFragmentInteractionListener,
     UsuarioInfoGeral.OnFragmentInteractionListener,
     UsuarioInfoAlter.OnFragmentInteractionListener,
-    Usuario_Endereco_Alter.OnFragmentInteractionListener
+    Usuario_Endereco_Alter.OnFragmentInteractionListener,
+    reportGenerateDetails.OnFragmentInteractionListener,
+    LoteFechadoFragment.OnFragmentInteractionListener
 {
+
+    val FECHADO : Boolean = false
+    val ABERTO : Boolean = true
+
+    override fun onLoteFechadoSelected(lote : List<Lote_Fechado>, pos : Int, tipo : Int, areaId : Int) {
+
+        changeFragment(LoteDetalheFragment.newInstance(null, lote[pos],usuario.usr_id,areaId), true, "LOTE_FECHADO_DETALHE_FRAGMENT")
+    }
+
+    override fun onAreaFechadosSelected(area: List<Area>, pos: Int) {
+        //newInstance(usuario.usr_area[pos]
+        changeFragment(LoteFechadoFragment.newInstance(area[pos]), true, "LOTE_FECHADO_FRAGMENT")
+    }
+
+    override fun onEndClick(areaID: Int, lotID : Int?, type : Boolean) {
+        var aID =  usuario.usr_area[areaID].ar_id
+        var lID = usuario.usr_area[areaID].ar_lote[lotID!!].lot_id
+
+        removeFragment("GENERATE_REPORT_FRAGMENT")
+        if(type){
+            usuario.usr_area[areaID].ar_lote[lotID].fecharLote(this,aID,lID)
+            usuario.reloadAreas(this)
+            usuario.loadFechados(this)
+            clearBackStack()
+            changeFragment(FechadoFragment.newInstance(usuario.usr_area), true, "FECHADO_FRAGMENT")
+        }
+
+    }
+
     override fun onEnderecoClick(usuario: Usuario) {
         clearBackStack()
-        usuario.usr_user_info.info_endereco = C_Endereco().selectEndereco(DBHelper(this), usuario.usr_user_info.info_id)
+        usuario.reloadUsuarioInfo(this)
         changeFragment(UsuarioInfoGeral.newInstance(usuario), true, "USUARIOGERAL_FRAGMENT")
     }
 
     override fun onSaveUsuarioInfo() {
-        usuario.usr_user_info = C_User_Info().selectUser_Info(DBHelper(this))
-        returnFragment(2)
-
+        usuario.reloadUsuarioInfo(this)
+        clearBackStack()
+        changeFragment(UsuarioInfoGeral.newInstance(usuario), true, "USUARIOGERAL_FRAGMENT")
     }
 
     override fun onInfoClick(usuario: Usuario, tipo: Int, endID : Int?) {
@@ -73,7 +105,7 @@ class MainActivity : AppCompatActivity(),
             if(C_Endereco().deleteEndereco(DBHelper(this), endID!!)){
                 Toast.makeText(this, "Endereço removido!", Toast.LENGTH_SHORT).show()
                 clearBackStack()
-                usuario.usr_user_info.info_endereco = C_Endereco().selectEndereco(DBHelper(this), usuario.usr_user_info.info_id)
+                usuario.reloadUsuarioInfo(this)
                 changeFragment(UsuarioInfoGeral.newInstance(usuario), true, "USUARIOGERAL_FRAGMENT")
             }
         }
@@ -87,12 +119,11 @@ class MainActivity : AppCompatActivity(),
         var indexArea = usuario.usr_area.indexOfFirst { it.ar_id == areaId }
         var indexLote = usuario.usr_area[indexArea].ar_lote.indexOfFirst { it.lot_id ==  loteId}
 
-        usuario.usr_area[indexArea].ar_lote[indexLote].lot_ent = C_Entrada().selectEntrada(DBHelper(this),loteId)
         removeFragment("ENTRADA_CRIA_ALTER_DIALOG")
 
         changeFragment(EntradaFragment.newInstance(
             usuario.usr_area[indexArea].ar_lote[indexLote],
-            usuario.usr_id,areaId), true, "ENTRADA_FRAGMENT")
+            usuario.usr_id,areaId, ABERTO), true, "ENTRADA_FRAGMENT")
 
     }
 
@@ -102,13 +133,13 @@ class MainActivity : AppCompatActivity(),
 
         if (fecha){
 
-            usuario.usr_area[indexArea].ar_lote[indexLote].lot_ent = C_Entrada().selectEntrada(DBHelper(this),loteId)
+            usuario.reloadAreas(this)
 
             removeFragment("ENTRADA_DETALHE_DIALOG")
 
             changeFragment(EntradaFragment.newInstance(
                 usuario.usr_area[indexArea].ar_lote[indexLote],
-                usuario.usr_id,areaId), true, "ENTRADA_FRAGMENT")
+                usuario.usr_id,areaId, ABERTO), true, "ENTRADA_FRAGMENT")
         }
         else{
             var datamin : Date? = usuario.usr_area[indexArea].ar_lote[indexLote].lot_ent[0].ent_data
@@ -121,7 +152,7 @@ class MainActivity : AppCompatActivity(),
     override fun onCloseLoteDialog(areaID: Int) {
         var indexArea = usuario.usr_area.indexOfFirst { it.ar_id == areaID }
 
-        usuario.usr_area[indexArea].ar_lote = C_Lote().selectLote(DBHelper(this), areaID)
+        usuario.reloadAreas(this)
 
         removeFragment("LOTE_ALTER_FRAGMENT")
 
@@ -130,17 +161,16 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onCloseAreaDialog() {
-        usuario.usr_area = C_Area().selectArea(DBHelper(this), true)
+        usuario.reloadAreas(this)
         removeFragment("AREA_ALTER_FRAGMENT")
         changeFragment(AreaFragment.newInstance(usuario.usr_area), true, "AREA_FRAGMENT")
     }
 
-    override fun onEntradaSelected(entrada: Entrada, userId : Int, areaId : Int, loteId : Int, new : Boolean) {
+    override fun onEntradaSelected(entrada: Entrada, userId : Int, areaId : Int, loteId : Int, new : Boolean, tipolote : Boolean) {
         var indexArea = usuario.usr_area.indexOfFirst { it.ar_id == areaId }
         var indexLote = usuario.usr_area[indexArea].ar_lote.indexOfFirst { it.lot_id ==  loteId}
         if (new){
             var datamin : Date? = null
-            usuario.usr_area[indexArea].ar_lote[indexLote].lot_ent = C_Entrada().selectEntrada(DBHelper(this),loteId)
             if(usuario.usr_area[indexArea].ar_lote[indexLote].lot_ent.size == 0){
                 datamin = null
             }
@@ -151,7 +181,7 @@ class MainActivity : AppCompatActivity(),
                 true, "ENTRADA_CRIA_ALTER_DIALOG")
         }
         else{
-            changeFragment(EntradaDetalheDialog.newInstance(entrada, userId,areaId,loteId), true, "ENTRADA_DETALHE_DIALOG")
+            changeFragment(EntradaDetalheDialog.newInstance(entrada, userId,areaId,loteId, tipolote), true, "ENTRADA_DETALHE_DIALOG")
         }
 
     }
@@ -174,7 +204,8 @@ class MainActivity : AppCompatActivity(),
 
             builder.setPositiveButton(android.R.string.yes) { dialog, which ->
                 if(usuario.usr_area[indexArea].ar_lote.size > 1){
-                    if (C_Lote().deleteLote(DBHelper(this), usuario.usr_area[indexArea].ar_lote[indexLote])){
+                    if (C_Lote().deleteLote(DBHelper(this), usuario.usr_area[indexArea].ar_lote[indexLote].lot_id)){
+                        usuario.reloadAreas(this)
                         dialog.dismiss()
                         onCloseLoteDialog(areaId)
                     }
@@ -196,11 +227,69 @@ class MainActivity : AppCompatActivity(),
             builder.show()
         }
         else if(tipo == 3){//Fechar lote
+            var incompleto = true;
 
+            if(usuario.usr_user_info != null){
+                if(usuario.usr_user_info.info_endereco.size > 0){
+
+                    val builder = AlertDialog.Builder(this)
+                    builder.setTitle("Fechar lote")
+                    builder.setMessage("Tem certeza que gostaria de finalizar as operações do lote ${usuario.usr_area[indexArea].ar_lote[indexLote].lot_nome}? Esta operação não pode ser desfeita!")
+
+                    builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+                        if(usuario.usr_area[indexArea].ar_lote[indexLote].lot_ent.size > 0){
+
+                            Toast.makeText(this, "Gerar relatório!", Toast.LENGTH_SHORT).show()
+
+                            usuario.loadUsuario(this)
+
+
+                            Toast.makeText(this, "Relatório gerado!", Toast.LENGTH_SHORT).show()
+                            dialog.dismiss()
+                            //onCloseLoteDialog(areaId)
+
+
+                            changeFragment(reportGenerateDetails.newInstance(usuario, indexArea,indexLote),
+                                true, "GENERATE_REPORT_FRAGMENT")
+
+                        }
+                        else{
+                            Toast.makeText(this, "Este lote não possui entradas para que um relatório seja gerado!", Toast.LENGTH_SHORT).show()
+                            dialog.dismiss()
+                        }
+
+                    }
+                    builder.setNegativeButton(android.R.string.no){dialog, which ->
+                        dialog.dismiss()
+                    }
+
+                    builder.show()
+
+                    incompleto = false;
+                }
+                else{
+                    incompleto = true;
+                }
+            }
+            else{
+                incompleto = true;
+            }
+
+            if(incompleto){
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle("Erro!")
+                builder.setMessage("Não é possível fechar o lote ${usuario.usr_area[indexArea].ar_lote[indexLote].lot_nome} pois as suas informações/endereços não foram preenchidos!")
+
+
+                builder.setNeutralButton(android.R.string.ok){dialog, which ->
+                    dialog.dismiss()
+                }
+
+                builder.show()
+            }
         }
         else if(tipo == 4){//Novo entrada
             var datamin : Date? = null
-            usuario.usr_area[indexArea].ar_lote[indexLote].lot_ent = C_Entrada().selectEntrada(DBHelper(this),loteId)
             if(usuario.usr_area[indexArea].ar_lote[indexLote].lot_ent.size == 0){
                 datamin = null
             }
@@ -212,11 +301,31 @@ class MainActivity : AppCompatActivity(),
 
         }
         else if(tipo == 5){//Ver entradas
-            usuario.usr_area[indexArea].ar_lote[indexLote].lot_ent = C_Entrada().selectEntrada(DBHelper(this),loteId)
 
-            changeFragment(EntradaFragment.newInstance(
-                usuario.usr_area[indexArea].ar_lote[indexLote],
-                usuario.usr_id,areaId), true, "ENTRADA_FRAGMENT")
+            if(indexLote != -1){
+                usuario.reloadAreas(this)
+
+                changeFragment(
+                    EntradaFragment.newInstance(
+                        usuario.usr_area[indexArea].ar_lote[indexLote],
+                        usuario.usr_id, areaId,
+                        ABERTO
+                    ), true, "ENTRADA_FRAGMENT"
+                )
+            }
+            else {
+                usuario.loadFechados(this)
+
+                indexLote = usuario.usr_area[indexArea].ar_lote_Fechado.indexOfFirst { it.lot_id ==  loteId}
+                changeFragment(
+                    EntradaFragment.newInstance(
+                        usuario.usr_area[indexArea].ar_lote_Fechado[indexLote],
+                        usuario.usr_id, areaId,
+                        FECHADO
+
+                    ), true, "ENTRADA_FRAGMENT"
+                )
+            }
         }
     }
 
@@ -224,11 +333,9 @@ class MainActivity : AppCompatActivity(),
         var indexArea = usuario.usr_area.indexOfFirst { it.ar_id == areaId }
 
         if (tipo == 0) { //lote
-
-            usuario.usr_area[indexArea].ar_lote[pos].lot_ent = C_Entrada().selectEntrada(DBHelper(this),lote[pos].lot_id)
-
             changeFragment(LoteDetalheFragment.newInstance(usuario.
-                usr_area[indexArea].ar_lote[pos]
+                usr_area[indexArea].ar_lote[pos],
+                null
                 ,usuario.usr_id, areaId), true, "LOTE_DETALHE_FRAGMENT")
         }
         else if(tipo == 1 || tipo == 3) { //alterar
@@ -242,7 +349,8 @@ class MainActivity : AppCompatActivity(),
 
             builder.setPositiveButton(android.R.string.yes) { dialog, which ->
                 if(usuario.usr_area[indexArea].ar_lote.size > 1){
-                    if (C_Lote().deleteLote(DBHelper(this), usuario.usr_area[indexArea].ar_lote[pos])){
+                    if (C_Lote().deleteLote(DBHelper(this), usuario.usr_area[indexArea].ar_lote[pos].lot_id)){
+                        usuario.reloadAreas(this)
                         dialog.dismiss()
                         onCloseLoteDialog(areaId)
                     }
@@ -269,11 +377,10 @@ class MainActivity : AppCompatActivity(),
 
     override fun onAreaSelected(area: List<Area>, pos : Int, tipo : Int) {
         if (tipo == 0) { //lote
-            usuario.usr_area[pos].ar_lote = C_Lote().selectLote(DBHelper(this),usuario.usr_area[pos].ar_id)
             if (usuario.usr_area[pos].ar_lote.size == 0){
                 createLote(pos)
+                usuario.reloadAreas(this)
             }
-            usuario.usr_area[pos].ar_lote = C_Lote().selectLote(DBHelper(this),usuario.usr_area[pos].ar_id)
             changeFragment(LoteFragment.newInstance(usuario.usr_area[pos]), true, "LOTE_FRAGMENT")
         }
         else if(tipo == 1) { //alterar
@@ -292,12 +399,13 @@ class MainActivity : AppCompatActivity(),
                 if(usuario.usr_area.size > 1){
                     area[pos].ar_del = Contrato.Area.STATUS_DELETADO
                     if (C_Area().updateArea(DBHelper(this), area[pos])){
+                        usuario.reloadAreas(this)
                         dialog.dismiss()
                         onCloseAreaDialog()
                     }
                     else{
                         Toast.makeText(this, "Não foi possível apagar a área selecionada!", Toast.LENGTH_SHORT).show()
-                        area[pos].ar_del = Contrato.Area.STATUS_ATIVO
+                        usuario.reloadAreas(this)
                         dialog.dismiss()
                     }
                 }
@@ -346,14 +454,7 @@ class MainActivity : AppCompatActivity(),
 
 
         usuario = intent.extras.get("usuario") as Usuario
-        usuario.usr_area = C_Area().selectArea(DBHelper(this), true)
-
-        for (area in usuario.usr_area){
-            area.ar_lote = C_Lote().selectLote(DBHelper(this), area.ar_id)
-            for(lote in area.ar_lote){
-                lote.lot_ent = C_Entrada().selectEntrada(DBHelper(this), lote.lot_id)
-            }
-        }
+        usuario.loadUsuario(this)
 
         if (usuario.usr_area.size == 0){
             createArea()
@@ -369,6 +470,7 @@ class MainActivity : AppCompatActivity(),
         supportFragmentManager.inTransaction {
             add(R.id.frmMainContainer, MainFragment.newInstance(usuario))
         }
+
     }
 
     override fun onBackPressed() {
@@ -391,12 +493,8 @@ class MainActivity : AppCompatActivity(),
         when (item.itemId) {
             R.id.nav_main -> {
                 if (!MainFragment().isVisible){
-                    for (area in usuario.usr_area){
-                        area.ar_lote = C_Lote().selectLote(DBHelper(this), area.ar_id)
-                        for(lote in area.ar_lote){
-                            lote.lot_ent = C_Entrada().selectEntrada(DBHelper(this), lote.lot_id)
-                        }
-                    }
+                    clearBackStack()
+                    usuario.reloadAreas(this)
                     changeFragment(MainFragment.newInstance(usuario), true, "MAIN_FRAGMENT")
                 }
 
@@ -407,7 +505,10 @@ class MainActivity : AppCompatActivity(),
             }
             R.id.nav_fechado -> {
                 clearBackStack()
-                changeFragment(FechadoFragment(), true, "FECHADO_FRAGMENT")
+                if(!usuario.checkLoteFechado()){
+                    usuario.loadFechados(this)
+                }
+                changeFragment(FechadoFragment.newInstance(usuario.usr_area), true, "FECHADO_FRAGMENT")
             }
             R.id.nav_qrcode -> {
                 clearBackStack()
@@ -459,8 +560,11 @@ class MainActivity : AppCompatActivity(),
 
     fun removeFragment(tag : String){
         val fragment = supportFragmentManager.findFragmentByTag(tag)
-        if (fragment != null)
-            supportFragmentManager.beginTransaction().remove(fragment).commit()
+        if (fragment != null){
+            supportFragmentManager.popBackStack(tag, POP_BACK_STACK_INCLUSIVE)
+//            supportFragmentManager.beginTransaction().remove(fragment).commit()
+        }
+
     }
 
     fun createArea(){

@@ -1,45 +1,43 @@
 package com.trabalho.tg.View
 
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.trabalho.tg.Adapters.AreaAdapter
-import com.trabalho.tg.Controller.C_Area
-import com.trabalho.tg.Helper.Contrato
-import com.trabalho.tg.Helper.DBHelper
+import com.trabalho.tg.Adapters.LoteAdapter
+import com.trabalho.tg.Adapters.LoteFechadoAdapter
 import com.trabalho.tg.Model.Area
+import com.trabalho.tg.Model.Lote_Fechado
+
 import com.trabalho.tg.R
 import java.io.Serializable
 
-
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "area"
+private const val AREAPAM = "areaPam"
 
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [AreaFragment.OnFragmentInteractionListener] interface
+ * [LoteFechadoFragment.OnFragmentInteractionListener] interface
  * to handle interaction events.
- * Use the [AreaFragment.newInstance] factory method to
+ * Use the [LoteFechadoFragment.newInstance] factory method to
  * create an instance of this fragment.
  *
  */
-class AreaFragment : Fragment() {
+class LoteFechadoFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    private var area: ArrayList<Area>? = null
+    private var areaPam: Area? = null
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            area = it.getSerializable(ARG_PARAM1) as ArrayList<Area>
+            areaPam = it.getSerializable(AREAPAM) as Area
         }
     }
 
@@ -48,13 +46,12 @@ class AreaFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view  = inflater.inflate(R.layout.fragment_area, container, false)
-        return view
+        return inflater.inflate(R.layout.fragment_lote_fechado, container, false)
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onAreaSelected(area: List<Area>, pos : Int, tipo : Int) {
-        listener?.onAreaSelected(area, pos, tipo)
+    fun onLoteFechadoSelected(lote : List<Lote_Fechado>, pos : Int, tipo : Int, areaId: Int) {
+        listener?.onLoteFechadoSelected(lote, pos, tipo, areaId)
     }
 
     override fun onAttach(context: Context) {
@@ -64,7 +61,6 @@ class AreaFragment : Fragment() {
         } else {
             throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
         }
-
     }
 
     override fun onDetach() {
@@ -85,7 +81,7 @@ class AreaFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onAreaSelected(area: List<Area>, pos : Int, tipo : Int)
+        fun onLoteFechadoSelected(lote : List<Lote_Fechado>, pos : Int, tipo : Int, areaId : Int)
     }
 
     companion object {
@@ -93,16 +89,16 @@ class AreaFragment : Fragment() {
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
-         * @param area Parameter 1.
+         * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment AreaFragment.
+         * @return A new instance of fragment LoteFechadoFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(area: ArrayList<Area>) =
-            AreaFragment().apply {
+        fun newInstance(areaPam: Area) =
+            LoteFechadoFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(ARG_PARAM1, area as Serializable)
+                    putSerializable(AREAPAM, areaPam as Serializable)
                 }
             }
     }
@@ -110,18 +106,16 @@ class AreaFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val mlistener = fun(view : View, position: Int , tipo : Int) {
-            Toast.makeText(context, "Position $position e tipo : $tipo", Toast.LENGTH_SHORT).show();
-            onAreaSelected(area!!, position, tipo)
 
+        val mlistener = fun(view : View, position: Int, tipo : Int) {
+            Toast.makeText(context, "Position $position", Toast.LENGTH_SHORT).show();
+            onLoteFechadoSelected(areaPam!!.ar_lote_Fechado, position, tipo, areaPam!!.ar_id)
         }
 
 
-        var recyclerView = view.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.recView_AreaFrag)
+        var recyclerView = view.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.recView_LoteFechadoFrag)
         recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity)
 
-        recyclerView.adapter = AreaAdapter(area!!, context, mlistener, true)
+        recyclerView.adapter = LoteFechadoAdapter(areaPam!!.ar_lote_Fechado, context, mlistener)
     }
-
 }
-

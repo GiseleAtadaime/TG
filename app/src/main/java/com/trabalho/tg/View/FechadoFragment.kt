@@ -7,13 +7,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import com.trabalho.tg.Adapters.AreaAdapter
+import com.trabalho.tg.Model.Area
 import com.trabalho.tg.R
+import java.io.Serializable
 
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val ARG_PARAM1 = "area"
 
 /**
  * A simple [Fragment] subclass.
@@ -26,15 +29,13 @@ private const val ARG_PARAM2 = "param2"
  */
 class FechadoFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var area: ArrayList<Area>? = null
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            area = it.getSerializable(ARG_PARAM1) as ArrayList<Area>
         }
     }
 
@@ -47,8 +48,8 @@ class FechadoFragment : Fragment() {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
+    fun onAreaFechadosSelected(area: List<Area>, pos : Int) {
+        listener?.onAreaFechadosSelected(area, pos)
     }
 
     override fun onAttach(context: Context) {
@@ -78,7 +79,7 @@ class FechadoFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+        fun onAreaFechadosSelected(area: List<Area>, pos : Int)
     }
 
     companion object {
@@ -92,12 +93,27 @@ class FechadoFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(area: ArrayList<Area>) =
             FechadoFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putSerializable(ARG_PARAM1, area as Serializable)
                 }
             }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val mlistener = fun(view : View, position: Int , tipo : Int) {
+            Toast.makeText(context, "Position $position e tipo : $tipo", Toast.LENGTH_SHORT).show();
+            onAreaFechadosSelected(area!!, position)
+
+        }
+
+
+        var recyclerView = view.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.recView_AreaFechadoFrag)
+        recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity)
+
+        recyclerView.adapter = AreaAdapter(area!!, context, mlistener, false)
     }
 }

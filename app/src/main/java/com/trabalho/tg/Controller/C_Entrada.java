@@ -132,7 +132,7 @@ public class C_Entrada {
 
     public Boolean insertEntrada(DBHelper dbHelper, Entrada e, Integer lID, Integer uID){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        SQLiteDatabase dbR = dbHelper.getReadableDatabase();
+
         Boolean ret = false;
 
         ContentValues values = new ContentValues();
@@ -231,23 +231,29 @@ public class C_Entrada {
         }
     }
     
-    public Boolean deleteAllEntradasByLote(DBHelper dbHelper, Integer loteID){
+    public Boolean deleteAllEntradasByLote(DBHelper dbHelper, Integer loteID, ArrayList<Entrada> entradas){
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         Boolean ret = false;
-        ArrayList<Entrada> entradas = null;
         Integer i = 0;
+        int text = 0;
         try{
-            entradas = selectEntrada(dbHelper,loteID);
 
-            for(i=0;i< entradas.size() - 1;i++){
-                db.delete(Contrato.Entrada.TABLENAME,Contrato.Entrada.COLUMN_NUMERO + " = ?", new String[]{entradas.get(i).getEnt_numero().toString()});
-                db.delete(Contrato.Entrada_Detalhe.TABLENAME,Contrato.Entrada_Detalhe.COLUMN_DETALHE_NUMERO + " = ?", new String[]{entradas.get(i).getEnt_tipo().toString()});
+            String whereClause =  Contrato.Entrada.COLUMN_LOTE_ID + " = ?";
+            String[] whereArgs = new String[] { String.valueOf(loteID) };
+            text =  db.delete(Contrato.Entrada.TABLENAME, whereClause, whereArgs);
+
+            whereClause =  Contrato.Entrada_Detalhe.COLUMN_DETALHE_NUMERO + " = ?";
+            for(i=0;i <= entradas.size();i++){
+                whereArgs = new String[] { String.valueOf(entradas.get(i).getEnt_detalhe_num()) };
+                db.delete(Contrato.Entrada_Detalhe.TABLENAME, whereClause, whereArgs);
             }
+
             ret = true;
+            db.setTransactionSuccessful();
         }
         finally {
-            db.setTransactionSuccessful();
+
             db.close();
             return ret;
         }

@@ -22,16 +22,18 @@ public class AreaAdapter extends RecyclerView.Adapter{
     private Context c;
     List<Area> area;
     AdapterListener listener;
+    Boolean aberto;
 
     public interface AdapterListener {
         void onClick(View view, int adapterPosition, Integer tipo);
     }
 
 
-    public AreaAdapter(List<Area> area, Context c, AdapterListener listener) {
+    public AreaAdapter(List<Area> area, Context c, AdapterListener listener, Boolean  aberto) {
         this.area = area;
         this.c = c;
         this.listener = listener;
+        this.aberto = aberto;
 
     }
 
@@ -87,6 +89,38 @@ public class AreaAdapter extends RecyclerView.Adapter{
 
             this.listener = listener;
 
+            if(aberto){
+
+
+                editImagem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onClick(v, getAdapterPosition(), 1);
+                    }
+                });
+
+                delImagem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onClick(v, getAdapterPosition(), 2);
+                    }
+                });
+
+                addImagem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onClick(v, getAdapterPosition(), 3);
+                    }
+                });
+
+            }
+            else{
+                editImagem.setVisibility(View.GONE);
+                delImagem.setVisibility(View.GONE);
+                addImagem.setVisibility(View.GONE);
+            }
+
+
             areaImagem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -94,26 +128,6 @@ public class AreaAdapter extends RecyclerView.Adapter{
                 }
             });
 
-            editImagem.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onClick(v, getAdapterPosition(), 1);
-                }
-            });
-
-            delImagem.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onClick(v, getAdapterPosition(), 2);
-                }
-            });
-
-            addImagem.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onClick(v, getAdapterPosition(), 3);
-                }
-            });
 
         }
 

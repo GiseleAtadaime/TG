@@ -18,7 +18,7 @@ public class C_Endereco {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String query = "SELECT * FROM " + Contrato.Endereco.TABLENAME  +  " WHERE " + Contrato.Endereco.COLUMN_INFO_ID + " = " + iID + ";";
+        String query = "SELECT * FROM " + Contrato.Endereco.TABLENAME  +  " WHERE " + Contrato.Endereco.COLUMN_INFO_ID + " = " + iID + " order by " + Contrato.Endereco.COLUMN_ID + "  asc;";
 
 
         try{

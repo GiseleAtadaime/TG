@@ -210,6 +210,7 @@ class EntradaCriaAlterDialog : Fragment() {
                 btnCriar_EntradaNewDialog.isEnabled = true
 
                 spiQtde_EntradaNewDialog.visibility = View.GONE
+                spiTempo_EntradaNewDialog.visibility = View.GONE
 
                 txtMudasB_EntradaNewDialog.visibility = View.GONE
                 edtMudasB_EntradaNewDialog.visibility = View.GONE
@@ -221,6 +222,7 @@ class EntradaCriaAlterDialog : Fragment() {
 
                         txtQtde_EntradaNewDialog.visibility = View.VISIBLE
                         linQtde_EntradaNewDialog.visibility = View.VISIBLE
+
                         txtValor_EntradaNewDialog.visibility = View.VISIBLE
                         edtValor_EntradaNewDialog.visibility = View.VISIBLE
 
@@ -245,17 +247,13 @@ class EntradaCriaAlterDialog : Fragment() {
                         if (!tipo) {
                             edtQtde_EntradaNewDialog.setText(entrada!!.ent_qtde.toString())
                             edtValor_EntradaNewDialog.setText(utils.formatMonetario(utils.doubleToString(entrada!!.ent_valor)))
-                            spiQtde_EntradaNewDialog.setSelection(
-                                (spiQtde_EntradaNewDialog.adapter as ArrayAdapter<CharSequence>).getPosition(
-                                    entrada!!.ent_qtun
-                                )
-                            )
                             edtMudasB_EntradaNewDialog.setText(entrada!!.ent_mudas_bandeja.toString())
                         }
 
                     }
                     2 -> {
                         spiTempo_EntradaNewDialog.adapter = adapterTempo
+                        spiTempo_EntradaNewDialog.visibility = View.VISIBLE
                         txtTempo_EntradaNewDialog.visibility = View.VISIBLE
                         linTempo_EntradaNewDialog.visibility = View.VISIBLE
 
@@ -297,6 +295,7 @@ class EntradaCriaAlterDialog : Fragment() {
                     3 -> {
 
                         spiTempo_EntradaNewDialog.adapter = adapterTempoCarencia
+                        spiTempo_EntradaNewDialog.visibility = View.VISIBLE
                         txtTempo_EntradaNewDialog.visibility = View.VISIBLE
                         linTempo_EntradaNewDialog.visibility = View.VISIBLE
                         txtTempo_EntradaNewDialog.text = "Tempo de carência"
@@ -483,6 +482,7 @@ class EntradaCriaAlterDialog : Fragment() {
                     }
                     7 -> {
                         spiTempo_EntradaNewDialog.adapter = adapterTempo
+                        spiTempo_EntradaNewDialog.visibility = View.VISIBLE
                         txtTempo_EntradaNewDialog.visibility = View.VISIBLE
                         linTempo_EntradaNewDialog.visibility = View.VISIBLE
 
@@ -534,13 +534,13 @@ class EntradaCriaAlterDialog : Fragment() {
 
                 }
 
-                if(linTempo_EntradaNewDialog.visibility == View.VISIBLE){
+                if(spiTempo_EntradaNewDialog.visibility == View.VISIBLE){
                     entrada!!.ent_tpun = spiTempo_EntradaNewDialog.selectedItem.toString()
                 }
                 else{
                     entrada!!.ent_tpun = null
                 }
-                if(linQtde_EntradaNewDialog.visibility == View.VISIBLE){
+                if(spiQtde_EntradaNewDialog.visibility == View.VISIBLE){
                     entrada!!.ent_qtun = spiQtde_EntradaNewDialog.selectedItem.toString()
                 }
                 else{

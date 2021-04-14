@@ -18,8 +18,8 @@ import com.trabalho.tg.Helper.Utils_TG
 import com.trabalho.tg.Model.Lote
 import com.trabalho.tg.Model.Usuario
 import com.trabalho.tg.R
-import java.util.ArrayList
 import java.io.Serializable
+import java.util.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -145,7 +145,9 @@ class MainFragment : Fragment() {
             plotOptions.bar = HIBar()
             plotOptions.bar.dataLabels = HIDataLabels()
             plotOptions.bar.dataLabels.enabled = true
+            plotOptions.bar.colors = ArrayList(Arrays.asList( "#F5896C","#DCF109","#48D3BC","#FF1100","#1733DA"))
             options.plotOptions = plotOptions
+
 
             var legend = HILegend()
             legend.layout = "vertical"
@@ -192,7 +194,7 @@ class MainFragment : Fragment() {
                 }
             }
 
-
+            options.colors = ArrayList(Arrays.asList( "#F5896C","#DCF109","#48D3BC","#FF1100","#1733DA"))
             xaxis.categories = categories
             var arrayx = ArrayList<HIXAxis>()
             arrayx.add(xaxis)
@@ -200,8 +202,9 @@ class MainFragment : Fragment() {
 
 
             options.series = series
+            options.exporting = HIExporting();
+            options.exporting.enabled = false;
             chartView.options = options
-
 
 
     }

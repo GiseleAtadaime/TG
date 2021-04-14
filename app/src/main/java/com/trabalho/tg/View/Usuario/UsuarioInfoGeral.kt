@@ -157,7 +157,7 @@ class UsuarioInfoGeral : Fragment() {
     fun saveBitmap() {
         val cw = ContextWrapper(context)
         val directory = cw.getDir("imageDir", Context.MODE_PRIVATE)
-        val file = File(directory, usuario!!.usr_nome.replace(" ","_") + ".jpg")
+        val file = File(directory, "usrID_" + usuario!!.usr_id + "_" + usuario!!.usr_nome.replace(" ","_") + ".jpg")
         //if (!file.exists()) {
         Log.d("path", file.toString())
         image_path = file.toString()
@@ -292,7 +292,7 @@ class UsuarioInfoGeral : Fragment() {
             var recyclerView = view.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.recViewEndereco_UsuarioGeral)
             recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity)
 
-            recyclerView.adapter = EnderecoAdapter(usuario!!.usr_user_info.info_endereco, context, mlistener)
+            recyclerView.adapter = EnderecoAdapter(usuario!!.usr_user_info.info_endereco, context, mlistener, true)
 
 
         }

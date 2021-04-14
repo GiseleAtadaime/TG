@@ -1,5 +1,6 @@
 package com.trabalho.tg.View
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -23,6 +24,7 @@ import java.io.Serializable
 private const val LOTEPAM = "param1"
 private const val USERID = "userid"
 private const val AREAID = "areaid"
+private const val TIPOLOTE = "tipolote"
 
 /**
  * A simple [Fragment] subclass.
@@ -38,6 +40,7 @@ class EntradaFragment : Fragment() {
     private var lotePam: Lote? = null
     private var userid: Int? = null
     private var areaId: Int? = null
+    private var tipolote: Boolean? = null
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +49,7 @@ class EntradaFragment : Fragment() {
             lotePam = it.getSerializable(LOTEPAM) as Lote
             userid = it.getInt(USERID)
             areaId = it.getInt(AREAID)
+            tipolote = it.getBoolean(TIPOLOTE)
         }
     }
 
@@ -58,8 +62,8 @@ class EntradaFragment : Fragment() {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onEntradaSelected(entrada : Entrada, userId : Int, areaId : Int, loteId : Int, new : Boolean) {
-        listener?.onEntradaSelected(entrada, userId, areaId, loteId, new)
+    fun onEntradaSelected(entrada : Entrada, userId : Int, areaId : Int, loteId : Int, new : Boolean, tipolote : Boolean) {
+        listener?.onEntradaSelected(entrada, userId, areaId, loteId, new, tipolote)
     }
 
     override fun onAttach(context: Context) {
@@ -89,7 +93,7 @@ class EntradaFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onEntradaSelected(entrada : Entrada,userId : Int, areaId : Int, loteId : Int, new : Boolean)
+        fun onEntradaSelected(entrada : Entrada,userId : Int, areaId : Int, loteId : Int, new : Boolean, tipolote : Boolean)
     }
 
     companion object {
@@ -103,22 +107,24 @@ class EntradaFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(lotePam: Lote, user : Int, areaId : Int) =
+        fun newInstance(lotePam: Lote, user : Int, areaId : Int, tipolote : Boolean) =
             EntradaFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable(LOTEPAM, lotePam as Serializable)
                     putInt(USERID, user)
                     putInt(AREAID, areaId)
+                    putBoolean(TIPOLOTE, tipolote)
                 }
             }
     }
 
+    @SuppressLint("RestrictedApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val mlistener = fun(view : View, position: Int) {
             Toast.makeText(context, "Entrada position:  $position", Toast.LENGTH_SHORT).show()
-            onEntradaSelected(lotePam!!.lot_ent[position], userid!!, areaId!!, lotePam!!.lot_id, false)
+            onEntradaSelected(lotePam!!.lot_ent[position], userid!!, areaId!!, lotePam!!.lot_id, false, tipolote!!)
         }
 
         var recyclerView = view.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.recView_Entrada)
@@ -137,9 +143,12 @@ class EntradaFragment : Fragment() {
             btnFechar_EntradaFragment.visibility = View.INVISIBLE
         }
 
+        if(!tipolote!!){
+            fBtnAdd_EntradaFragment.visibility = View.GONE
+        }
 
         fBtnAdd_EntradaFragment.setOnClickListener {
-                onEntradaSelected(Entrada(0), userid!!, areaId!!, lotePam!!.lot_id, true)
+                onEntradaSelected(Entrada(0), userid!!, areaId!!, lotePam!!.lot_id, true, tipolote!!)
 
         }
 

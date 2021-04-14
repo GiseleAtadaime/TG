@@ -1,8 +1,16 @@
 package com.trabalho.tg.Model;
 
+import android.content.Context;
+import com.trabalho.tg.Controller.C_Entrada;
+import com.trabalho.tg.Controller.C_Entrada_Fechado;
+import com.trabalho.tg.Controller.C_Lote;
+import com.trabalho.tg.Controller.C_Lote_Fechado;
+import com.trabalho.tg.Helper.DBHelper;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class Lote implements Serializable {
     private Integer lot_id;
@@ -47,12 +55,34 @@ public class Lote implements Serializable {
         return lot_ent;
     }
 
+    public ArrayList<Entrada> getLot_EntAgro() {
+        ArrayList<Entrada> agro = new ArrayList<>();
+        for(Entrada ent : lot_ent){
+            if(ent.getEnt_tipo() == 3){
+                agro.add(ent);
+            }
+        }
+        return agro;
+    }
+
     public void setLot_ent(ArrayList<Entrada> lot_ent) {
         this.lot_ent = lot_ent;
     }
 
     public void addEntrada(Entrada ent){
         lot_ent.add(ent);
+    }
+
+    public List<Integer> todosTipos(){
+        ArrayList<Integer> tipos = new ArrayList<>();
+        for (Entrada e : lot_ent
+        ) {
+            if(!tipos.contains(e.getEnt_tipo())){
+                tipos.add(e.getEnt_tipo());
+            }
+        }
+
+        return tipos;
     }
 
     public int totalTipoEntrada(int tipo){
@@ -75,5 +105,45 @@ public class Lote implements Serializable {
             }
         }
         return total;
+    }
+
+    public Double maiorDespesa(){
+        Double total = 0.00;
+        Double atual = 0.00;
+
+        List<Integer> tipos = todosTipos();
+        if(tipos.contains(4)){
+            tipos.remove(tipos.indexOf(4));
+        }
+        if(tipos.contains(7)){
+            tipos.remove(tipos.indexOf(7));
+        }
+
+        for(Integer tipo : tipos){
+            atual = valorTotal(tipo);
+            if(atual > total){
+                total = atual;
+            }
+        }
+        return total;
+    }
+
+
+    public void fecharLote(Context context, Integer aID, Integer uID){
+
+
+        Lote_Fechado l = new Lote_Fechado(this.lot_id);
+        l.setLot_imagem(this.lot_imagem);
+        l.setLot_nome(this.lot_nome);
+        l.setLot_planta(this.lot_planta);
+        l.setLot_ent(this.lot_ent);
+
+
+        if(new C_Lote_Fechado().insertLote_Fechado(new DBHelper(context),l,aID,uID)){
+            if(new C_Entrada_Fechado().insertListEntrada(new DBHelper(context),this.lot_ent,this.lot_id,uID)){
+                new C_Entrada().deleteAllEntradasByLote(new DBHelper(context),this.lot_id, this.lot_ent);
+                new C_Lote().deleteLote(new DBHelper(context),this.lot_id);
+            }
+        }
     }
 }

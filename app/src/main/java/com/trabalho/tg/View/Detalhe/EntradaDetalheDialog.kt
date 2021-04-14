@@ -23,6 +23,8 @@ private const val ENTRADA = "param1"
 private const val USERID = "userid"
 private const val AREAID = "areaid"
 private const val LOTEID = "loteid"
+private const val TIPOLOTE = "tipolote"
+
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
@@ -38,6 +40,7 @@ class EntradaDetalheDialog : Fragment() {
     private var userid: Int? = null
     private var areaId: Int? = null
     private var loteId: Int? = null
+    private var tipolote: Boolean? = null
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +50,7 @@ class EntradaDetalheDialog : Fragment() {
             userid = it.getInt(USERID)
             areaId = it.getInt(AREAID)
             loteId = it.getInt(LOTEID)
+            tipolote = it.getBoolean(TIPOLOTE)
         }
     }
 
@@ -104,13 +108,14 @@ class EntradaDetalheDialog : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(entrada: Entrada, user : Int, areaId : Int, loteId : Int) =
+        fun newInstance(entrada: Entrada, user : Int, areaId : Int, loteId : Int, tipolote : Boolean) =
             EntradaDetalheDialog().apply {
                 arguments = Bundle().apply {
                     putSerializable(ENTRADA, entrada as Serializable)
                     putInt(USERID, user)
                     putInt(AREAID, areaId)
                     putInt(LOTEID,loteId)
+                    putBoolean(TIPOLOTE, tipolote)
                 }
             }
     }
@@ -255,6 +260,11 @@ class EntradaDetalheDialog : Fragment() {
 
         }
 
+
+        if(!tipolote!!){
+            imgBtnAlter_EntradaDetalhe.visibility = View.GONE
+            imgBtnDelete_EntradaDetalhe.visibility = View.GONE
+        }
 
         imgBtnAlter_EntradaDetalhe.setOnClickListener(){
             onAlterDetalheClick(entrada!!,userid!!,areaId!!, loteId!!, false)

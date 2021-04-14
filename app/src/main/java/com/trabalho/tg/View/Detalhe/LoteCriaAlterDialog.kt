@@ -234,7 +234,7 @@ class LoteCriaAlterDialog : Fragment() {
         fun saveBitmap(lote : Lote) {
             val cw = ContextWrapper(context)
             val directory = cw.getDir("imageDir", Context.MODE_PRIVATE)
-            val file = File(directory, lote.lot_nome.replace(" ","_") + ".jpg")
+            val file = File(directory, "loteID_" + lote.lot_id + "_" + lote.lot_nome.replace(" ","_") + ".jpg")
             //if (!file.exists()) {
             Log.d("path", file.toString())
             image_path = file.toString()
@@ -272,21 +272,25 @@ class LoteCriaAlterDialog : Fragment() {
                     lote.lot_nome = edtTxtNome_LoteDialog.text.toString()
                     lote.lot_planta = edtPlanta_LoteDialog.text.toString()
 
-                    bitmap = (imgLote_LoteDialog.drawable as BitmapDrawable).bitmap
+                    if(imgLote_LoteDialog.drawable.constantState != resources.getDrawable(R.drawable.ic_menu_camera).constantState) {
+                        bitmap = (imgLote_LoteDialog.drawable as BitmapDrawable).bitmap
 
-                    if(!lote.lot_nome.equals(lotePam!!.lot_nome) && lotePam!!.lot_imagem != null){
-                        var file = File(lotePam!!.lot_imagem)
-                        if(file.exists()){
-                            try{
-                                file.delete()
-                            }
-                            catch(e : Exception){
-                                System.out.println("File not deleted" + e.message)
+                        if (!lote.lot_nome.equals(lotePam!!.lot_nome) && lotePam!!.lot_imagem != null) {
+                            var file = File(lotePam!!.lot_imagem)
+                            if (file.exists()) {
+                                try {
+                                    file.delete()
+                                } catch (e: Exception) {
+                                    System.out.println("File not deleted" + e.message)
+                                }
                             }
                         }
+                        saveBitmap(lote)
+                        lote.lot_imagem = image_path
                     }
-                    saveBitmap(lote)
-                    lote.lot_imagem = image_path
+                    else{
+                        lote.lot_imagem = null;
+                    }
 
                     if (C_Lote().updateLote(DBHelper(context), lote)){
                         val builder = AlertDialog.Builder(this!!.context!!)
@@ -312,16 +316,20 @@ class LoteCriaAlterDialog : Fragment() {
                 else{
 
                     var lote = Lote(0)
-                    lote.lot_planta = edtPlanta_LoteDialog.text.toString()
-
-                    saveBitmap(lote)
-                    lote.lot_imagem = image_path
-
                     if(edtTxtNome_LoteDialog.text.isNullOrBlank()){
                         lote.lot_nome = "20191026A"//TODO mudar essa lógica
                     }
                     else{
                         lote.lot_nome = edtTxtNome_LoteDialog.text.toString()
+                    }
+                    lote.lot_planta = edtPlanta_LoteDialog.text.toString()
+
+                    if(imgLote_LoteDialog.drawable.constantState != resources.getDrawable(R.drawable.ic_menu_camera).constantState) {
+                        saveBitmap(lote)
+                        lote.lot_imagem = image_path
+                    }
+                    else{
+                        lote.lot_imagem = null
                     }
 
                     if (C_Lote().insertLote(DBHelper(context), lote ,areaId, userid)){
