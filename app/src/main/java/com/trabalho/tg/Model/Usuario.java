@@ -101,7 +101,15 @@ public class Usuario implements Serializable {
                 }
             }
         }
+    }
 
+    public void reloadUsuarioInfo(Context context){
+        DBHelper helper = new DBHelper(context);
+        this.usr_user_info = new C_User_Info().selectUser_Info(helper);
+
+        if(this.usr_user_info != null){
+            this.usr_user_info.setInfo_endereco(new C_Endereco().selectEndereco(helper, this.usr_user_info.getInfo_id()));
+        }
 
     }
 
